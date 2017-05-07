@@ -98,10 +98,11 @@ I put anything I find interesting regarding reverse engineering in this journal.
 
 #
 ## *<p align='center'> WinDBG Tips (5/6/17) </p>*
-* Use lmf to find the binary's image base and !dh to read the image's header information for the entry point
-  * lmf: get loaded modules 
-  * !dh x: get module x image's header information
-* poi(<-addr->): displays data pointed to by addr   
+* Use lm to find the binary's image base and !dh to read the image's header information for the entry point
+  * __lm__: list loaded modules 
+  * __!dh x__: get module x image's header information. Since we can find the entry point in the file headers, we can use the -f option to only display the file headers 
+* __poi(<-addr->)__: displays data pointed to by addr   
+* __d(b/w/d/q/yb/a) <-memory-> L<-num->__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display  
 ---
 
 # .instruction-sets
