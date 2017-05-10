@@ -97,7 +97,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 
 #
 ## *<p align='center'> WinDBG Tips (5/6/17) </p>*
-* __Notation Conventions__: 
+* __Notations__: 
   * __$__: all pseudo-registers (e.g. $ip, $peb) are prefixed with this 
   * __?__: to evaluate an expression 
   * __??__: to evaluate a C++ expression
@@ -107,8 +107,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __!dh x__: get module x image's header information. Since we can find the entry point in the file headers, we can use the -f option to only display the file headers 
   * __$iment(addr)__: retrieve entry point for image located at addr 
 * __poi(addr)__: displays data pointed to by addr   
-* __d(b/w/d/q/yb/a/u/f/D/p) &lt;memory&gt; L&lt;num&gt;__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display
+* __d[b/w/d/q/yb/a/u/f/D/p] &lt;memory&gt; L&lt;num&gt;__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display
+  * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
 * __e[b|d|D|f|p|q|w] Address [Values]__: the e command edits memory
+  * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
 * __~ command__: list all threads. ~Ns switches to the Nth thread
 * __| command__: list current process and all child processes. |Ns switches to the Nth process
 ---
