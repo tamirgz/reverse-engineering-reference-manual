@@ -108,7 +108,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __!dh x__: get module x image's header information. Since we can find the entry point in the file headers, we can use the -f option to only display the file headers 
   * __$iment(addr)__: retrieve entry point for image located at addr 
 * __poi(<-addr->)__: displays data pointed to by addr   
-* __d(b/w/d/q/yb/a/u/f/D/p) <memory> L''<num>''__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display  
+* __d(b/w/d/q/yb/a/u/f/D/p) &lt;<memory> L &lt;<num>__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display  
 * __~ command__: list all threads. ~Ns switches to the Nth thread
 * ___| command__: list current process and all child processes. |Ns switches to the Nth process
 ---
