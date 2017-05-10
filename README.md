@@ -105,7 +105,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __poi(<-addr->)__: displays data pointed to by addr   
 * __d(b/w/d/q/yb/a) <-memory-> L<-num->__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display  
 * __~ command__: list all threads. ~Ns switches to the Nth thread
-* ____| command__: list current process and all child processes. |Ns switches to the Nth process
+* ___| command__: list current process and all child processes. |Ns switches to the Nth process
 ---
 
 # .instruction-sets
