@@ -34,7 +34,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 ## *<p align='center'> int 0x7374617274 (12/18/2016) </p>*
 * Processes are containers for execution. Threads are what the OS executes
 * Any function that calls another function is called a non-leaf function, and all other functions are leaf functions
-* Entry point of a binary (beginning of .text section) is not main. A program's startup code (how main is called) depends on the compiler and the platform that the binary is compiled for
+* Entry point of a binary (start function) is not main. A program's startup code (how main is called) depends on the compiler and the platform that the binary is compiled for
 * To hide a string from strings command, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section. To do this, initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out Data Encoding section in this journal
 * __Random Number Generator__: Randomness requires a source of entropy, which is an unpredictable sequence of bits. This source of entropy is called the seed and can be from OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness. So as long as you seed the algorithms with a legitimate source of entropy, they can generate fairly long sequences of random values without the sequence repeating 
 * __Software/Hardware/Memory Breakpoint__: 
@@ -55,7 +55,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 
 ## *<p align='center'> IDA Tips (4/1/2017) </p>*
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. Import Address Table is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the Import Address Table, a programmer can dynamically resolve the API 
-  + How to find dynamically resolved APIs: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs it called is not in the Import Address Table, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it) and then step back through the call stack to find where it's called in user code after execution pauses at that breakpoint
+  + How to find dynamically resolved APIs: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the Import Address Table, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 * To show advanced toolbar: View -> Toolbars -> Advanced Mode
 * To save memory snapshot from your debugger session: Debugger -> Take Memory Snapshot -> All Segments
@@ -69,7 +69,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 #
 ## *<p align='center'> GDB Tips (2/15/17) </p>*
 * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
-* Default display assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. To make this change permanent, write it in the .gdbinit file
+* Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. To make this change permanent, write it in the .gdbinit file
 * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
   + When reversing, it could be useful to hook on breakpoints by using hook-stop 
   + How to define a hook: 
@@ -89,7 +89,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * Set watchpoint (data breakpoint) in GDB: watch only break on write, rwatch break on read, awatch break on read/write
 * Set temporary variable: set $<-variable name-> = <-value->
   * Set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
-    + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAG is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
+    + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
     
 <p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
@@ -102,7 +102,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __?__: to evaluate an expression 
   * __??__: to evaluate a C++ expression
   * __!__: prefixed to a token to tell the debugger that the token is a symbol and not an expression
-* Use lm to find the binary's image base and !dh to read the image's header information for the entry point or use $iment, which will directly tell you the entry point location 
+* Use lm to find the binary's image base and then use !dh to read the image's header information to get the entry point. If you just want the entry point, use $iment to get just the entry point and not the rest of the header information 
   * __lm__: list loaded modules 
   * __!dh x__: get module x image's header information. Since we can find the entry point in the file headers, we can use the -f option to only display the file headers 
   * __$iment(addr)__: retrieve entry point for image located at addr 
@@ -156,24 +156,24 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * CMOVcc: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
 #
 ## *<p align='center'> x86-64 (4/24/2017) </p>*
-* All addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Modern processors only support 48-bit for address space rather than the full 64-bit that is available. As a result, bit 47 and bits 48-63 must match otherwise an exception will be raised 
+* All addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
 * 16 general-purpose registers each 64-bits (RAX, RCX, RDX, RBX, RSP, RBP, RSI, RDI, R8, R9, R10, R11, R12, R13, R14, R15)
   + DWORD (32-bit) version can be accessed with a D suffix, WORD (16-bit) with a W suffix, BYTE (8-bit) with a B suffix for registers R8 to R15
   + For registers with alternate names like x86 (e.g. RAX, RCX), size access for register is same as x86. For example, 32-bit version of RAX is EAX and the 16-bit version is DX 
-* 16 XMM registers, each 128-bit long. XMM registers are for SIMD instruction set, which is an extension to the x86-86 architecture. SIMD is for performing the same instruction on multiple data at once and/or for floating point operations 
+* 16 XMM registers, each 128-bit long. XMM registers are for SIMD instruction set, which is an extension to the x86-64 architecture. SIMD is for performing the same instruction on multiple data at once and/or for floating point operations 
   + Floating point operations were once done using stack-based instruction set that accesses the FPU Register Stack. But now, it can be done using SIMD instruction set 
-* Supports instruction pointer-relative addressing. Unlike x86, referencing data will not use absolute address but rather an offset from RIP
+* Supports instruction pointer-relative addressing on data. Unlike x86, referencing data will not use absolute address but rather an offset from RIP
 * Calling conventions: Parameters are passed to registers. Additional one are stored on stack
   + Windows: first 4 parameters are placed in RCX, RDX, R8, and R9
   + Linux: first 6 parameters are placed in RDI, RSI, RDX, RCX, R8, and R9
 * In 32-bit code, stack space can be allocated and unallocated in middle of the function using push or pop. However, in 64-bit code, functions cannot allocate any space in the middle of the function
-* Nonleaf functions are sometimes called frame functions because they require a stack frame. All nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
+* Nonleaf functions are sometimes called frame functions because they require a stack frame. Since stack space on x86-64 cannot change in the middle of a function,  all nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
 * Structured exception handling in x64 does not use the stack. In 32-bit code, the fs:[0] is used as a pointer to the current exception handler frame, which is stored on the stack so that each function can define its own exception handler
 * Easier in 64-bit code to differentiate between pointers and data values. The most common size for storing integers is 32 bits and pointers are always 64 bits
 * RBP is treated like another GPR. As a result, local variables are referenced through RSP
 #
 ## *<p align='center'> ARM (4/14/2017) </p>*
-* ARMv7 uses 3 profiles (Application, Real-time, Microcontroller) and model name (Cortex). For example, ARMv7 Cortex-M is meant for microcontroller and support Thumb-2 execution only 
+* ARMv7 uses 3 profiles (Application, Real-Time, Microcontroller) and model name (Cortex). For example, ARMv7 Cortex-M is meant for microcontroller and support Thumb-2 execution only 
 * Thumb-1 is used in ARMv6 and earlier. Its instructions are always 2 bytes in size
 * Thumb-2 is used in ARMv7. Its instructions can be either 2 bytes or 4 bytes in size. 4 bytes Thumb instruction has a .W suffix, otherwise it generates a 2 byte Thumb instruction
 * Native ARM instructions are always 4 bytes in size
@@ -207,11 +207,11 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * PUSH/POP and STMFD/LDMFD are functionally the same, but PUSH/POP is used as prologue and epilogue in Thumb state while STMFD/LDMFD is used as prologue and epilogue in ARM state. 
 * Instructions for function invocation: B, BX, BL, and BLX
   + B's syntax: B imm. imm is relative offset from R15, the program counter
-  + BX's syntax: BX <-register->. X means that it can switch between ARM and THUMB state. If the LSB of the destination is 1, it will execute in Thumb state. BX LR is commonly used to return from function 
+  + BX's syntax: BX &lt;register&gt;. X means that it can switch between ARM and THUMB state. If the LSB of the destination is 1, it will execute in Thumb state. BX LR is commonly used to return from function 
   + BL's syntax: BL imm. It stores return address, the next instruction, in LR before transferring control to destination
-  + BLX's syntax: BLX imm./<-register->. When BLX uses an offset, it always swap state
+  + BLX's syntax: BLX imm./&lt;register&gt;. When BLX uses an offset, it always swap Thumb state
 * Since instructions can only be 2 or 4 bytes in size, it's not possible to directly use a 32-bit constant as an operand. As a result, barrel shifter can be used to transform the immediate into a larger value 
-* For arithmetic operations, the "S" suffix indicates that conditional flags should be set. Whereas, comparison instructions (CBZ, CMP, TST, CMN, and TEQ) automatically update the flags
+* For arithmetic operations, the "S" suffix will update conditional flags. Whereas, comparison instructions (CBZ, CMP, TST, CMN, and TEQ) automatically update the flags
 * Instructions can be conditionally executed by adding conditional suffixes. That is how conditional branch instruction is implemented
 * Thumb instruction cannot be conditionally executed, with the exception of B instruction, without the IT instruction. 
   + IT (If-then)'s syntax: ITxyz cc. cc is the conditional suffix for the 1st instruction after IT. xyz are for the 2nd, 3rd, and 4th instructions after IT. It can be either T or E. T means that the condition must match cc for it to be executed. E means that condition must be the opposite of cc for it to be executed
