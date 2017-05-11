@@ -209,10 +209,11 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + B's syntax: B imm. imm is relative offset from R15, the program counter
   + BX's syntax: BX &lt;register&gt;. X means that it can switch between ARM and THUMB state. If the LSB of the destination is 1, it will execute in Thumb state. BX LR is commonly used to return from function 
   + BL's syntax: BL imm. It stores return address, the next instruction, in LR before transferring control to destination
-  + BLX's syntax: BLX imm./&lt;register&gt;. When BLX uses an offset, it always swap Thumb state
+  + BLX's syntax: BLX imm./&lt;register&gt;. When BLX uses an offset, it always swap state (ARM to THUMB or THUMB to ARM)
 * Since instructions can only be 2 or 4 bytes in size, it's not possible to directly use a 32-bit constant as an operand. As a result, barrel shifter can be used to transform the immediate into a larger value 
 * For arithmetic operations, the "S" suffix will update conditional flags. Whereas, comparison instructions (CBZ, CMP, TST, CMN, and TEQ) automatically update the flags
-* Instructions can be conditionally executed by adding conditional suffixes. That is how conditional branch instruction is implemented
+* Instructions can be conditionally executed by adding conditional suffixes
+  * This is how conditional branch instruction is implemented. For example, BEQ executes Branch instruction if EQ condition is true (ZF = 1)
 * Thumb instruction cannot be conditionally executed, with the exception of B instruction, without the IT instruction. 
   + IT (If-then)'s syntax: ITxyz cc. cc is the conditional suffix for the 1st instruction after IT. xyz are for the 2nd, 3rd, and 4th instructions after IT. It can be either T or E. T means that the condition must match cc for it to be executed. E means that condition must be the opposite of cc for it to be executed
 ---
@@ -407,7 +408,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + __MOV SS__: when you write to SS (e.g. pop ss), CPU will lock all interrupts until the end of the next instruction. Therefore, if you are single-stepping through it with a debugger, the debugger will not stop on the next instruction but the instruction after the next one. One way to detect debugger is for the next instruction after a write to SS to be pushfd. Since the debugger did not stop there, it will not clear the trap flag and pushfd will push the value of trap flag (plus rest of EFLAGS) onto the stack
   + __Instruction Counting__: register an exception handler. Use an int 3 instruction to trigger it and set hardware breakpoints. When a hardware breakpoint is reached, the same exception handler will be triggered due to EXCEPTION_SINGLE_STEP and a count of how many times it is triggered by EXCEPTION_SINGLE_STEP is kept. Debugger will mess with the instruction counts by not calling the previously set exception handler when a hardware breakpoint is reached. Checking the value of the instruction counts will tell us if the program is running under a debugger or not
 * __Timing Checks__:  record a timestamp, perform some operations, take another timestamp, and then compare the two timestamps. If there is a lag, you can assume the presence of a debugger
-* __rdtsc Instruction (0x0F31)__: this instruction returns the count of the number of ticks since the last system reboot as a 64-bit value placed into EDX:EAX. Simply execute this instruction twice and compare the difference between the two readings
+  * __rdtsc Instruction (0x0F31)__: this instruction returns the count of the number of ticks since the last system reboot as a 64-bit value placed into EDX:EAX. Simply execute this instruction twice and compare the difference between the two readings
 * __TLS Callbacks__: (Windows only) Most debuggers start at the program’s entry point as defined by the PE header. TlsCallback is traditionally used to initialze thread-specific data before a thread runs, so TlsCallback is called before the entry point and therefore can execute secretly in a debugger. To make it harder to find anti-debugging checks, anti-debugging checks can be placed in TlsCallback
 * __/proc/self/status File (Linux)__: a dynamic file that exists for every process. It includes information on whether a process is being traced
 #
