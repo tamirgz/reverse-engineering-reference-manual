@@ -98,10 +98,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
 #
 ## *<p align='center'> WinDBG Tips (5/6/17) </p>*
 * __Notations__: 
-  * __?__: to evaluate an expression 
-  * __??__: to evaluate a C++ expression
+  * __?__: evaluates an expression 
+  * __??__: evaluates a C++ expression
   * __!__: prefixed to a token to tell the debugger that the token is a symbol and not an expression
-  * __$__: all pseudo-registers (e.g. $ip, $peb) are prefixed with this 
+  * __$__: prefixed to all pseudo-registers (e.g. $ip, $peb) 
   * __@__: prefixed to tell debugger that the token is a register or pseudo-register to save it time from doing symbol lookup
 * WinDBG will break in the kernel, not at the entry point. Ways to find entry point: 
   * lm (loaded modules) to find the binary's image base. From image base, here are 2 ways to get entry point: 
