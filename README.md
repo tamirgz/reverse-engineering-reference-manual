@@ -98,14 +98,16 @@ I put anything I find interesting regarding reverse engineering in this journal.
 #
 ## *<p align='center'> WinDBG Tips (5/6/17) </p>*
 * __Notations__: 
-  * __$__: all pseudo-registers (e.g. $ip, $peb) are prefixed with this 
   * __?__: to evaluate an expression 
   * __??__: to evaluate a C++ expression
   * __!__: prefixed to a token to tell the debugger that the token is a symbol and not an expression
-* Use lm to find the binary's image base and then use !dh to read the image's header information to get the entry point. If you just want the entry point, use $iment to get just the entry point and not the rest of the header information 
-  * __lm__: list loaded modules 
-  * __!dh x__: get module x image's header information. Since we can find the entry point in the file headers, we can use the -f option to only display the file headers 
-  * __$iment(addr)__: retrieve entry point for image located at addr 
+  * __$__: all pseudo-registers (e.g. $ip, $peb) are prefixed with this 
+  * __@__: prefixed to tell debugger that the token is a register or pseudo-register to save it time from doing symbol lookup
+* WinDBG will break in the kernel, not at the entry point. Ways to find entry point: 
+  * lm (loaded modules) to find the binary's image base. From image base, here are 2 ways to get entry point: 
+    * !dh (dump headers) to read the image's header information to get the entry point
+    * $iment to get just the entry point and not the rest of the header information 
+  * $exentry: a pseudo-register that contains the entry point
 * __poi(addr)__: displays data pointed to by addr   
 * __d[b/w/d/q/yb/a/u/f/D/p] &lt;memory&gt; L&lt;num&gt;__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display
   * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
