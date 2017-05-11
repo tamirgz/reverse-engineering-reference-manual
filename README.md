@@ -85,10 +85,12 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * x command displays memory contents at a given address in the specified format
   + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: x/14i $pc
 * p command displays value stored in a named variable
+* Catch program events: catch &lt;event&gt;
+  * "catch syscall" will set a catchpoint that breaks at every call/return from a system call
 * Set hardware breakpoint in GDB: hbreak 
 * Set watchpoint (data breakpoint) in GDB: watch only break on write, rwatch break on read, awatch break on read/write
 * Set temporary variable: set $<-variable name-> = <-value->
-  * Set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
+  * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
     
