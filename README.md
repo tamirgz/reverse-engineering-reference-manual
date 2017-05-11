@@ -112,10 +112,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * poi(address): displays data pointed to by addr   
   * d[b/w/d/q/yb/a/u/f/D/p] &lt;memory&gt; L&lt;num&gt;: displays memory. The num right next to L is the range specifier that specifies the amount to display
     * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
-  * e[b|d|D|f|p|q|w] address [Values]: edits memory
+  * e[b|d|D|f|p|q|w] address [values]: edits memory
     * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
-  * ~: lists all threads. ~Ns switches to the Nth thread
-  * |: lists current process and all child processes. |Ns switches to the Nth process
+  * __~__: lists all threads. ~Ns switches to the Nth thread
+  * __|__: lists current process and all child processes. |Ns switches to the Nth process
   * sx(e/d/r/i): controls how the debugger handle exceptions or events
     * sxe: breaks on an event 
     * sxd: disables break for an event 
