@@ -100,17 +100,17 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Notations__: 
   * __?__: evaluates an expression 
   * __??__: evaluates a C++ expression
-  * __!__: prefixed to a token to tell the debugger that the token is a symbol and not an expression
+  * __!__: prefixed to tell debugger that the token is a symbol and not an expression
   * __$__: prefixed to all pseudo-registers (e.g. $ip, $peb) 
   * __@__: prefixed to tell debugger that the token is a register or pseudo-register to save it time from doing symbol lookup
 * WinDBG will break in the kernel, not at the entry point. Ways to find entry point: 
   * lm (loaded modules) to find the binary's image base. From image base, here are 2 ways to get entry point: 
     * !dh (dump headers) to read the image's header information to get the entry point
-    * $iment to get just the entry point and not the rest of the header information 
+    * $iment to display just the entry point and not the rest of the header information 
   * $exentry: a pseudo-register that contains the entry point
 * __Useful General Commands__: 
-  * poi(address): displays data pointed to by addr   
-  * d[b/w/d/q/yb/a/u/f/D/p] &lt;memory&gt; L&lt;num&gt;: displays memory. The num right next to L is the range specifier that specifies the amount to display
+  * poi(address): displays data pointed to by address
+  * d[b/w/d/q/yb/a/u/f/D/p] address L&lt;num&gt;: displays memory. The num right next to L is the range specifier that specifies the amount to display
     * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
   * e[b|d|D|f|p|q|w] address [values]: edits memory
     * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
