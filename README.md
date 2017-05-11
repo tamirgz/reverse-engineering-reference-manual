@@ -108,13 +108,19 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * !dh (dump headers) to read the image's header information to get the entry point
     * $iment to get just the entry point and not the rest of the header information 
   * $exentry: a pseudo-register that contains the entry point
-* __poi(addr)__: displays data pointed to by addr   
-* __d[b/w/d/q/yb/a/u/f/D/p] &lt;memory&gt; L&lt;num&gt;__: the d command displays memory. The num right next to L is the range specifier that specifies the amount to display
-  * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
-* __e[b|d|D|f|p|q|w] Address [Values]__: the e command edits memory
-  * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
-* __~ command__: list all threads. ~Ns switches to the Nth thread
-* __| command__: list current process and all child processes. |Ns switches to the Nth process
+* __Useful General Commands__: 
+  * __poi(addr)__: displays data pointed to by addr   
+  * __d[b/w/d/q/yb/a/u/f/D/p] &lt;memory&gt; L&lt;num&gt;__: displays memory. The num right next to L is the range specifier that specifies the amount to display
+    * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
+  * __e[b|d|D|f|p|q|w] Address [Values]__: edits memory
+    * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
+  * __~__: lists all threads. ~Ns switches to the Nth thread
+  * __|__: lists current process and all child processes. |Ns switches to the Nth process
+  * __sx(e/d/r/i)__: controls how the debugger handle exceptions or events
+    * sxe: breaks on an event 
+    * sxd: disables break for an event 
+    * sxr: shows output for an event 
+    * sxi: ignores an event 
 ---
 
 # .instruction-sets
