@@ -151,20 +151,20 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + FST instruction is for storing values from ST0 into memory 
   + FPU Register Stack can be accessed only by FPU instructions
 * __Hard To Remember x86 Instructions With Side Effects__:
-  * IMUL reg/mem: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
-  * IDIV reg/mem: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
-  * STOS(B/W/D): writes the value AL/AX/EAX to EDI. Commonly used to initialize a buffer to a constant value
-  * SCAS(B/W/D): compares AL/AX/EAX with data starting at the memory address EDI
-  * LODS(B/W/D): reads 1, 2, or 4 byte value from esi and stores it in al, ax, or eax 
-  * REP prefix: repeats an instruction up to ECX times
-  * MOVS(B/W/D): moves data with 1, 2, or 4 byte granularity between two addresses. They implicitly use EDI/ESI as the destination/source address, respectively. In addition, they also automatically update the source/destination address depending on the direction flag
-  * CLD: clear direction flag. DF: 0
-  * STD: set direction flag. DF: 1. If DF is 1, addresses are decremented
-  * PUSHAD, POPAD: pushes/pops all 8 general-purpose registers 
-  * PUSHFD, POPFD: pushes/pops EFLAGS register 
-  * MOVSX: moves a signed value into a register and sign-extends it 
-  * MOVZX: moves an unsigned value into a register and zero-extends it
-  * CMOVcc: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
+  * __IMUL reg/mem__: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
+  * __IDIV reg/mem__: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
+  * __STOS(B/W/D)__: writes the value AL/AX/EAX to EDI. Commonly used to initialize a buffer to a constant value
+  * __SCAS(B/W/D)__: compares AL/AX/EAX with data starting at the memory address EDI
+  * __LODS(B/W/D)__: reads 1, 2, or 4 byte value from esi and stores it in al, ax, or eax 
+  * __REP__: repeats an instruction up to ECX times
+  * __MOVS(B/W/D)__: moves data with 1, 2, or 4 byte granularity between two addresses. They implicitly use EDI/ESI as the destination/source address, respectively. In addition, they also automatically update the source/destination address depending on the direction flag
+  * __CLD__: clear direction flag. DF: 0
+  * __STD__: set direction flag. DF: 1. If DF is 1, addresses are decremented
+  * __PUSHAD, POPAD__: pushes/pops all 8 general-purpose registers 
+  * __PUSHFD, POPFD__: pushes/pops EFLAGS register 
+  * __MOVSX__: moves a signed value into a register and sign-extends it 
+  * __MOVZX__: moves an unsigned value into a register and zero-extends it
+  * __CMOVcc__: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
 #
 ## *<p align='center'> x86-64 (4/24/2017) </p>*
 * All addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
