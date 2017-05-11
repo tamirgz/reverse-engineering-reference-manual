@@ -103,6 +103,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __?__: evaluates an expression 
   * __??__: evaluates a C++ expression
   * __!__: prefixed to tell debugger that the token is a symbol and not an expression
+    * symbol can also be prefixed with module name (e.g. &lt;module&gt;!&lt;symbol&gt;) to save debugger time from searching through all modules for the matching symbol
   * __$__: prefixed to all pseudo-registers (e.g. $ip, $peb) 
   * __@__: prefixed to tell debugger that the token is a register or pseudo-register to save it time from doing symbol lookup
 * WinDBG will break in the kernel, not at the entry point. Ways to find entry point: 
@@ -318,7 +319,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Kernal32dll__: interface that provides APIs to interact with Windows OS
 * __Ntdll__: interface to kernel. Lowest userland API
   + Native applications are applications that issue calls directly to the Natice API(Ntdll)
-* __Windows API's Invocation Pipeline__: User Code -> Kernel32 with functions that end with A (e.g. CreateFileA) -> Kernel32 with functions that end with W (e.g. CreateFileW) -> Ntdll -> Kernel
+* __Windows API's Invocation Pipeline__: User Code -> Kernel32 with functions that end with A (e.g. CreateFileA) -> Kernel32 with functions that end with W (e.g. CreateFileW) -> Ntdll -> Kernel(ntoskrnl.exe, ...)
   + There are two versions of Kernel32 API calls if the call takes in a string: One that ends in A and one that ends in W. A for ASCII and W for wide string
   + In Kernel32 one has the option to call the API with ASCII or wide string. But if one calls it with ASCII, Windows will internally convert it to wide string and call the wide string version of the API
   + Windows API uses stdcall for its calling convention
