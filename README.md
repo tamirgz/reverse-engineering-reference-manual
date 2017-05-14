@@ -280,7 +280,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * .dynsym symbol table cannot be stripped since it is needed for runtime, so imported library symbols remain in a stripped binary. But if a binary is compiled statically, it will have no symbol table at all if stripped
   * With non-stripped, gdb can identify local function names and knows the bounds of all functions so we can do: disas "function name"
   * With stripped binary, gdb can’t even identify main. Can identify entry point using the command: info file. Also, can’t do disas since gdb does not know the bounds of the functions so it does not know which address range should be disassembled. Solution: use examine(x) command on address pointed by pc register like: x/14i $pc
-* Tools to analyze it: 
+* Ways to analyze it: 
   + display section headers: readelf -S
   + display program headers and section to segment mapping: readelf -l
   + display symbol tables: readelf --syms or objdump -t
@@ -288,6 +288,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + trace library call: ltrace -f
   + trace sys call: strace -f
   + decompile: retargetable decompiler
+  + view a running program's process address space: /proc/$pid/maps
 #
 ## *<p align='center'> PE Files (5/14/2017) </p>*
 
@@ -452,7 +453,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Timing Checks__:  record a timestamp, perform some operations, take another timestamp, and then compare the two timestamps. If there is a lag, you can assume the presence of a debugger
   * __rdtsc Instruction (0x0F31)__: this instruction returns the count of the number of ticks since the last system reboot as a 64-bit value placed into EDX:EAX. Simply execute this instruction twice and compare the difference between the two readings
 * __TLS Callbacks__: (Windows only) Most debuggers start at the program’s entry point as defined by the PE header. TlsCallback is traditionally used to initialze thread-specific data before a thread runs, so TlsCallback is called before the entry point and therefore can execute secretly in a debugger. To make it harder to find anti-debugging checks, anti-debugging checks can be placed in TlsCallback
-* __/proc/self/status File (Linux)__: a dynamic file that exists for every process. It includes information on whether a process is being traced
+* __&lt;process name&gt; /proc/self/status (Linux)__: a dynamic file that contains information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced
 #
 ## *<p align='center'> Anti-Emulation (2/5/2017) </p>*
 * Using emulation allows reverse engineer to bypass many anti-debugging techniques
