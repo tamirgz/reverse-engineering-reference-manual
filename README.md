@@ -250,9 +250,13 @@ I put anything I find interesting regarding reverse engineering in this journal.
 # .file-formats
 
 ## *<p align='center'> ELF Files (1/20/17) </p>*
-
 <p align='center'> <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Elf-layout--en.svg" height="400"> </p>
 <!-- this image is from wikipedia -->
+
+* What's important for linking compared to what's important for execution: 
+
+<p align='center'> <img src="https://lh4.googleusercontent.com/bdHe2FFeRH120O3iEV-Ikqs6UpTDOg-rJ7iAssHIOQEx-6XlPPeLISFYAaVB6-BL5aFL-D9y0wB9dfEz3NcTiroT6L-Q-EzPeXDT6VB1iK-BtPXub3o" height="400"> </p>
+<!-- this image is found on Google -->
 
 * ELF file header starts at offset 0 and is the roadmap that describes the rest of the file. It marks the ELF type, architecture, execution entry point, and offsets to program headers and section headers
 * Program header table let the system knows how to create the process image. It contains an array of structures, each describing a segment. A segment contains one or more sections
