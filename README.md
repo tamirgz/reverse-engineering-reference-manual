@@ -17,7 +17,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [C++ Reversing](#-c-reversing-121316-)
 * [.file-formats](#file-formats)
   + [ELF Files](#-elf-files-12017-)
-  * [PE Files](#-pe-flies-51417-)
+  * [PE Files](#-pe-files-5142017-)
 * [.operating-system-concepts](#operating-system-concepts)
   + [Windows OS](#-windows-os-412017-)
   + [Interrupts](#-interrupts-4132017-)
@@ -286,6 +286,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + decompile: retargetable decompiler
 #
 ## *<p align='center'> PE Files (5/14/2017) </p>*
+
+<p align='center'> <img src="http://nagareshwar.securityxploded.com/wp-content/uploads/2013/10/PE-architecture.jpg" height="400"> </p>
+<!-- this image is from http://nagareshwar.securityxploded.com -->
+
 * How a PE file is loaded into memory: 
 
 <p align='center'> <img src="https://e16ae89e-a-62cb3a1a-s-sites.googlegroups.com/site/delphibasics/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1/PEFormat1.gif?attachauth=ANoY7crq-jlujmE8zWi60Cm1Xi_rNPgeQUC1YYKQlSvboVrM-HQoeheT2P4WBCI0_ucUP_NvHGSqE8JlQMo_t8bF3lUsnZSRzHEC1uVP0Z-1v-jkIOQqVKSJpK_ryOoQDHKu3zLerXHhxlpgIXAKSSGXmsH4ysNQiSiubcM4BTBAQfJiGDhinfcUL3kWQieZD91oSDlrYJo9HEsEnULu1X9Wlcc40V77IvtcQ_eZJKq9hd4Qy42gbBBav2rxu2dBgfqxFZ-NMhK9m4oupLnWQLLWBMxf3jZoUiSsO3VeIz7yIfnX0PCj_iowkY8_lcDMgl4NQGDgehgBqvi9jn59u51cwjB9fE065A%3D%3D&attredirects=0" height="400"> </p>
