@@ -311,7 +311,9 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __IMAGE_FILE_HEADER__: contains basic information on the file (e.g. target CPU, number of sections)
   * __IMAGE_OPTIONAL_HEADER32__: contains more information on the file. But most importantly, it contains an array of IMAGE_NT_HEADERS structures
 * Section table (IMAGE_SECTION_HEADERs) is right after PE Header. Each IMAGE_SECTION_HEADER contains information on a section, such as a section's virtual address or its pointer to data on disk 
-* __Program Exception Data__: can be found in IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_EXCEPTION. It is an exception table that contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. Each IMAGE_RUNTIME_FUNCTION_ENTRY contains the address to an exception handler
+* __Base Relocations__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_BASERELOC. Refers to as the .reloc section. Contains every location that needs to be rebased if the executable doesn't load at the preferred load address
+  * To rebase, loader calculates the difference between the actual load address and the preferred load address. Every entry in this section is then updated with the previous calculation
+* __Program Exception Data__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_EXCEPTION. It is an exception table that contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. Each IMAGE_RUNTIME_FUNCTION_ENTRY contains the address to an exception handler
 ---
 
 # .operating-system-concepts
