@@ -151,7 +151,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + FLD instruction is for loading values onto the FPU Register Stack
   + FST instruction is for storing values from ST0 into memory 
   + FPU Register Stack can be accessed only by FPU instructions
-* __Hard To Remember x86 Instructions With Side Effects__:
+* __Commonly Used Hard To Remember x86 Instructions With Side Effects__:
   * __IMUL reg/mem__: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
   * __IDIV reg/mem__: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
   * __STOS(B/W/D)__: writes the value AL/AX/EAX to EDI. Commonly used to initialize a buffer to a constant value
