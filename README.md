@@ -25,7 +25,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Anti-Disassembly](#-anti-disassembly-111716-)
   + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
-* [.encodings](#encoding)
+* [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
   + [Data Encoding](#-data-encoding-121516-)
 ---
