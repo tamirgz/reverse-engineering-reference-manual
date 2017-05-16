@@ -499,4 +499,4 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * One padding character may be presented at the end of the encoded string (typically =). If padded, length of encoded string will be divisible by 4
   * Easy to develop a custom substitution cipher since the only item that needs to be changed is the indexing string
 
-[Go to Table of Contents](#table-of-contents)
+[Go to .table-of-contents](#table-of-contents)
