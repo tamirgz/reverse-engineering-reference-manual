@@ -254,8 +254,8 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * Instructions are shorter than instructions in register-based virtual machine since operands don’t need to be explicitly stated because they are on the stack, thus resulting in shorter bytecode 
     * Easier to implement since it doesn’t have to worry about register allocation 
 * Function object is associated with 3 tuples:
-  * Local variables and parameters (&lt;object name&gt;.__code__.co_varnames)
-  * Global variables that it uses (&lt;object name&gt;.__code__.co_names)
+  * Local variables and parameters (&lt;object name&gt;.`__code__`.co_varnames)
+  * Global variables that it uses (&lt;object name&gt;.`__code__`.co_names)
   * Constants it uses (&lt;object name&gt;.__code__.co_consts)
 * __Load/Store Operations__
   * Load and store operations are followed by an integer. The integer indexes one of the tuples associated with function object. Load will push the value at that index onto the stack and store will store the value at the top of the stack to variable at that index 
