@@ -15,6 +15,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [ARM](#-arm-4142017-)
 * [.languages](#languages)
   + [C++ Reversing](#-c-reversing-121316-)
+  + [Python Reversing](#-python-reversing-5172017-)
 * [.file-formats](#file-formats)
   + [ELF Files](#-elf-files-12017-)
   * [PE Files](#-pe-files-5142017-)
@@ -245,6 +246,22 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + Compiler places a pointer immediately prior to the class vtable. It points to a structure that contains information on the name of class that owns the vtable
 * Memory spaces for global objects are allocated at compile-time and placed in data or bss section of binary 
 * Use Name Mangling to support Method Overloading (multiple functions with same name but accept different parameters). Since in PE or ELF format, a function is only labeled with its name 
+#
+## *<p align='center'> Python Reversing (5/17/2017) </p>*
+* PVM (Python Virtual Machine) is a stack-based virtual machine that stores operands in an upwardly-growing stack
+  * In stack-based execution, an operation is performed by popping operands from the stack, operates on them, and then storing the result back to the stack
+  * __Advantages of Stack-Based Virtual Machine__
+    * Instructions are shorter than instructions in register-based virtual machine since operands don’t need to be explicitly stated because they are on the stack, thus resulting in shorter bytecode 
+    * Easier to implement since it doesn’t have to worry about register allocation 
+* Function object is associated with 3 tuples:
+  * Local variables and parameters (&lt;object name&gt;.__code__.co_varnames)
+  * Global variables that it uses (&lt;object name&gt;.__code__.co_names)
+  * Constants it uses (&lt;object name&gt;.__code__.co_consts)
+* __Load/Store Operations__
+  * Load and store operations are followed by an integer. The integer indexes one of the tuples associated with function object. Load will push the value at that index onto the stack and store will store the value at the top of the stack to variable at that index 
+  * __LOAD/STORE_CONST__: indexes the &lt;object name&gt;.__code__.co_consts tuple 
+  * __LOAD/STORE_FAST__: indexes the &lt;object name&gt;.__code__.co_varnames tuple
+  * __LOAD/STORE_GLOBAL__: indexes the &lt;object name&gt;.__code__.co_names tuple
 ---
 
 # .file-formats
