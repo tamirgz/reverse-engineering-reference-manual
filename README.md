@@ -256,12 +256,12 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * Function object is associated with 3 tuples:
   * Local variables and parameters (&lt;object name&gt;.`__code__`.co_varnames)
   * Global variables that it uses (&lt;object name&gt;.`__code__`.co_names)
-  * Constants it uses (&lt;object name&gt;.__code__.co_consts)
+  * Constants it uses (&lt;object name&gt;.`__code__`.co_consts)
 * __Load/Store Operations__
   * Load and store operations are followed by an integer. The integer indexes one of the tuples associated with function object. Load will push the value at that index onto the stack and store will store the value at the top of the stack to variable at that index 
-  * __LOAD/STORE_CONST__: indexes the &lt;object name&gt;.__code__.co_consts tuple 
-  * __LOAD/STORE_FAST__: indexes the &lt;object name&gt;.__code__.co_varnames tuple
-  * __LOAD/STORE_GLOBAL__: indexes the &lt;object name&gt;.__code__.co_names tuple
+  * __LOAD/STORE_CONST__: indexes the &lt;object name&gt;.`__code__`.co_consts tuple 
+  * __LOAD/STORE_FAST__: indexes the &lt;object name&gt;.`__code__`.co_varnames tuple
+  * __LOAD/STORE_GLOBAL__: indexes the &lt;object name&gt;.`__code__`.co_names tuple
 ---
 
 # .file-formats
