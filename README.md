@@ -260,7 +260,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Python Bytecode Instructions__ 
   * For full instruction set, check out the [Official Python Documentation](https://docs.python.org/2/library/dis.html)
   * An instruction consists of an opcode and possibly an oparg. Opcode is the instruction and oparg is the index that resolves to the actual operands
-    * Some instructions, such as BINARY_ADD, doesn't require an oparg since everything is carried out on the stack
+    * Some instructions, such as BINARY_ADD, doesn't require an oparg since the operands it needs are on the stack 
     * Other instructions, such as those for LOAD/STORE, require an oparg to index a tuple for the operand. The specific tuple is referenced in the latter half of the opcode
       * __LOAD/STORE_CONST__: uses oparg to index the &lt;object name&gt;.`__code__`.co_consts tuple 
       * __LOAD/STORE_FAST__: uses oparg to index the &lt;object name&gt;.`__code__`.co_varnames tuple
