@@ -51,6 +51,9 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * VA - image_base = RVA. VA relative to the base of the image 
   * RVA - section_base_RVA = offset from base of the section
   * offset_from_section_base + section_file_offset = file offset on disk  
+* __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here is something to keep in mind when reversing: 
+  * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and treat it as such 
+  * For other multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
 ---
 
 # .tools
