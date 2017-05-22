@@ -23,7 +23,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Windows OS](#-windows-os-412017-)
   + [Interrupts](#-interrupts-4132017-)
 * [.anti-reversing](#anti-reversing)
-  + [Anti-Disassembly](#-anti-static-analysis-111716-)
+  + [Anti-Static Analysis](#-anti-static-analysis-111716-)
   + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
 * [.encodings](#encodings)
