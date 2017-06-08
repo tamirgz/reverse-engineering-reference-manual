@@ -444,6 +444,9 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * __Constant Unfolding__: replaces constant with unnecessary computations that will output the same constant
       * this can be accomplished on the source code level if the variable is assigned as volatile in C. The volatile keyword tells the compiler to not optimize this variable so you can perform unnecessary computations on it without worrying that the compiler will optimize those computations away 
     * __Arithmetic Substitution via Identities__: replaces a mathematical statement with one that is more complicated but semantically the same
+  * __Data Obfuscation__: alters the data structures used in the program to make it harder to analyze 
+    * __Aggregation__: splits, merges, folds, or flattens an array. [This technique can be used to hide the intended string](https://youtu.be/7IKIzsXr3Z8?t=1964) or simply makes an array harder to analyze by merging junk array with the actual array. This allows code for array access to be more complex thus harder to analyze
+    * __Re-Ordering__: 
   * __Imported Function Obfuscation (makes it difficult to determine which shared libraries or library functions are used)__: have the program’s import table be initialized by the program itself. The program itself loads any additional libraries it depends on, and once the libraries are loaded, the program locates any required functions within those libraries
     + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
     + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
