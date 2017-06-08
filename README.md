@@ -435,7 +435,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __Dead Code Insertion__: inserts useless code that doesn't affect a program's functionalities
   * __Junk Code Insertion__: inserts code that never get executed 
   * __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same 
-    + __Opaque Predicate__: code construct that makes it hard to evaluate the predicate statically so when compiled, compiler doesn't optimize away the conditional construct
+    + __Opaque Predicate__: transforms a trivial opaque predicate into a non-trivial opaque predicate. On the source code level, a trivial opaque predicate's conditional construct will be optimized away if compiler knows that it will always be evaluated to either True or False. For a non-trivial opaque predicate, even though the predicate will always evaluate to either True or False, the underlying code construct makes it hard to figure that out statically. As a result, compiler doesn't optimize away the conditional construct
       * [Environment-Based Opaque Predicates](https://reverseengineering.stackexchange.com/questions/2340/how-to-design-opaque-predicates)
       * Uses global variables instead of constants in the predicates. Compiler won't be able to optimize the conditional construct since it can't assume the value of global variables 
       * Introduces entropy into the predicate (e.g. using rand() function)
