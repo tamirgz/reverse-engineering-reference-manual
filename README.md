@@ -420,7 +420,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * __Opaque Predicates__: conditional construct that looks like conditional code but actually always evaluates to either true or false 
       + __Jump Instructions With The Same Target__: JZ follows by JNZ. Essentially an unconditional jump. The bytes following JNZ instruction could be data but will be disassembled as code
       + __Jump Instructions With A Constant Condition__: XOR follows by JZ. It will always jump so bytes following false branch could be data
-      + Any type of code construct that makes it hard to evaluate the predicate statically but programmer knows in advance of the value 
+      + Any type of code construct that makes it hard to evaluate the predicate statically so when compiled, compiler doesn't optimize away the conditional construct
         * Uses global variables instead of constants in the predicates. Compiler won't be able to optimize the conditional construct since it can't assume the value of the global variables 
         * Introduces entropy into the predicate (e.g. using rand() function)
         * [Environment-Based Opaque Predicates](https://reverseengineering.stackexchange.com/questions/2340/how-to-design-opaque-predicates)
