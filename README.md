@@ -420,6 +420,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * __Opaque Predicates__: conditional construct that looks like conditional code but actually always evaluates to either true or false 
       + __Jump Instructions With The Same Target__: JZ follows by JNZ. Essentially an unconditional jump. The bytes following JNZ instruction could be data but will be disassembled as code
       + __Jump Instructions With A Constant Condition__: XOR follows by JZ. It will always jump so bytes following false branch could be data
+      + Any type of code construct that makes it hard to evaluate the predicate statically but programmer knows in advance of the value 
+        * Uses global variables instead of constants in the predicates. Compiler won't be able to optimize the conditional construct since it can't assume the value of the global variables 
+        * Introduces entropy into the predicate (e.g. using rand() function)
+        * [Environment-Based Opaque Predicates](https://reverseengineering.stackexchange.com/questions/2340/how-to-design-opaque-predicates)
     + __Impossible Disassembly__: a byte is part of multiple instructions. Disassembler cannot represent a byte as part of two instructions. Either can the processor, but it doesn't have to because it just needs to execute the instructions 
   * __Functions In/Out-Lining__: performs operations that create inline and outline functions randomly and through multiple passes to obfuscate the call graph  
     * __Inline Functions__: a function that is merged into the body of its caller 
@@ -438,6 +442,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __Arithmetic Substitution via Identities__: replaces a mathematical statement with one that is more complicated but semantically the same
   * __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same 
   * __Control-Flow Graph Flattening__: obfuscates control flow by replacing a group of control structures with a dispatcher. Each basic block updates the dispatcher's context so it knows which basic block to execute next
+  * __Irreducible Programs__: transform a loop into more complicated construct. Duplicate the loop and insert a conditional construct that could reach either loop. Obsfucate each loop accordingly. When compiled, compiler cannot optimize away the conditional construct since even though both path are functionally the same they are syntactically different 
   * __Imported Function Obfuscation (makes it difficult to determine which shared libraries or library functions are used)__: have the program’s import table be initialized by the program itself. The program itself loads any additional libraries it depends on, and once the libraries are loaded, the program locates any required functions within those libraries
     + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
     + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
