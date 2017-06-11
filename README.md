@@ -75,10 +75,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
 ## *<p align='center'> GDB Tips (2/15/17) </p>*
 * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
 * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. To make this change permanent, write it in the .gdbinit file
-* __User Input__: how to take user input as program arguments and from stdin
+* __User Inputs__: way to pass user inputs to program arguments or/and to stdin
   * After already starting GDB...
-    * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; < &lt;file&gt;
-    * content of file will be passed to debugged program
+    * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; __<__ &lt;file&gt;
+    * content of file will be passed to debugged program's stdin
 * __Automation__: ways to automate tasks in GDB
   * __-x Option__: puts the list of commands you want GDB to run when gdb starts in a file. Run GDB with the -x option like this:
     * gdb -x &lt;command file&gt; &lt;program to debug&gt;
