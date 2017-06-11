@@ -75,13 +75,20 @@ I put anything I find interesting regarding reverse engineering in this journal.
 ## *<p align='center'> GDB Tips (2/15/17) </p>*
 * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
 * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. To make this change permanent, write it in the .gdbinit file
-* __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
-  + When reversing, it could be useful to hook on breakpoints by using hook-stop 
-  + How to define a hook: 
-    * (gdb) define hook-?
-    * <div>>...commands...</div>
-    * <div>>end</div>
-    * (gdb)
+* __User Input__: how to take user input as program arguments and from stdin
+  * After already starting GDB...
+    * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; < &lt;file&gt;
+    * content of file will be passed to debugged program
+* __Automation__: ways to automate tasks in GDB
+  * __-x Option__: puts the list of commands you want GDB to run when gdb starts in a file. Run GDB with the -x option like this:
+    * gdb -x &lt;command file&gt; &lt;program to debug&gt;
+  * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
+    + When reversing, it could be useful to hook on breakpoints by using hook-stop 
+    + How to define a hook: 
+      * (gdb) define hook-?
+      * <div>>...commands...</div>
+      * <div>>end</div>
+      * (gdb)
 * maint info sections: shows where sections are mapped to in virtual address space
 * i command displays information on the item specified to the right of it
   + i proc mappings: show mapped address spaces 
