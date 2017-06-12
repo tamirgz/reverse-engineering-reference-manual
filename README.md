@@ -512,9 +512,16 @@ I put anything I find interesting regarding reverse engineering in this journal.
 #
 ## *<p align='center'> Anti-AV Detection (6/11/2017) </p>*
 * The usage of packers and crypters is popular for malware writers becuase it hides malware signature and malicious behaviors from detection by AV products. That is why nowsaday AV product also looks for signs of packer and crypter usage
-  * Signs of packer and crypter usage: 
-    * 
-    *
+  * __Signs Of Packer And Crypter Usage__: 
+    * Unusually high file entropy 
+    * Program behavior that mimics the way system loader loads a executable file into memory
+  * __How To Hide From Detection__: 
+    * Instead of encrypting/packing the whole binary, only encrypt/pack a small section of it (e.g. .text section) to avoid high file entropy
+    * Put in detection mechanism checking if the binary is running under emulation or in a sandbox. If it is, the decrypting or unpacking mechanism will not be performed
+* __Number of Cores__: the number of cores under sandboxing will be smaller than the number of cores on the host machine 
+* __Huge Memory Allocations__: AV scanner may prematurely end the scan if the program's memory usage grows too big during runtime
+* __Trap Flag Manipulation__: manually clear the trap flag from EFLAGS register using PUSHF and POPF to throw off program tracer
+* __Mutex Triggered Subprocess Creation (Windows)__: manually create a mutex. Use GetLastError() to check if it returns ERROR_ALREADY_EXISTS for the manually created mutex. If it doesn't, create a new process running the same code. AV products most likely won't let the program under analysis to create a new process. When the new process reaches the GetLastError() condition, ERROR_ALREADY_EXISTS will be true     
 ---
 
 # .encodings
