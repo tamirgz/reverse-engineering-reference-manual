@@ -24,7 +24,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Interrupts](#-interrupts-4132017-)
 * [.anti-reversing](#anti-reversing)
   + [Anti-Static Analysis](#-anti-static-analysis-111716-)
-  + [Anti-Debugging](#-anti-debugging-111716-)
+  + [Anti-Debugging](#-anti-dynamic-analysis-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
@@ -414,7 +414,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + IRQL is per-processor. The local interrupt controller (LAPIC) in the processor controls task priority register (TPR) and read-only processor priority register (PPR). Code running in certain PPR level will only fire interrupts that have priority higher than PPR
 ---
 
-# .anti-reversing
+# .anti-analysis
 
 ## *<p align='center'> Anti-Static Analysis (11/17/16) </p>*
 * __Disassembly Technique__: ways to disassemble machine code
@@ -471,7 +471,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     + Simply zero-ing out information regarding section headers table in the ELF Header (e_shoff, e_shentsize, e_shnum, e_shstrndx) can make tools such as readelf and Radare2 unable to display sections even though Section Headers Table still exists within the binary
     + The 6th byte of the ELF Header is EI_DATA, residing within e_ident array, which makes up the first 16 bytes of the ELF Header. EI_DATA specifies the data encoding of the processor-specific data in the file (unknown, little-endian, big-endian). Modifying EI_DATA after compilation will not affect program execution, but will make tools such as readelf, gdb, and radare2 to not work properly since they use this value to interpret the binary
 #
-## *<p align='center'> Anti-Debugging (11/17/16) </p>*
+## *<p align='center'> Anti-Dynamic Analysis (11/17/16) </p>*
 * __Using Functions from Dynamically Linked Libraries to Detect Debugger's Presence__ 
   * __ptrace (Linux)__: The ptrace system call allows a process (tracer) to observe and control execution of a second process (tracee), but only one tracer can control a tracee at a time. All debuggers and program tracers use ptrace call to setup debugging for a process. If the debugee's code itself contains a ptrace call with the request type PTRACE_TRACEME, PTRACE_TRACEME will set the parent process (most likely bash) as the tracer. This means that if a debugger is already attached to the debugee, the ptrace call within the debugee's code will fail 
     + This method can be bypassed by using LD_PRELOAD, which is an environment variable that is set to the path of a shared object. That shared object will be loaded first. As a result, if that shared object contains your own implementation of ptrace, then your own implementation of ptrace will be called instead when the call to ptrace is encountered 
@@ -508,6 +508,12 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __CPU Inconsistencies Detection__: try executing privileged instructions in user mode. If it succeeded, then it is under emulation
   + WRMSR is a privileged instruction (Ring 0) that is used to write values to a MSR register. Values in MSR registers are very important. For example, the SYSCALL instruction invokes the system-call handler by loading RIP from IA32_LSTAR MSR. As a result, WRMSR instruction cannot be executed in user-mode  
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
+#
+## *<p align='center'> Anti-AV Detection (6/11/2017) </p>*
+* The usage of packers and crypters is popular for malware writers becuase it hides malware signature and malicious behaviors from detection by AV products. That is why nowsaday AV product also looks for signs of packer and crypter usage
+  * Signs of packer and crypter usage: 
+    * 
+    *
 ---
 
 # .encodings
