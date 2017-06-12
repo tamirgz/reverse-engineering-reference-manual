@@ -154,7 +154,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + STDCALL: arguments pushed on stack from right to left. Callee cleaned up stack after
   + FASTCALL: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
 * The call instruction contains a 32-bit signed relative displacement that is added to the address immediately following the call instruction to calculate the call destination
-* The jump instruction, like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
+* __Jump Instruction__: 
+  * __Short Jump (Near)__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
+  * __Long Jump (Near)__: uses larger offset value but also uses relative addressing from instruction pointer
+  * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
 * x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
 * The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction
 * There is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
