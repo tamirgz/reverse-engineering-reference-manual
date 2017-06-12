@@ -26,7 +26,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Anti-Static Analysis](#-anti-static-analysis-111716-)
   + [Anti-Dynamic Analysis](#-anti-dynamic-analysis-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
-  + [Anti-AV Detection](#-anti-av-detection-61117-)
+  + [Anti-AV Detection](#-anti-av-detection-6112017-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
   + [Data Encoding](#-data-encoding-121516-)
