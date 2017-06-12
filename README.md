@@ -522,6 +522,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Huge Memory Allocations__: AV scanner may prematurely end the scan if the program's memory usage grows too big during runtime
 * __Trap Flag Manipulation__: manually clear the trap flag from EFLAGS register using PUSHF and POPF to throw off program tracer
 * __Mutex Triggered Subprocess Creation (Windows)__: manually create a mutex. Use GetLastError() to check if it returns ERROR_ALREADY_EXISTS for the manually created mutex. If it doesn't, create a new process running the same code. AV products most likely won't let the program under analysis to create a new process. When the new process reaches the GetLastError() condition, ERROR_ALREADY_EXISTS will be true     
+* __RunPE__: this is a technique to hide code inside another process. When a malicious process starts, it will select a random running process and start a new instance of that process in a suspended state. The malicious process can then inject its own code into that new process. When that new process resumes, it will execute the malicious code instead of what it's supposed to execute  
 ---
 
 # .encodings
