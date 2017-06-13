@@ -484,7 +484,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * __IsDebuggerPresent__: checks the PEB structure for the IsDebugged field. If the process is running under the context of a debugger, the IsDebugged field will be 1, otherwise 0
     * __CheckRemoteDebuggerPresent__: can use this to check if a remote or current process is being debugged. Also checks the IsDebugged field in the PEB structure to make the decision
     * __NtQueryInformationProcess__: Native Windows API in Ntdll.dll. CheckRemoteDebuggerPresent will eventually call this native function. Passing ProcessDebugPort (0x7) as its second argument will tell this function to query whether the process is being debugged or not 
-    * __OutputDebugString__: sends debugger strings to display. If debugger is not preseent, calling this function will set an error code
+    * __OutputDebugString__: sends debugger strings to display. If debugger is present, this function will return a valid address in the process address space into eax. Otherwise, it will return an invalid address 
     * For a more comprehensive list, check out [section 7 of the Ultimate Anti-Debugging Reference by Peter Ferrie](http://anti-reversing.com/Downloads/Anti-Reversing/The_Ultimate_Anti-Reversing_Reference.pdf)
 * __Using Flags within the PEB structure to Detect Debugger's Presence (Windows)__
   * Location of PEB can be referenced by the location fs:[30h]. The second item on the PEB struct is BYTE BeingDebugged. The API function, isDebuggerPresent, checks this field to determine if a debugger is present or not
