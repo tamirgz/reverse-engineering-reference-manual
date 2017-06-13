@@ -155,8 +155,8 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + FASTCALL: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
 * The call instruction contains a 32-bit signed relative displacement that is added to the address immediately following the call instruction to calculate the call destination
 * __Jump Instruction__: 
-  * __Short Jump (Near)__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
-  * __Long Jump (Near)__: uses larger offset value but also uses relative addressing from instruction pointer
+  * __Short (Near) Jump__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
+  * __Long (Near) Jump__: uses larger offset value but also uses relative addressing from instruction pointer
   * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
 * x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
 * The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction
@@ -438,7 +438,6 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __Opcode Obfuscation__: a more effective technique for preventing correct disassembly by encoding or encrypting the actual instructions
     + Encoding/encrypting portions of a program can hinder static analysis because disassembly is not possible and hinder debugging because placing breakpoints is difficult. For example, even if the start of an instructions is known, breakpoint cannot be placed until the instruction have been decoded/decrypted
     + __Virtual Obfuscation__: parts of the program are compiled to the bytecode that corresponds to the instruction set of an undocumented interpreter (usually one that the obfuscator wrote him or herself). The interpreter will be a part of the protected program such that during runtime, the interpreter will translate those bytecode into machine code that corresponds to the original architecture (e.g. x86)  
-  * __Destruction of Sequential and Temporal Locality__: code within a basic block will be right next to each other __(sequential locality)__ and basic blocks relating to each other will be placed in close proximity to maximize instruction cache locality __(temporal locality)__. to obstruct this property and make disassembly harder to understand, a basic block can be further divided and randomized using unconditional jumps 
   * __Function Pointer Problem__: if a function is called indirectly through pointers, IDA xref will only record the first usage
   * __Return Pointer Abuse__: RET is used to jump to function instead of returning from function. Disassembler won’t show any code cross-reference to the target being jumped to. Also, disassembler will prematurely terminate the function since RET is supposed to be used for returning from function
   * __Thwarting Stack-Frame Analysis__: technique to mess with IDA when deducing numbers of parameters and local variables. For example, the code makes a conditional jump that's always false but in true branch add absurd amount to esp. If the disassembler choose to believe the true branch, the numbers of local variables will be incorrect
@@ -446,6 +445,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __Dead Code Insertion__: inserts useless code that doesn't affect a program's functionalities
   * __Junk Code Insertion__: inserts code that never get executed 
   * __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same 
+    * __Destruction of Sequential and Temporal Locality (Spaghetti Code)__: code within a basic block will be right next to each other __(sequential locality)__ and basic blocks relating to each other will be placed in close proximity to maximize instruction cache locality __(temporal locality)__. to obstruct this property and make disassembly harder to understand, a basic block can be further divided and randomized using unconditional jumps 
     + __Opaque Predicate__: transforms a trivial opaque predicate into a non-trivial opaque predicate. On the source code level, a trivial opaque predicate's conditional construct will be optimized away if compiler knows that it will always be evaluated to either True or False. For a non-trivial opaque predicate, even though the predicate will always evaluate to either True or False, the underlying code construct makes it hard to figure that out statically. As a result, compiler doesn't optimize away the conditional construct
       * [Environment-Based Opaque Predicates](https://reverseengineering.stackexchange.com/questions/2340/how-to-design-opaque-predicates)
       * Uses global variables instead of constants in the predicates. Compiler won't be able to optimize the conditional construct since it can't assume the value of global variables 
@@ -455,6 +455,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     * __Constant Unfolding__: replaces constant with unnecessary computations that will output the same constant
       * this can be accomplished on the source code level if the variable is assigned as volatile in C. The volatile keyword tells the compiler to not optimize this variable so you can perform unnecessary computations on it without worrying that the compiler will optimize those computations away 
     * __Arithmetic Substitution via Identities__: replaces a mathematical statement with one that is more complicated but semantically the same
+    * __Table Interpretation__: loads an array with call destinations and junk data. Instead of directly calling those functions, call them indirectly by indexing the array  
   * __Data Obfuscation__: alters the data structures used in the program to make it harder to analyze 
     * __Aggregation__: splits, merges, folds, or flattens an array. [This technique can be used to hide the intended string](https://youtu.be/7IKIzsXr3Z8?t=1964) or simply makes an array harder to analyze by merging junk array with the actual array. This allows code for array access to be more complex thus harder to analyze
     * __Re-Ordering__: obfuscation technique that re-orders the array. The indices used to access elements in the array now needs to be updated and can be made more complicated by using a function that maps indice i to the new indice
