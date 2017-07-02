@@ -52,20 +52,20 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * VA - image_base = RVA. VA relative to the base of the image 
   * RVA - section_base_RVA = offset from base of the section
   * offset_from_section_base + section_file_offset = file offset on disk  
-* __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here is something to keep in mind when reversing: 
-  * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
-  * For other multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
+* __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
+  * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
+  * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
 ---
 
 # .tools
 
 ## *<p align='center'> IDA Tips (4/1/2017) </p>*
-* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. Import Address Table is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the Import Address Table, a programmer can dynamically resolve the API 
-  + How to find dynamically resolved APIs: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the Import Address Table, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
+* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve the API 
+  + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
-* To show advanced toolbar: View -> Toolbars -> Advanced Mode
-* To save memory snapshot from your debugger session: Debugger -> Take Memory Snapshot -> All Segments
-* Useful shortcuts: 
+* __To Show Advanced Toolbar__: View -> Toolbars -> Advanced Mode
+* __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
+* __Useful Shortcuts__: 
   + u to undefine 
   + d to turn it to data 
   + c to turn it to code 
@@ -74,8 +74,10 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + x to show cross-references
 #
 ## *<p align='center'> GDB Tips (2/15/17) </p>*
-* ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
-* Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. To make this change permanent, write it in the .gdbinit file
+* __Changing Default Settings__: 
+  * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
+  * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. 
+  * To make changes permanent, write it in the .gdbinit file
 * __User Inputs__: way to pass user inputs to debugged program as arguments or/and to debugged program's stdin
   * After already starting GDB...
     * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; __<__ &lt;file&gt;
@@ -142,7 +144,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 # .instruction-sets
 
 ## *<p align='center'> x86 (4/23/2017) </p>*
-* Value stored in RAM is in little-endian but when moved to registers it is in big-endian  
+* Value stored in RAM is in little-endian but when moved to a register it is in big-endian  
 * The 8 32-bit general-purpose registers (GPRs) for x86 architecture: EAX, EBX, ECX, EDX, EDI, ESI, EBP, and ESP. GPRs are used for temporary storage and can be directly accessed/changed in user code (e.g. mov eax, 1)  
 * The 5 32-bit memory index registers for x86 architecture: ESI, EDI, ESP, EBP, EIP. Most of them are also GPRs. They usually contain memory addresses. But obviously, if a memory index register is used as a GPR instead, it can contain any value 
 * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register indicates a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
@@ -538,29 +540,31 @@ I put anything I find interesting regarding reverse engineering in this journal.
 # .encodings
 
 ## *<p align='center'> String Encoding (12/12/16) </p>*
-* There are only 128 characters defined in ASCII and 95 of them are human-readable
-* ASCII only used 7 bits, but the extra bit is still not enough to encode all the other languages
-* Various encoding schemes were invented but none covered every languages until Unicode came along
-* Unicode is a large table mapping characters to numbers (or a table of code points for characters) and the different UTF encodings specify how these numbers are encoded as bits
-* Characters are referred to by their “Unicode code point”
-* The primary cause of garbled text is: Somebody is trying to read a byte sequence using the wrong encoding
-* All characters available in the ASCII encoding only take up a single byte in UTF-8 and they're the exact same bytes as are used in ASCII. In other words, ASCII maps 1:1 unto UTF-8. Any character not in ASCII takes up two or more bytes in UTF-8
+* __ASCII__: string encoding that maps a byte to an English character, a special character, or a number
+  * Out of the 128 characters defined in ASCII, only 95 of them are human-readable
+  * ASCII used 7 bits only, but the extra bit is still not enough to encode all the other languages
+* __Unicode__: Various encoding schemes were invented but none covered every languages until Unicode came along
+  * Unicode is a large table mapping characters to numbers (or a table of code points for characters) and the different UTF encodings specify how these numbers are encoded as bits
+  * Characters are referred to by their “Unicode code point”
+  * __Cause Of Garbled Text__: Somebody is trying to read a byte sequence using the wrong encoding
+  * ASCII maps 1:1 unto UTF-8. Any character not in ASCII takes up two or more bytes in UTF-8
 #
 ## *<p align='center'> Data Encoding (12/15/16) </p>*
 * All forms of content modification for the purpose of hiding intent
-* Caesar cipher: formed by shifting the letters of alphabet #’s characters to the left or right
-* Single-byte XOR encoding: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
-* Problem with Single-byte XOR is that if there are many null bytes then key will be easy to figure out since XOR-ing nulls with the key reveals the key. Solutions: 
-  + Null-preserving single-byte XOR encoding: if plaintext is NULL or key itself, then it will not be encoded via XOR
-  + Blum Blum Shub pseudo-random number generator: Produces a key stream which will be xor-ed with the data. Generic form: Value = (Value * Value) % M. M is a constant and an initial V needs to be given. Actual key being xor-ed with the data is the lowest byte of current PRNG value
-* Identifying XOR loop: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
-* Other Simple Encoding Scheme:
+* __Caesar Cipher__: formed by shifting the letters of alphabet #’s characters to the left or right
+* __Single-Byte XOR Encoding__: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
+  * Problem with Single-byte XOR is that if there are many null bytes then key will be easy to figure out since XOR-ing nulls with the key reveals the key. 
+  * __Solutions To Single-Byte XOR Encoding's Weakness__: 
+    + Null-preserving single-byte XOR encoding: if plaintext is NULL or key itself, then it will not be encoded via XOR
+    + Blum Blum Shub pseudo-random number generator: Produces a key stream which will be xor-ed with the data. Generic form: Value = (Value * Value) % M. M is a constant and an initial V needs to be given. Actual key being xor-ed with the data is the lowest byte of current PRNG value
+* __Identifying XOR Loop__: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
+* __Other Simple Encoding Scheme__:
   + ADD, SUB
   + ROL, ROR: Instructions rotate the bits within a byte right or left
   + Multibyte: XOR key is multibyte
   + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next characte
 * If outputs are suspected of containing encoded data, then the encoding function will occur prior to the output. Conversely, decoding will occur after an input
-* Data encoding example: Base64
+* __Data Encoding Example (Base64)__:
   * Represents binary data in ASCII string format
   * Converts binary data into character set of 64 characters
   * Most common character set is MIME’s Base64, which uses A-Z, a-z, and 0-9 for the first 62 values and + / for the last two
