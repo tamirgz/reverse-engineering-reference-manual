@@ -556,17 +556,16 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * All forms of content modification for the purpose of hiding intent
 * __Caesar Cipher__: formed by shifting the letters of alphabet #’s characters to the left or right
 * __Single-Byte XOR Encoding__: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
-  * Problem with Single-byte XOR is that if there are many null bytes then key will be easy to figure out since XOR-ing nulls with the key reveals the key. 
+  * __Single-byte XOR's Weakness__: if there are many null bytes then key will be easy to figure out since XOR-ing nulls with the key reveals the key. 
   * __Solutions To Single-Byte XOR Encoding's Weakness__: 
     + Null-preserving single-byte XOR encoding: if plaintext is NULL or key itself, then it will not be encoded via XOR
     + Blum Blum Shub pseudo-random number generator: Produces a key stream which will be xor-ed with the data. Generic form: Value = (Value * Value) % M. M is a constant and an initial V needs to be given. Actual key being xor-ed with the data is the lowest byte of current PRNG value
-* __Identifying XOR Loop__: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
+  * __Identifying XOR Loop__: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
 * __Other Simple Encoding Scheme__:
   + ADD, SUB
   + ROL, ROR: Instructions rotate the bits within a byte right or left
   + Multibyte: XOR key is multibyte
-  + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next characte
-* If outputs are suspected of containing encoded data, then the encoding function will occur prior to the output. Conversely, decoding will occur after an input
+  + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next character
 * __Data Encoding Example (Base64)__:
   * Represents binary data in ASCII string format
   * Converts binary data into character set of 64 characters
