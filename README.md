@@ -109,7 +109,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
     
-<p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
+* <p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
 <!-- EFLAGS Register - MIT course 6.858 --!>
 
 #
@@ -556,23 +556,25 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * All forms of content modification for the purpose of hiding intent
 * __Caesar Cipher__: formed by shifting the letters of alphabet #’s characters to the left or right
 * __Single-Byte XOR Encoding__: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
+  * __Identifying XOR Loop__: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
   * __Single-byte XOR's Weakness__: if there are many null bytes then key will be easy to figure out since XOR-ing nulls with the key reveals the key. 
   * __Solutions To Single-Byte XOR Encoding's Weakness__: 
     + Null-preserving single-byte XOR encoding: if plaintext is NULL or key itself, then it will not be encoded via XOR
-    + Generate the keystream used to XOR the data using a pseudorandom number generator 
-      * Blum Blum Shub PRNG: generic form: Value<sup>i+1</sup> = (Value<sup>i</sup> * Value<sup>i</sup>) % M. M is a constant  that is the product of 2 large primes and an initial V needs to be given. Actual key being xor-ed with the data is the lowest byte of current PRNG value
-  * __Identifying XOR Loop__: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
+    + Generates the keystream used to XOR the data using a pseudorandom number generator 
+      * __Blum Blum Shub PRNG__: generic form: Value<sup>i+1</sup> = (Value<sup>i</sup> * Value<sup>i</sup>) % M. M is a constant  that is the product of 2 large primes and an initial V needs to be given. Actual key being xor-ed with the data is the lowest byte of current PRNG value
 * __Other Simple Encoding Scheme__:
   + ADD, SUB
   + ROL, ROR: Instructions rotate the bits within a byte right or left
   + Multibyte: XOR key is multibyte
   + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next character
 * __Data Encoding Example (Base64)__:
-  * Represents binary data in ASCII string format
-  * Converts binary data into character set of 64 characters
-  * Most common character set is MIME’s Base64, which uses A-Z, a-z, and 0-9 for the first 62 values and + / for the last two
-  * Bits are read in blocks of six. The number represented by the 6 bits is used as an index into a 64-byte long string
-  * One padding character may be presented at the end of the encoded string (typically =). If padded, length of encoded string will be divisible by 4
-  * Easy to develop a custom substitution cipher since the only item that needs to be changed is the indexing string
+  * Encodes binary data into character set of 64 ASCII characters
+  * Most common character set is MIME’s Base64, whose table consists of A-Z, a-z, and 0-9 for the first 62 values and + / for the last 2 values
+  * Base64 operates every 3 bytes (24 bits). For every 6 bits, it indexes the table with 64 characters. The encoded value is the character that is indexed  
+  * One padding character may be presented at the end of the encoded string (typically =) since Base64 operates every 3 bytes
+  * Easy to develop a custom substitution cipher using Base64 since the only item that needs to be changed is the indexing string table of 64 characters
+
+* <p align='center'> <img src="http://www.tcpipguide.com/free/diagrams/mimebase64.png"> </p> 
+<!-- The TCP/IP Guide --!>
 
 [Go to .table-of-contents](#table-of-contents)
