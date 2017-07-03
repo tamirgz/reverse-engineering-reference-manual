@@ -239,7 +239,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * Instructions for function invocation: B, BX, BL, and BLX
   + B's syntax: B imm. imm is relative offset from R15, the program counter
   + BX's syntax: BX &lt;register&gt;. X means that it can switch between ARM and THUMB state. If the LSB of the destination is 1, it will execute in Thumb state. BX LR is commonly used to return from function 
-  + BL's syntax: BL imm. It stores return address, the next instruction, in LR before transferring control to destination
+  + BL's syntax: BL imm. It stores return address, the next instruction, in LR before transferring control to destination. To return from function, B LR is used
   + BLX's syntax: BLX imm./&lt;register&gt;. When BLX uses an offset, it always swap state (ARM to THUMB or THUMB to ARM)
 * Since instructions can only be 2 or 4 bytes in size, it's not possible to directly use a 32-bit constant as an operand. As a result, barrel shifter can be used to transform the immediate into a larger value 
 * For arithmetic operations, the "S" suffix will update conditional flags. Whereas, comparison instructions (CBZ, CMP, TST, CMN, and TEQ) automatically update the flags
