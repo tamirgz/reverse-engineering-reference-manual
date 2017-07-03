@@ -568,8 +568,9 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + Multibyte: XOR key is multibyte
   + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next character
 * __Data Encoding Example (Base64)__:
+
 <p align='center'> <img src="http://www.tcpipguide.com/free/diagrams/mimebase64.png"> </p> 
-<!-- The TCP/IP Guide --!>
+
   * Encodes binary data into character set of 64 ASCII characters
   * Most common character set is MIME’s Base64, whose table consists of A-Z, a-z, and 0-9 for the first 62 values and + / for the last 2 values
   * Base64 operates every 3 bytes (24 bits). For every 6 bits, it indexes the table with 64 characters. The encoded value is the character that is indexed  
