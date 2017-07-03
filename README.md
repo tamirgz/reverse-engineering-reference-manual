@@ -547,10 +547,12 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * Out of the 128 characters defined in ASCII, only 95 of them are human-readable
   * ASCII used 7 bits only, but the extra bit is still not enough to encode all the other languages
 * __Unicode__: Various encoding schemes were invented but none covered every languages until Unicode came along
-  * Unicode is a large table mapping characters to numbers (or a table of code points for characters) and the different UTF encodings specify how these numbers are encoded as bits
-  * Characters are referred to by their “Unicode code point”
-  * __Cause Of Garbled Text__: Somebody is trying to read a byte sequence using the wrong encoding
-  * ASCII maps 1:1 unto UTF-8. Any character not in ASCII takes up two or more bytes in UTF-8
+  * [Unicode Character Table](https://unicode-table.com/en/#control-character)
+  * Unicode is a large table mapping every character to a unique numbers (code point) 
+  * First 256 code points maps 1:1 to ASCII  
+  * Different UTF encodings (e.g. UTF-8, UTF-16) use different amount of bytes to encode those code points
+* __Cause Of Garbled Text__: Somebody is trying to read a byte sequence using the wrong encoding
+  
 #
 ## *<p align='center'> Data Encoding (12/15/16) </p>*
 * All forms of content modification for the purpose of hiding intent
