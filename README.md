@@ -1,5 +1,5 @@
 # <p align='center'> Reverse Engineering Journal </p>
-I put anything I find interesting regarding reverse engineering in this journal. The date beside each heading denotes the start date that I added the topic, but most of the time I will still be adding information to that heading days later. 
+I put anything I find interesting regarding reverse engineering in this journal. The date beside each heading denotes the start date that I added the topic, but most of the time I will still be adding information to that heading days later.
 
 # .table-of-contents
 
@@ -109,7 +109,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
     
-* <p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
+![EFLAGS Register]("http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif") 
 <!-- EFLAGS Register - MIT course 6.858 --!>
 
 #
