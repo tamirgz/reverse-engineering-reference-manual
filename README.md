@@ -109,7 +109,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
     
-![EFLAGS Register]("http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif") 
+<p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
 <!-- EFLAGS Register - MIT course 6.858 --!>
 
 #
@@ -574,7 +574,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * One padding character may be presented at the end of the encoded string (typically =) since Base64 operates every 3 bytes
   * Easy to develop a custom substitution cipher using Base64 since the only item that needs to be changed is the indexing string table of 64 characters
 
-* <p align='center'> <img src="http://www.tcpipguide.com/free/diagrams/mimebase64.png"> </p> 
+<p align='center'> <img src="http://www.tcpipguide.com/free/diagrams/mimebase64.png"> </p> 
 <!-- The TCP/IP Guide --!>
 
 [Go to .table-of-contents](#table-of-contents)
