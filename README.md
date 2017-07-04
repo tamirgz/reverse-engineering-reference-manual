@@ -217,16 +217,23 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + R15 is the program counter (PC)
 * Only load/store instructions can access memory. All other instructions operate on registers 
   + load/store instructions: LDR/STR, LDM/STM, and PUSH/POP
-* There are 3 forms of LDR/STR instructions 
+* There are 4 forms of LDR/STR instructions 
+  + LDR/STR Ra, [Rb]. LDR loads the data at Rb to Ra. STR stores Ra to the location pointed to by Rb 
   + LDR/STR Ra, [Rb, imm]
   + LDR/STR Ra, [Rb, Rc]
-  + LDR/STR Ra, [Rb, Rc, barrel-shifter]. Barrel shifter is performed on Rc, the immediate 
+  + LDR/STR Ra, [Rb, Rc, barrel-shifter]. Barrel shifter is performed on Rc. The result is added to Rb, the base address 
   + extra (pseudo-form): LDR Ra, ="address". This is not valid syntax, but is used by disassembler to make disassembly easier to read. Internally, what's actually executed is LDR Ra, [PC + imm]
 * There are 3 addressing modes for LDR/STR: offset, pre-indexed, post-indexed 
-  + Offset: base register is never modified 
-  + Pre-indexed: base register is updated with the memory address used in the reference operation 
-  + Post-indexed: base register is used as the address to reference from and then updated with the offset 
-* LDM/STM loads/stores multiple words (32-bits), starting from a base address. Form: LDM/STM<-mode-> Rb[!], {register(s)}
+  + __Offset__: base register is never modified 
+    * Form: LDR Rd, [Rn, offset]
+  + __Pre-indexed__: base register is updated with the memory address used in the reference operation 
+    * Form: LDR Rd, [Rn, offset]!
+  + __Post-indexed__: base register is used as the address to reference from and then updated with the offset 
+    * Form: LDR Rd, [Rn], offset
+* LDM/STM loads/stores multiple words (32-bits), starting from a base address 
+  * LDM Form: LDM<-mode-> Rb [!], {Registers}. LDM means load the data starting from Rb and loads it into Registers
+  * STM Form: STM<-mode-> Rb [!], {Registers}. STM means store the data in Registers into location starting from Rb
+    * Exclamation mark (!) means Rb should be updated to the final location after the LDM/STM operation
 * LDM/STM can use several types of stack: 
   + Descending or ascending: descending means that the stack grows downward, from higher address to lower address. Ascending means that the stack grows upward 
   + Full or empty: full means that the stack pointer points to the last item in the stack. Empty means that the stack pointer points to the next free space
