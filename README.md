@@ -23,7 +23,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Windows OS](#-windows-os-412017-)
   + [Interrupts](#-interrupts-4132017-)
 * [.anti-analysis](#anti-analysis)
-  + [Obfuscation](#-obfuscation-70317-)
+  + [Obfuscation](#-obfuscation-7317-)
   + [Anti-Disassembly](#-anti-disassembly-111716-)
   + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
@@ -470,7 +470,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Imported Function Obfuscation (makes it difficult to determine which shared libraries or library functions are used)__: have the program’s import table be initialized by the program itself. The program itself loads any additional libraries it depends on, and once the libraries are loaded, the program locates any required functions within those libraries
   + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
   + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
-
+#
 ## *<p align='center'> Anti-Disassembly (11/17/16) </p>*
 * __Disassembly Technique__: ways to disassemble machine code
   * __Linear Disassembly__: disassembling one instruction at a time linearly. Problem: code section of nearly all binaries will also contain data that isn’t instructions 
@@ -495,7 +495,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
     + Simply zero-ing out information regarding section headers table in the ELF Header (e_shoff, e_shentsize, e_shnum, e_shstrndx) can make tools such as readelf and Radare2 unable to display sections even though Section Headers Table still exists within the binary
     + The 6th byte of the ELF Header is EI_DATA, residing within e_ident array, which makes up the first 16 bytes of the ELF Header. EI_DATA specifies the data encoding of the processor-specific data in the file (unknown, little-endian, big-endian). Modifying EI_DATA after compilation will not affect program execution, but will make tools such as readelf, gdb, and radare2 to not work properly since they use this value to interpret the binary
 #
-## *<p align='center'> Anti-Dynamic Analysis (11/17/16) </p>*
+## *<p align='center'> Anti-Debugging (11/17/16) </p>*
 * __Using Functions from Dynamically Linked Libraries to Detect Debugger's Presence__ 
   * __ptrace (Linux)__: The ptrace system call allows a process (tracer) to observe and control execution of a second process (tracee), but only one tracer can control a tracee at a time. All debuggers and program tracers use ptrace call to setup debugging for a process. If the debugee's code itself contains a ptrace call with the request type PTRACE_TRACEME, PTRACE_TRACEME will set the parent process (most likely bash) as the tracer. This means that if a debugger is already attached to the debugee, the ptrace call within the debugee's code will fail 
     + This method can be bypassed by using LD_PRELOAD, which is an environment variable that is set to the path of a shared object. That shared object will be loaded first. As a result, if that shared object contains your own implementation of ptrace, then your own implementation of ptrace will be called instead when the call to ptrace is encountered 
