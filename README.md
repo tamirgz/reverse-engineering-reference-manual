@@ -23,8 +23,9 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Windows OS](#-windows-os-412017-)
   + [Interrupts](#-interrupts-4132017-)
 * [.anti-analysis](#anti-analysis)
-  + [Anti-Static Analysis](#-anti-static-analysis-111716-)
-  + [Anti-Dynamic Analysis](#-anti-dynamic-analysis-111716-)
+  + [Obfuscation](#-obfuscation-70317-)
+  + [Anti-Disassembly](#-anti-disassembly-111716-)
+  + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
@@ -430,56 +431,58 @@ I put anything I find interesting regarding reverse engineering in this journal.
 
 # .anti-analysis
 
-## *<p align='center'> Anti-Static Analysis (11/17/16) </p>*
+## *<p align='center'> Obfuscation (7/3/17) </p>*
+* Program transformation techniques that output a program that is semantically equivalent to the original program but is more difficult to analyze
+* __Original Entry Point (OEP) Hiding__: OEP can be hidden through packing. A packer can compress or encrypt a whole executable and inject an unpacking stub that unpack (decompress or decrypt) the executable during runtime. This will hide the OEP and also the original executable (such as the text, data, rsrc sections) from static analysis
+  * __Tail Jump__: an instruction that jumps from the unpacking stub to OEP after the unpacking stub finishes
+  * __Signs Of Packer Usage__: 
+    * Unusually high file entropy 
+    * Program behavior that mimics the way system loader loads a executable file into memory
+  * __How To Hide From Detection__: 
+    * Instead of encrypting/packing the whole binary, only encrypt/pack a small section of it (e.g. .text section) to avoid high file entropy
+* __Functions In/Out-Lining__: performs operations that create inline and outline functions randomly and through multiple passes to obfuscate the call graph  
+  * __Inline Functions__: a function that is merged into the body of its caller 
+  * __Outline Functions__: inverse of Inline function where a subportion of a function is extracted to create another function. The subportion of this function is then replaced with a CALL instruction that calls the new function 
+* __Opcode Obfuscation__: an effective technique for preventing correct disassembly by displaying opcodes that need to be re-interpreted/altered during runtime before being executed by the CPU 
+  + __Self-Modifying Code__: disassembly shows the encoded/encrypted opcodes. During runtime, the encoded/encrypted opcodes are decoded/decrypted, revealing the opcodes that will actually be executed. Encoding/encrypting portions of a program can hinder static analysis because disassembly is not possible (if it is, it will show false disassembly instead) and hinder debugging because placing breakpoints is difficult. For example, even if the start of an instructions is known, breakpoint cannot be placed until the instruction have been decoded/decrypted
+  + __Virtual Obfuscation (Runtime Code Generation)__: parts of the program are compiled to the bytecode that corresponds to the instruction set of an undocumented interpreter (usually one that the obfuscator wrote him or herself). The interpreter will be a part of the protected program such that during runtime, the interpreter will translate those bytecode into machine code that corresponds to the original architecture (e.g. x86). This method can also prevent the dumping of a whole section of de-obfuscated opcodes from memory during runtime like the Self-Modifying Code method would
+* __Dynamically Computed Target Addresses__: an address to which execution will go to is computed at runtime. This makes it hard to tell what the call destination is statically
+* __Junk Code Insertion__: inserts useless code that doesn't affect a program's functionalities
+* __Dead Code Insertion__: inserts code that never get executed 
+* __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same 
+  * [Reverser's Living Nightmare](https://0x00sec.org/t/what-a-living-nightmare-looks-like/2087)
+  * __Destruction of Sequential and Temporal Locality (Spaghetti Code)__: code within a basic block will be right next to each other __(sequential locality)__ and basic blocks relating to each other will be placed in close proximity to maximize instruction cache locality __(temporal locality)__. to obstruct this property and make disassembly harder to understand, a basic block can be further divided and randomized using unconditional jumps 
+  + __Opaque Predicate__: transforms a trivial opaque predicate into a non-trivial opaque predicate. On the source code level, a trivial opaque predicate's conditional construct will be optimized away if compiler knows that it will always be evaluated to either True or False. For a non-trivial opaque predicate, even though the predicate will always evaluate to either True or False, the underlying code construct makes it hard to figure that out statically. As a result, compiler doesn't optimize away the conditional construct
+    * [Environment-Based Opaque Predicates](https://reverseengineering.stackexchange.com/questions/2340/how-to-design-opaque-predicates)
+    * Uses global variables instead of constants in the predicates. Compiler won't be able to optimize the conditional construct since it can't assume the value of global variables 
+    * Introduces entropy into the predicate (e.g. using rand() function)
+  * __Control-Flow Graph Flattening__: obfuscates control flow by replacing a group of control structures with a dispatcher. Each basic block updates the dispatcher's context so it knows which basic block to execute next
+  * __Irreducible Programs__: transform a loop into more complicated construct on the source code level. Duplicate the loop and insert a conditional construct that could reach either loop. Obsfucate each loop accordingly. When compiled, compiler cannot optimize away the conditional construct since even though both path are functionally the same they are syntactically different, so both obfuscated loops remain in compiled binary
+  * __Constant Unfolding__: replaces constant with unnecessary computations that will output the same constant
+    * this can be accomplished on the source code level if the variable is assigned as volatile in C. The volatile keyword tells the compiler to not optimize this variable so you can perform unnecessary computations on it without worrying that the compiler will optimize those computations away 
+  * __Arithmetic Substitution via Identities__: replaces a mathematical statement with one that is more complicated but semantically the same
+  * __Table Interpretation__: loads an array with call destinations and junk data. Instead of directly calling those functions, call them indirectly by indexing the array  
+* __Data Obfuscation__: alters the data structures used in the program to make it harder to analyze 
+  * __Aggregation__: splits, merges, folds, or flattens an array. [This technique can be used to hide the intended string](https://youtu.be/7IKIzsXr3Z8?t=1964) or simply makes an array harder to analyze by merging junk array with the actual array
+  * __Re-Ordering__: obfuscation technique that re-orders the array. The indices used to access elements in the array now needs to be updated and can be made more complicated by using a function that maps indice i to the new indice
+  * __Encoding__: alters how the program interprets stored data. For example, initialize an index i by 2i instead. When the index i needs to be used, use the expression i/2 instead. It is also commonly used to hide readable strings by only storing the encoded strings in the binary and decode those strings during runtime 
+  * __Storage__: data storage obfuscation changes a variable's storage type, such as converting a local variable to a global variable
+* __Imported Function Obfuscation (makes it difficult to determine which shared libraries or library functions are used)__: have the program’s import table be initialized by the program itself. The program itself loads any additional libraries it depends on, and once the libraries are loaded, the program locates any required functions within those libraries
+  + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
+  + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
+
+## *<p align='center'> Anti-Disassembly (11/17/16) </p>*
 * __Disassembly Technique__: ways to disassemble machine code
   * __Linear Disassembly__: disassembling one instruction at a time linearly. Problem: code section of nearly all binaries will also contain data that isn’t instructions 
   * __Flow-Oriented Disassembly__: for conditional branch, it will process false branch first and note to disassemble true branch later. For unconditional branch, it will add destination to the end of list of places to disassemble in future and then disassemble from that list. For call instruction, most will disassemble the bytes after the call first and then the called location. If there is conflict between the true and false branch when disassembling, disassembler will trust the one it disassembles first
-* __Obfuscation Techniques__: program transformation techniques that output a program that is semantically equivalent to the original program but is more difficult to analyze  
-  * __Original Entry Point (OEP) Hiding__: OEP can be hidden through packing. A packer can compress or encrypt a whole executable and inject an unpacking stub that unpack (decompress or decrypt) the executable during runtime. This will hide the OEP and also the original executable (such as the text, data, rsrc sections) from static analysis
-    * __Tail Jump__: an instruction that jumps from the unpacking stub to OEP after the unpacking stub finishes
-    * __Signs Of Packer Usage__: 
-      * Unusually high file entropy 
-      * Program behavior that mimics the way system loader loads a executable file into memory
-    * __How To Hide From Detection__: 
-      * Instead of encrypting/packing the whole binary, only encrypt/pack a small section of it (e.g. .text section) to avoid high file entropy
-  * __Disassembly Desynchronization__: to cause disassembly tools to produce an incorrect program listing. Works by taking advantage of the assumptions made by flow-oriented disassemblers. For every assumption it makes (e.g. process false branch first), there is a corresponding anti-disassembly technique. Desynchronization has the greatest impact on the disassembly, but it is easily defeated by reformatting the disassembly to reflect the correct instruction flow
-    * __Opaque Predicate__: conditional construct that looks like conditional code but actually always evaluates to either true or false 
-      + __Jump Instructions With The Same Target__: JZ follows by JNZ. Essentially an unconditional jump. The bytes following JNZ instruction could be data but will be disassembled as code
-      + __Jump Instructions With A Constant Condition__: XOR follows by JZ. It will always jump so bytes following false branch could be data but will be disassembled as code
-    + __Impossible Disassembly__: a byte is part of multiple instructions. Disassembler cannot represent a byte as part of two instructions. Either can the processor, but it doesn't have to because it just needs to execute the instructions 
-  * __Functions In/Out-Lining__: performs operations that create inline and outline functions randomly and through multiple passes to obfuscate the call graph  
-    * __Inline Functions__: a function that is merged into the body of its caller 
-    * __Outline Functions__: inverse of Inline function where a subportion of a function is extracted to create another function. The subportion of this function is then replaced with a CALL instruction that calls the new function 
-  * __Opcode Obfuscation__: an effective technique for preventing correct disassembly by displaying opcodes that need to be re-interpreted/altered during runtime before being executed by the CPU 
-    + __Self-Modifying Code__: disassembly shows the encoded/encrypted opcodes. During runtime, the encoded/encrypted opcodes are decoded/decrypted, revealing the opcodes that will actually be executed. Encoding/encrypting portions of a program can hinder static analysis because disassembly is not possible (if it is, it will show false disassembly instead) and hinder debugging because placing breakpoints is difficult. For example, even if the start of an instructions is known, breakpoint cannot be placed until the instruction have been decoded/decrypted
-    + __Virtual Obfuscation (Runtime Code Generation)__: parts of the program are compiled to the bytecode that corresponds to the instruction set of an undocumented interpreter (usually one that the obfuscator wrote him or herself). The interpreter will be a part of the protected program such that during runtime, the interpreter will translate those bytecode into machine code that corresponds to the original architecture (e.g. x86). This method can also prevent the dumping of a whole section of de-obfuscated opcodes from memory during runtime like the Self-Modifying Code method would
-  * __Function Pointer Problem__: if a function is called indirectly through pointers (on the stack), IDA xref will only record the first usage (i.e. when the offset is loaded onto the stack). As a result, xref will not show the various locations that the function could have been called from
-  * __Return Pointer Abuse__: RET is used to jump to function instead of returning from function. Disassembler won’t show any code cross-reference to the target being jumped to. Also, disassembler will prematurely terminate the function since RET is supposed to be used for returning from function, resulting in false disassembly
-  * __Thwarting Stack-Frame Analysis__: technique to mess with IDA when deducing numbers of parameters and local variables. For example, the code makes a conditional jump that's always false but in true branch add absurd amount to ESP. If the disassembler chooses to believe the true branch, the numbers of local variables will be incorrect
-  * __Dynamically Computed Target Addresses__: an address to which execution will go to is computed at runtime. This makes it hard to tell what the call destination is statically
-  * __Junk Code Insertion__: inserts useless code that doesn't affect a program's functionalities
-  * __Dead Code Insertion__: inserts code that never get executed 
-  * __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same 
-    * [Reverser's Living Nightmare](https://0x00sec.org/t/what-a-living-nightmare-looks-like/2087)
-    * __Destruction of Sequential and Temporal Locality (Spaghetti Code)__: code within a basic block will be right next to each other __(sequential locality)__ and basic blocks relating to each other will be placed in close proximity to maximize instruction cache locality __(temporal locality)__. to obstruct this property and make disassembly harder to understand, a basic block can be further divided and randomized using unconditional jumps 
-    + __Opaque Predicate__: transforms a trivial opaque predicate into a non-trivial opaque predicate. On the source code level, a trivial opaque predicate's conditional construct will be optimized away if compiler knows that it will always be evaluated to either True or False. For a non-trivial opaque predicate, even though the predicate will always evaluate to either True or False, the underlying code construct makes it hard to figure that out statically. As a result, compiler doesn't optimize away the conditional construct
-      * [Environment-Based Opaque Predicates](https://reverseengineering.stackexchange.com/questions/2340/how-to-design-opaque-predicates)
-      * Uses global variables instead of constants in the predicates. Compiler won't be able to optimize the conditional construct since it can't assume the value of global variables 
-      * Introduces entropy into the predicate (e.g. using rand() function)
-    * __Control-Flow Graph Flattening__: obfuscates control flow by replacing a group of control structures with a dispatcher. Each basic block updates the dispatcher's context so it knows which basic block to execute next
-    * __Irreducible Programs__: transform a loop into more complicated construct on the source code level. Duplicate the loop and insert a conditional construct that could reach either loop. Obsfucate each loop accordingly. When compiled, compiler cannot optimize away the conditional construct since even though both path are functionally the same they are syntactically different, so both obfuscated loops remain in compiled binary
-    * __Constant Unfolding__: replaces constant with unnecessary computations that will output the same constant
-      * this can be accomplished on the source code level if the variable is assigned as volatile in C. The volatile keyword tells the compiler to not optimize this variable so you can perform unnecessary computations on it without worrying that the compiler will optimize those computations away 
-    * __Arithmetic Substitution via Identities__: replaces a mathematical statement with one that is more complicated but semantically the same
-    * __Table Interpretation__: loads an array with call destinations and junk data. Instead of directly calling those functions, call them indirectly by indexing the array  
-  * __Data Obfuscation__: alters the data structures used in the program to make it harder to analyze 
-    * __Aggregation__: splits, merges, folds, or flattens an array. [This technique can be used to hide the intended string](https://youtu.be/7IKIzsXr3Z8?t=1964) or simply makes an array harder to analyze by merging junk array with the actual array
-    * __Re-Ordering__: obfuscation technique that re-orders the array. The indices used to access elements in the array now needs to be updated and can be made more complicated by using a function that maps indice i to the new indice
-    * __Encoding__: alters how the program interprets stored data. For example, initialize an index i by 2i instead. When the index i needs to be used, use the expression i/2 instead. It is also commonly used to hide readable strings by only storing the encoded strings in the binary and decode those strings during runtime 
-    * __Storage__: data storage obfuscation changes a variable's storage type, such as converting a local variable to a global variable
-  * __Imported Function Obfuscation (makes it difficult to determine which shared libraries or library functions are used)__: have the program’s import table be initialized by the program itself. The program itself loads any additional libraries it depends on, and once the libraries are loaded, the program locates any required functions within those libraries
-    + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
-    + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
+* __Disassembly Desynchronization__: to cause disassembly tools to produce an incorrect program listing. Works by taking advantage of the assumptions made by flow-oriented disassemblers. For every assumption it makes (e.g. process false branch first), there is a corresponding anti-disassembly technique. Desynchronization has the greatest impact on the disassembly, but it is easily defeated by reformatting the disassembly to reflect the correct instruction flow
+  * __Opaque Predicate__: conditional construct that looks like conditional code but actually always evaluates to either true or false 
+    + __Jump Instructions With The Same Target__: JZ follows by JNZ. Essentially an unconditional jump. The bytes following JNZ instruction could be data but will be disassembled as code
+    + __Jump Instructions With A Constant Condition__: XOR follows by JZ. It will always jump so bytes following false branch could be data but will be disassembled as code
+  + __Impossible Disassembly__: a byte is part of multiple instructions. Disassembler cannot represent a byte as part of two instructions. Either can the processor, but it doesn't have to because it just needs to execute the instructions 
+* __Function Pointer Problem__: if a function is called indirectly through pointers (on the stack), IDA xref will only record the first usage (i.e. when the offset is loaded onto the stack). As a result, xref will not show the various locations that the function could have been called from
+* __Return Pointer Abuse__: RET is used to jump to function instead of returning from function. Disassembler won’t show any code cross-reference to the target being jumped to. Also, disassembler will prematurely terminate the function since RET is supposed to be used for returning from function, resulting in false disassembly
+* __Thwarting Stack-Frame Analysis__: technique to mess with IDA when deducing numbers of parameters and local variables. For example, the code makes a conditional jump that's always false but in true branch add absurd amount to ESP. If the disassembler chooses to believe the true branch, the numbers of local variables will be incorrect
 * __Parser Differential Attack__: makes modifications to the ELF file such that it will still execute fine, but if you try to load it into a disassembler/debugger, the disassembler/debugger will not work properly. Similar techniques can be done on other file format like PE File as well
   * __Tampering/Removing Section Headers (Linux)__: makes tools such as gdb and objdump useless since they rely on the section headers to locate information regarding the various sections. Segments are necessary for program execution, not sections. Section headers table is for linking and debugging
     + "The biggest fuck up that (most) analysis tools are doing is that they are using the section headers table of the ELF file to get information about the binary...[because] sections contain more detailed information" - Andre Pawlowski
