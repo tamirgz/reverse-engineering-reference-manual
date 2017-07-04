@@ -26,7 +26,6 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Anti-Static Analysis](#-anti-static-analysis-111716-)
   + [Anti-Dynamic Analysis](#-anti-dynamic-analysis-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
-  + [Anti-AV Detection](#-anti-av-detection-6112017-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
   + [Data Encoding](#-data-encoding-121516-)
@@ -438,6 +437,11 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Obfuscation Techniques__: program transformation techniques that output a program that is semantically equivalent to the original program but is more difficult to analyze  
   * __Original Entry Point (OEP) Hiding__: OEP can be hidden through packing. A packer can compress or encrypt a whole executable and inject an unpacking stub that unpack (decompress or decrypt) the executable during runtime. This will hide the OEP and also the original executable (such as the text, data, rsrc sections) from static analysis
     * __Tail Jump__: an instruction that jumps from the unpacking stub to OEP after the unpacking stub finishes
+    * __Signs Of Packer Usage__: 
+      * Unusually high file entropy 
+      * Program behavior that mimics the way system loader loads a executable file into memory
+    * __How To Hide From Detection__: 
+      * Instead of encrypting/packing the whole binary, only encrypt/pack a small section of it (e.g. .text section) to avoid high file entropy
   * __Disassembly Desynchronization__: to cause disassembly tools to produce an incorrect program listing. Works by taking advantage of the assumptions made by flow-oriented disassemblers. For every assumption it makes (e.g. process false branch first), there is a corresponding anti-disassembly technique. Desynchronization has the greatest impact on the disassembly, but it is easily defeated by reformatting the disassembly to reflect the correct instruction flow
     * __Opaque Predicate__: conditional construct that looks like conditional code but actually always evaluates to either true or false 
       + __Jump Instructions With The Same Target__: JZ follows by JNZ. Essentially an unconditional jump. The bytes following JNZ instruction could be data but will be disassembled as code
@@ -531,19 +535,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __CPU Inconsistencies Detection__: try executing privileged instructions in user mode. If it succeeded, then it is under emulation
   + WRMSR is a privileged instruction (Ring 0) that is used to write values to a MSR register. Values in MSR registers are very important. For example, the SYSCALL instruction invokes the system-call handler by loading RIP from IA32_LSTAR MSR. As a result, WRMSR instruction cannot be executed in user-mode  
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
-#
-## *<p align='center'> Anti-AV Detection (6/11/2017) </p>*
-* The usage of packers and crypters is popular for malware writers becuase it hides malware signature and malicious behaviors from detection by AV products. That is why nowsaday AV product also looks for signs of packer and crypter usage
-  * __Signs Of Packer And Crypter Usage__: 
-    * Unusually high file entropy 
-    * Program behavior that mimics the way system loader loads a executable file into memory
-  * __How To Hide From Detection__: 
-    * Instead of encrypting/packing the whole binary, only encrypt/pack a small section of it (e.g. .text section) to avoid high file entropy
-    * Put in detection mechanism checking if the binary is running under emulation or in a sandbox. If it is, the decrypting or unpacking mechanism will not be performed
-* __Number of Cores__: the number of cores under sandboxing will be smaller than the number of cores on the host machine 
-* __Huge Memory Allocations__: AV scanner may prematurely end the scan if the program's memory usage grows too big during runtime
-* __Mutex Triggered Subprocess Creation (Windows)__: manually create a mutex. Use GetLastError() to check if it returns ERROR_ALREADY_EXISTS for the manually created mutex. If it doesn't, create a new process running the same code. AV products most likely won't let the program under analysis to create a new process. When the new process reaches the GetLastError() condition, ERROR_ALREADY_EXISTS will be true      
-* __RunPE__: this is a technique to hide code inside another process. When a malicious process starts, it will select a random running process and start a new instance of that process in a suspended state. The malicious process can then inject its own code into that new process. When that new process resumes, it will execute the malicious code instead of what it's supposed to execute  
+* __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
 ---
 
 # .encodings
