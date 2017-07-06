@@ -449,7 +449,8 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Dynamically Computed Target Addresses__: an address to which execution will go to is computed at runtime. This makes it hard to tell what the call destination is statically
 * __Dead Code Insertion__: inserts useless code that doesn't affect a program's functionalities. To do this, an obfuscator needs to know which registers are dead (e.g. does not contain important values) so that it can insert instructions that modify those dead registers 
 * __Junk Code Insertion__: inserts code that never get executed 
-* __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same 
+* __Pattern-Based Obfuscation__: transforms a sequence of instructions into another sequence of instructions that is more complicated but semantically the same
+  * This task could be difficult since the obfuscated sequence can look semantically the same but does not preserve CPU state, which can cause later program behavior to be semantically nonequivalent. This can happen if the new sequence's side effects (modify/didn't modify the flags or modify/didn't modify the stack) is opposite that of the original sequence's side effects  
   * [Reverser's Living Nightmare](https://0x00sec.org/t/what-a-living-nightmare-looks-like/2087)
   * Can be resolved by applying peephole optimization on the obfuscated set of instructions
 * __Destruction of Sequential and Temporal Locality (Spaghetti Code)__: code within a basic block will be right next to each other __(sequential locality)__ and basic blocks relating to each other will be placed in close proximity to maximize instruction cache locality __(temporal locality)__. to obstruct this property and make disassembly harder to understand, a basic block can be further divided and randomized using unconditional jumps
