@@ -461,6 +461,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
 * __Irreducible Programs__: transform a loop into more complicated construct on the source code level. Duplicate the loop and insert a conditional construct that could reach either loop. Obsfucate each loop accordingly. When compiled, compiler cannot optimize away the conditional construct since even though both path are functionally the same they are syntactically different, so both obfuscated loops remain in compiled binary
 * __Constant Unfolding__: replaces constant with unnecessary computations that will output the same constant
   * this can be accomplished on the source code level if the variable is assigned as volatile in C. The volatile keyword tells the compiler to not optimize this variable so you can perform unnecessary computations on it without worrying that the compiler will optimize those computations away 
+  * Can be resolved by applying constant folding optimization on the obfuscated sequence of instructions that performs constant unfolding
 * __Arithmetic Substitution via Identities__: replaces a mathematical statement with one that is more complicated but semantically the same
 * __Array-Based Obfuscation__: alters the data structures used in the program to make it harder to analyze 
   * __Aggregation__: splits, merges, folds, or flattens an array. [This technique can be used to hide the intended string](https://youtu.be/7IKIzsXr3Z8?t=1964) or simply makes an array harder to analyze by merging junk array with the actual array
