@@ -161,7 +161,9 @@ I put anything I find interesting regarding reverse engineering in this journal.
   * __Long (Near) Jump__: uses larger offset value but also uses relative addressing from instruction pointer
   * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
 * x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
-* The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction
+* The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction, although their opcode are different
+* An opcode can have multiple mnemonics associated with it
+  * 0x75 is both the opcode for JNZ and JNE
 * There is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
 * EIP can only be changed through CALL, JMP, or RET
 * __Floating Point Arithmetic__: Floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
