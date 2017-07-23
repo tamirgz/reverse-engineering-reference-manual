@@ -1,7 +1,7 @@
 # <p align='center'> Reverse Engineering Journal </p>
 
 <p align='center'> 
-![Introduction](images/heading/Introduction.PNG) 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/heading/Introduction.PNG"> 
 </p>
 
 __NOTE:__ I put anything I find interesting regarding reverse engineering in this journal. The date beside each heading denotes the start date that I added the topic, but most of the time I will still be adding information to that heading days later.
