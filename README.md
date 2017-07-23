@@ -27,6 +27,7 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + [Anti-Disassembly](#-anti-disassembly-111716-)
   + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
+  + [Bonus](#-bonus-72217-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
   + [Data Encoding](#-data-encoding-121516-)
@@ -547,6 +548,11 @@ I put anything I find interesting regarding reverse engineering in this journal.
   + WRMSR is a privileged instruction (Ring 0) that is used to write values to a MSR register. Values in MSR registers are very important. For example, the SYSCALL instruction invokes the system-call handler by loading RIP from IA32_LSTAR MSR. As a result, WRMSR instruction cannot be executed in user-mode  
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
 * __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
+#
+## *<p align='center'> Bonus (7/22/17) </p>*
+* "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
+  * [Repsych: Psychological Warfare in Reverse Engineering](https://www.youtube.com/watch?v=HlUe0TUHOIc)
+  * [REpsych's Github Repo](https://github.com/xoreaxeaxeax/REpsych)
 ---
 
 # .encodings
