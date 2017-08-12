@@ -32,6 +32,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + [Anti-Disassembly](#-anti-disassembly-111716-)
   + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
+  + [Anti-Dumping](#-anti-dumping-8122017-)
   + [Bonus](#-bonus-72217-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
@@ -555,6 +556,10 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + WRMSR is a privileged instruction (Ring 0) that is used to write values to a MSR register. Values in MSR registers are very important. For example, the SYSCALL instruction invokes the system-call handler by loading RIP from IA32_LSTAR MSR. As a result, WRMSR instruction cannot be executed in user-mode  
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
 * __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
+#
+## *<p align='center'> Anti-Dumping (8/12/17) </p>*
+* __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if able to, the dumped image will be missing important information that the loader needs to load it again
+* __Stolen Bytes__: 
 #
 ## *<p align='center'> Bonus (7/22/17) </p>*
 * "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
