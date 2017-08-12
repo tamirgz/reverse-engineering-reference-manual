@@ -32,7 +32,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + [Anti-Disassembly](#-anti-disassembly-111716-)
   + [Anti-Debugging](#-anti-debugging-111716-)
   + [Anti-Emulation](#-anti-emulation-252017-)
-  + [Anti-Dumping](#-anti-dumping-8122017-)
+  + [Anti-Dumping](#-anti-dumping-81217-)
   + [Bonus](#-bonus-72217-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-121216-)
