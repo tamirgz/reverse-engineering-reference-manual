@@ -4,7 +4,7 @@
 <img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/heading/Introduction.PNG"> 
 </p>
 
-__NOTE:__ I put anything I find interesting regarding reverse engineering in this journal. The date beside each heading denotes the start date that I added the topic, but most of the time I will still be adding information to that heading days later.
+__NOTE__: Here is a collage of reverse engineering topics that I find interesting. Enjoy~ 
 
 # .table-of-contents
 
@@ -42,16 +42,16 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 # .general-knowledge
 
 ## *<p align='center'> int 0x7374617274 (12/18/2016) </p>*
-* Processes are containers for execution. Threads are what the OS executes
-* Any function that calls another function is called a non-leaf function, and all other functions are leaf functions
-* Entry point of a binary (start function) is not main. A program's startup code (how main is called) depends on the compiler and the platform that the binary is compiled for
-* To hide a string from strings command, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section. To do this, initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out Data Encoding section in this journal
-* __Random Number Generator__: Randomness requires a source of entropy, which is an unpredictable sequence of bits. This source of entropy is called the seed and can be from OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness. So as long as you seed the algorithms with a legitimate source of entropy, they can generate fairly long sequences of random values without the sequence repeating 
+* A process is a container for execution. A thread is what the OS executes
+* Any function that calls another function is a non-leaf function, and all other functions are leaf functions
+* The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
+* To hide a string from GNU's strings utility, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section. One way to do this is to initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out the Data Encoding section
+* __Random Number Generator__: Randomness requires a source of entropy, which is an unpredictable sequence of bits. This source of entropy is called the seed and can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness. So as long as you seed the algorithms with a legitimate source of entropy, they can generate fairly long sequences of random values without the sequence repeating 
 * __Software/Hardware/Memory Breakpoint__: 
   * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint, OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
   * __Hardware Breakpoint__: set in special registers called debug registers (DR0 through DR7)
     + Only DR0 - DR3 registers are reserved for breakpoint addresses
-    + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the CPU halts
+    + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
     + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
   * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
     + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
@@ -67,7 +67,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 # .tools
 
 ## *<p align='center'> IDA Tips (4/1/2017) </p>*
-* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve the API 
+* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 * __To Show Advanced Toolbar__: View -> Toolbars -> Advanced Mode
@@ -152,11 +152,8 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 ## *<p align='center'> x86 (4/23/2017) </p>*
 * Value stored in RAM is in little-endian but when moved to a register it is in big-endian  
-* The 8 32-bit general-purpose registers (GPRs) for x86 architecture: EAX, EBX, ECX, EDX, EDI, ESI, EBP, and ESP. GPRs are used for temporary storage and can be directly accessed/changed in user code (e.g. mov eax, 1)  
-* The 5 32-bit memory index registers for x86 architecture: ESI, EDI, ESP, EBP, EIP. Most of them are also GPRs. They usually contain memory addresses. But obviously, if a memory index register is used as a GPR instead, it can contain any value 
 * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register indicates a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
   + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the PEB structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
-* The 3 32-bit scratch registers for x86 architecture: EAX, ECX, and EDX. Values stored in scratch registers are not preserved across function calls. It allows process to spend less time on saving registers that are most likely to be modified 
 * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
 * Calling Conventions (x86): 
   + CDECL: arguments pushed on stack from right to left. Caller cleaned up stack after
@@ -169,8 +166,9 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
 * x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
 * The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction, although their opcodes are different
-* An opcode can have multiple mnemonics associated with it
-  * For example, 0x75 is both the opcode for JNZ and JNE
+* An opcode can have multiple mnemonics associated with it and a mnemonic can have multiple opcodes associated with it
+  * __Example 1__: 0x75 is both the opcode for JNZ and JNE
+  * __Example 2__: 0xb142 and 0xc6c142 both corresponds to the instruction MOV CL, 66
 * There is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
 * EIP can only be changed through CALL, JMP, or RET
 * __Floating Point Arithmetic__: Floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
@@ -558,7 +556,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 * __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
 #
 ## *<p align='center'> Anti-Dumping (8/12/17) </p>*
-* __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if able to, the dumped image will be missing important information that the loader needs to load it again
+* __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if a tool is able to dump it, the dumped image will be missing important information that the loader needs
 * __Stolen Bytes__: 
 #
 ## *<p align='center'> Bonus (7/22/17) </p>*
