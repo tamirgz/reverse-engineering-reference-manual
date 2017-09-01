@@ -1,4 +1,4 @@
-# <p align='center'> Reverse Engineering Journal </p>
+# <p align='center'> Reverse Engineering Cheatsheet </p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/heading/Introduction.PNG"> 
