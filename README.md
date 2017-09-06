@@ -9,11 +9,11 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .table-of-contents
 
 * [.general-knowledge](#general-knowledge)
-  + [int 0x7374617274](#-int-0x7374617274-12182016-)
+  + [int 0x7374617274](#-int-0x7374617274-)
 * [.tools](#tools)
-  + [IDA Tips](#-ida-tips-412017-)
-  + [GDB Tips](#-gdb-tips-21517-)
-  + [WinDBG Tips](#-windbg-tips-5617-)
+  + [IDA Tips](#-ida-tips-)
+  + [GDB Tips](#-gdb-tips-)
+  + [WinDBG Tips](#-windbg-tips-)
 * [.instruction-sets](#instruction-sets)
   + [x86](#-x86-4232017-)
   + [x86-64](#-x86-64-4242017-)
@@ -41,7 +41,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .general-knowledge
 
-## *<p align='center'> int 0x7374617274 (12/18/2016) </p>*
+## *<p align='center'> int 0x7374617274 </p>*
 * A process is a container for execution. A thread is what the OS executes
 * Any function that calls another function is a non-leaf function, and all other functions are leaf functions
 * The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
@@ -66,7 +66,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .tools
 
-## *<p align='center'> IDA Tips (4/1/2017) </p>*
+## *<p align='center'> IDA Tips </p>*
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
@@ -80,7 +80,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + n to rename
   + x to show cross-references
 #
-## *<p align='center'> GDB Tips (2/15/17) </p>*
+## *<p align='center'> GDB Tips </p>*
 * __Changing Default Settings__: 
   * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
   * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. 
@@ -120,7 +120,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 <!-- EFLAGS Register - MIT course 6.858 --!>
 
 #
-## *<p align='center'> WinDBG Tips (5/6/17) </p>*
+## *<p align='center'> WinDBG Tips </p>*
 * __Notations__: 
   * __?__: evaluates an expression 
   * __??__: evaluates a C++ expression
