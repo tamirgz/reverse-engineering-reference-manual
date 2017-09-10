@@ -1,74 +1,78 @@
-# <p align='center'> Reverse Engineering Journal </p>
+# <p align='center'> Reverse Engineering Cheatsheet </p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/heading/Introduction.PNG"> 
 </p>
 
-__NOTE:__ I put anything I find interesting regarding reverse engineering in this journal. The date beside each heading denotes the start date that I added the topic, but most of the time I will still be adding information to that heading days later.
+__NOTE__: Here is a collage of reverse engineering topics that I find interesting. Enjoy~ 
 
 # .table-of-contents
 
 * [.general-knowledge](#general-knowledge)
-  + [int 0x7374617274](#-int-0x7374617274-12182016-)
+  + [int 0x7374617274](#-int-0x7374617274-)
 * [.tools](#tools)
-  + [IDA Tips](#-ida-tips-412017-)
-  + [GDB Tips](#-gdb-tips-21517-)
-  + [WinDBG Tips](#-windbg-tips-5617-)
+  + [IDA Tips](#-ida-tips-)
+  + [GDB Tips](#-gdb-tips-)
+  + [WinDBG Tips](#-windbg-tips-)
 * [.instruction-sets](#instruction-sets)
-  + [x86](#-x86-4232017-)
-  + [x86-64](#-x86-64-4242017-)
-  + [ARM](#-arm-4142017-)
+  + [x86](#-x86-)
+  + [x86-64](#-x86-64-)
+  + [ARM](#-arm-)
 * [.languages](#languages)
-  + [C++ Reversing](#-c-reversing-121316-)
-  + [Python Reversing](#-python-reversing-5172017-)
+  + [C++ Reversing](#-c-reversing-)
+  + [Python Reversing](#-python-reversing-)
 * [.file-formats](#file-formats)
-  + [ELF Files](#-elf-files-12017-)
-  * [PE Files](#-pe-files-5142017-)
+  + [ELF Files](#-elf-files-)
+  * [PE Files](#-pe-files-)
 * [.operating-system-concepts](#operating-system-concepts)
-  + [Windows OS](#-windows-os-412017-)
-  + [Interrupts](#-interrupts-4132017-)
+  + [Windows OS](#-windows-os-)
+  + [Interrupts](#-interrupts-)
 * [.anti-analysis](#anti-analysis)
-  + [Obfuscation](#-obfuscation-7317-)
-  + [Anti-Disassembly](#-anti-disassembly-111716-)
-  + [Anti-Debugging](#-anti-debugging-111716-)
-  + [Anti-Emulation](#-anti-emulation-252017-)
-  + [Anti-Dumping](#-anti-dumping-81217-)
-  + [Bonus](#-bonus-72217-)
+  + [Obfuscation](#-obfuscation-)
+  + [Anti-Disassembly](#-anti-disassembly-)
+  + [Anti-Debugging](#-anti-debugging-)
+  + [Anti-Emulation](#-anti-emulation-)
+  + [Anti-Dumping](#-anti-dumping-)
+  + [Bonus](#-bonus-)
 * [.encodings](#encodings)
-  + [String Encoding](#-string-encoding-121216-)
-  + [Data Encoding](#-data-encoding-121516-)
+  + [String Encoding](#-string-encoding-)
+  + [Data Encoding](#-data-encoding-)
 ---
 
 # .general-knowledge
 
-## *<p align='center'> int 0x7374617274 (12/18/2016) </p>*
-* Processes are containers for execution. Threads are what the OS executes
-* Any function that calls another function is called a non-leaf function, and all other functions are leaf functions
-* Entry point of a binary (start function) is not main. A program's startup code (how main is called) depends on the compiler and the platform that the binary is compiled for
-* To hide a string from strings command, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section. To do this, initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out Data Encoding section in this journal
-* __Random Number Generator__: Randomness requires a source of entropy, which is an unpredictable sequence of bits. This source of entropy is called the seed and can be from OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness. So as long as you seed the algorithms with a legitimate source of entropy, they can generate fairly long sequences of random values without the sequence repeating 
+## *<p align='center'> int 0x7374617274 </p>*
+* A process is a container for execution. A thread is what the OS executes
+* Any function that calls another function is a non-leaf function, and all other functions are leaf functions
+* The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
+  * Even if no library is statically compiled into the binary, part of the .text section will contain code that has nothing to do with what the original developer(s) wrote
+* To hide a string from GNU's strings utility, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section 
+  * One way to do this is to initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out the Data Encoding section
+* __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
-  * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint, OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
+  * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
   * __Hardware Breakpoint__: set in special registers called debug registers (DR0 through DR7)
     + Only DR0 - DR3 registers are reserved for breakpoint addresses
-    + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the CPU halts
+    + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
     + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
   * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
     + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
-  * VA - image_base = RVA. VA relative to the base of the image 
-  * RVA - section_base_RVA = offset from base of the section
-  * offset_from_section_base + section_file_offset = file offset on disk  
+  1. VA - image_base = RVA. VA relative to the base of the image 
+  2. RVA - section_base_RVA = offset from base of the section
+  3. offset_from_section_base + section_file_offset = file offset on disk  
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
+  * Value stored in RAM is in little-endian but when moved to a register it is in big-endian
 ---
 
 # .tools
 
-## *<p align='center'> IDA Tips (4/1/2017) </p>*
-* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve the API 
+## *<p align='center'> IDA Tips </p>*
+* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
+  * If there're functions in the IAT that are not in the function trace, that is considered normal since the function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 * __To Show Advanced Toolbar__: View -> Toolbars -> Advanced Mode
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
@@ -80,12 +84,12 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + n to rename
   + x to show cross-references
 #
-## *<p align='center'> GDB Tips (2/15/17) </p>*
+## *<p align='center'> GDB Tips </p>*
 * __Changing Default Settings__: 
   * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
   * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. 
   * To make changes permanent, write it in the .gdbinit file
-* __User Inputs__: way to pass user inputs to debugged program as arguments or/and to debugged program's stdin
+* __User Inputs__: way to pass user inputs to debugged program as arguments or/and as stdin
   * After already starting GDB...
     * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; __<__ &lt;file&gt;
     * content of file will be passed to debugged program's stdin
@@ -95,23 +99,23 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
     + When reversing, it could be useful to hook on breakpoints by using hook-stop 
     + How to define a hook: 
-      * (gdb) define hook-?
-      * <div>>...commands...</div>
-      * <div>>end</div>
-      * (gdb)
+      1. __(gdb)__ define hook-?
+      2. __>__ ...commands...
+      3. __>__ end
+      4. __(gdb)__
 * maint info sections: shows where sections are mapped to in virtual address space
 * i command displays information on the item specified to the right of it
-  + i proc mappings: show mapped address spaces 
-  + i b: show all breakpoints 
-  + i r: show the values in registers at that point of execution
+  + __i proc mappings__: show mapped address spaces 
+  + __i b__: show all breakpoints 
+  + __i r__: show the values in registers at that point of execution
 * x command displays memory contents at a given address in the specified format
   + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: x/14i $pc
 * p command displays value stored in a named variable
 * Catch program events: catch &lt;event&gt;
   * "catch syscall" will set a catchpoint that breaks at every call/return from a system call
 * Set hardware breakpoint in GDB: hbreak 
-* Set watchpoint (data breakpoint) in GDB: watch only break on write, rwatch break on read, awatch break on read/write
-* Set temporary variable: set $<-variable name-> = <-value->
+* Set watchpoint (data breakpoint) in GDB: __watch__ only break on write, __rwatch__ break on read, __awatch__ break on read/write
+* Set temporary variable: set &lt;variable name&gt; = &lt;value&gt;
   * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
@@ -120,7 +124,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 <!-- EFLAGS Register - MIT course 6.858 --!>
 
 #
-## *<p align='center'> WinDBG Tips (5/6/17) </p>*
+## *<p align='center'> WinDBG Tips </p>*
 * __Notations__: 
   * __?__: evaluates an expression 
   * __??__: evaluates a C++ expression
@@ -150,18 +154,14 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 # .instruction-sets
 
-## *<p align='center'> x86 (4/23/2017) </p>*
-* Value stored in RAM is in little-endian but when moved to a register it is in big-endian  
-* The 8 32-bit general-purpose registers (GPRs) for x86 architecture: EAX, EBX, ECX, EDX, EDI, ESI, EBP, and ESP. GPRs are used for temporary storage and can be directly accessed/changed in user code (e.g. mov eax, 1)  
-* The 5 32-bit memory index registers for x86 architecture: ESI, EDI, ESP, EBP, EIP. Most of them are also GPRs. They usually contain memory addresses. But obviously, if a memory index register is used as a GPR instead, it can contain any value 
+## *<p align='center'> x86 </p>*
 * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register indicates a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
   + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the PEB structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
-* The 3 32-bit scratch registers for x86 architecture: EAX, ECX, and EDX. Values stored in scratch registers are not preserved across function calls. It allows process to spend less time on saving registers that are most likely to be modified 
 * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
 * Calling Conventions (x86): 
-  + CDECL: arguments pushed on stack from right to left. Caller cleaned up stack after
-  + STDCALL: arguments pushed on stack from right to left. Callee cleaned up stack after
-  + FASTCALL: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
+  + __CDECL__: arguments pushed on stack from right to left. Caller cleaned up stack after
+  + __STDCALL__: arguments pushed on stack from right to left. Callee cleaned up stack after
+  + __FASTCALL__: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
 * The call instruction contains a 32-bit signed relative displacement that is added to the address immediately following the call instruction to calculate the call destination
 * __Jump Instruction__: 
   * __Short (Near) Jump__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
@@ -169,8 +169,9 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
 * x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
 * The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction, although their opcodes are different
-* An opcode can have multiple mnemonics associated with it
-  * For example, 0x75 is both the opcode for JNZ and JNE
+* An opcode can have multiple mnemonics associated with it and a mnemonic can have multiple opcodes associated with it
+  * __Example 1__: 0x75 is both the opcode for JNZ and JNE
+  * __Example 2__: 0xb142 and 0xc6c142 both corresponds to the instruction MOV CL, 66
 * There is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
 * EIP can only be changed through CALL, JMP, or RET
 * __Floating Point Arithmetic__: Floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
@@ -193,7 +194,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   * __MOVZX__: moves an unsigned value into a register and zero-extends it
   * __CMOVcc__: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
 #
-## *<p align='center'> x86-64 (4/24/2017) </p>*
+## *<p align='center'> x86-64 </p>*
 * All addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
 * 16 general-purpose registers each 64-bits (RAX, RCX, RDX, RBX, RSP, RBP, RSI, RDI, R8, R9, R10, R11, R12, R13, R14, R15)
   + DWORD (32-bit) version can be accessed with a D suffix, WORD (16-bit) with a W suffix, BYTE (8-bit) with a B suffix for registers R8 to R15
@@ -205,14 +206,14 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + Windows: first 4 parameters are placed in RCX, RDX, R8, and R9
   + Linux: first 6 parameters are placed in RDI, RSI, RDX, RCX, R8, and R9
 * In 32-bit code, stack space can be allocated and unallocated in middle of the function using push or pop. However, in 64-bit code, functions cannot allocate any space in the middle of the function
-* Nonleaf functions are sometimes called frame functions because they require a stack frame. Since stack space on x86-64 cannot change in the middle of a function,  all nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
+* Non-leaf functions are sometimes called frame functions because they require a stack frame. Since stack space on x86-64 cannot change in the middle of a function,  all nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
 * __Exception Handling__:  
   * __Windows__: on x86, Structured Exception Handling (SEH) is stored on the stack, which makes it vulnerable to buffer overflow attacks. SEH on x64 is implemented differently. SEH is table-based and no longer stored on the stack. It is instead stored in the PE Header
   * __Linux__: for both x86 and x64, exception handling can be achieved through signals 
 * Easier in 64-bit code to differentiate between pointers and data values. The most common size for storing integers is 32 bits and pointers are always 64 bits
 * RBP is treated like another GPR. As a result, local variables are referenced through RSP
 #
-## *<p align='center'> ARM (4/14/2017) </p>*
+## *<p align='center'> ARM </p>*
 * ARMv7 uses 3 profiles (Application, Real-Time, Microcontroller) and model name (Cortex). For example, ARMv7 Cortex-M is meant for microcontroller and support Thumb-2 execution only 
 * Thumb-1 is used in ARMv6 and earlier. Its instructions are always 2 bytes in size
 * Thumb-2 is used in ARMv7. Its instructions can be either 2 bytes or 4 bytes in size. 4 bytes Thumb instruction has a .W suffix, otherwise it generates a 2 byte Thumb instruction
@@ -267,7 +268,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 # .languages
 
-## *<p align='center'> C++ Reversing (12/13/16) </p>*
+## *<p align='center'> C++ Reversing </p>*
 * C++ calling convention for this pointer is called thiscall: 
   + On Microsoft Visual C++ compiled binary, this is stored in ecx. Sometimes esi 
   + On g++ compiled binary, this is passed in as the first parameter of the member function as an address 
@@ -281,7 +282,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 * Memory spaces for global objects are allocated at compile-time and placed in data or bss section of binary 
 * Use Name Mangling to support Method Overloading (multiple functions with same name but accept different parameters). Since in PE or ELF format, a function is only labeled with its name 
 #
-## *<p align='center'> Python Reversing (5/17/2017) </p>*
+## *<p align='center'> Python Reversing </p>*
 * PVM (Python Virtual Machine) is a stack-based virtual machine that stores operands in an upwardly-growing stack
   * In stack-based execution, an operation is performed by popping operands from the stack, operates on them, and then storing the result back to the stack
   * __Advantages of Stack-Based Virtual Machine__
@@ -304,7 +305,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 # .file-formats
 
-## *<p align='center'> ELF Files (1/20/17) </p>*
+## *<p align='center'> ELF Files </p>*
 <p align='center'> <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Elf-layout--en.svg" height="400"> </p>
 <!-- this image is from wikipedia -->
 
@@ -345,7 +346,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + decompile: retargetable decompiler
   + view a running program's process address space: /proc/$pid/maps
 #
-## *<p align='center'> PE Files (5/14/2017) </p>*
+## *<p align='center'> PE Files </p>*
 
 <p align='center'> <img src="http://nagareshwar.securityxploded.com/wp-content/uploads/2013/10/PE-architecture.jpg" height="400"> </p>
 <!-- this image is from http://nagareshwar.securityxploded.com -->
@@ -374,7 +375,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 # .operating-system-concepts
 
-## *<p align='center'> Windows OS (4/1/2017) </p>*
+## *<p align='center'> Windows OS </p>*
 * Windows debug symbol information isn't stored inside the executable like Linux's ELF executable, where debug symbol information has its own section in the executable. Instead, it is stored in the program database (PDB) file
   + To load the PDB File along with the executable (assuming they are in the same directory): File -> Load File -> PDB File
 * __Device Driver__: allows third-party developers to run code in the Windows kernel. Located in the kernel. Device drivers create/destroy device objects. User space application interacts with the driver by sending requests to a device object
@@ -417,7 +418,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + SYSENTER invokes system call dispatcher (KiFastCallEntry) by loading EIP from MSR 0x176
   + System call dispatcher will use the value in EAX to index KiServiceTable for the system call, dispatch the system call, and return to user code
 #
-## *<p align='center'> Interrupts (4/13/2017) </p>*
+## *<p align='center'> Interrupts </p>*
 * Hardware interrupts are generated by hardware devices/peripherals (asynchronous: can happen at any time)
 * Software interrupts (exceptions) are generated by the executing code and can be categorized as either faults or traps (synchronous)
   + fault is a correctable exception such as page fault. After the exception is handled, execution returns to the instruction that causes the fault
@@ -440,7 +441,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 # .anti-analysis
 
-## *<p align='center'> Obfuscation (7/3/17) </p>*
+## *<p align='center'> Obfuscation </p>*
 * Program transformation techniques that output a program that is semantically equivalent to the original program but is more difficult to analyze
 * __Original Entry Point (OEP) Hiding__: OEP can be hidden through packing. A packer can compress or encrypt a whole executable and inject an unpacking stub that unpack (decompress or decrypt) the executable during runtime. This will hide the OEP and also the original executable (such as the text, data, rsrc sections) from static analysis
   * __Tail Jump__: an instruction that jumps from the unpacking stub to OEP after the unpacking stub finishes
@@ -483,7 +484,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
   + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
 #
-## *<p align='center'> Anti-Disassembly (11/17/16) </p>*
+## *<p align='center'> Anti-Disassembly </p>*
 * __Disassembly Technique__: ways to disassemble machine code
   * __Linear Disassembly__: disassembling one instruction at a time linearly. Problem: code section of nearly all binaries will also contain data that isn’t instructions 
   * __Flow-Oriented Disassembly__: for conditional branch, it will process false branch first and note to disassemble true branch later. For unconditional branch, it will add destination to the end of list of places to disassemble in future and then disassemble from that list. For call instruction, most will disassemble the bytes after the call first and then the called location. If there is conflict between the true and false branch when disassembling, disassembler will trust the one it disassembles first
@@ -509,7 +510,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
     + Simply zero-ing out information regarding section headers table in the ELF Header (e_shoff, e_shentsize, e_shnum, e_shstrndx) can make tools such as readelf and Radare2 unable to display sections even though Section Headers Table still exists within the binary
     + The 6th byte of the ELF Header is EI_DATA, residing within e_ident array, which makes up the first 16 bytes of the ELF Header. EI_DATA specifies the data encoding of the processor-specific data in the file (unknown, little-endian, big-endian). Modifying EI_DATA after compilation will not affect program execution, but will make tools such as readelf, gdb, and radare2 to not work properly since they use this value to interpret the binary
 #
-## *<p align='center'> Anti-Debugging (11/17/16) </p>*
+## *<p align='center'> Anti-Debugging </p>*
 * __Using Functions from Dynamically Linked Libraries to Detect Debugger's Presence__ 
   * __ptrace (Linux)__: The ptrace system call allows a process (tracer) to observe and control execution of a second process (tracee), but only one tracer can control a tracee at a time. All debuggers and program tracers use ptrace call to setup debugging for a process. If the debugee's code itself contains a ptrace call with the request type PTRACE_TRACEME, PTRACE_TRACEME will set the parent process (most likely bash) as the tracer. This means that if a debugger is already attached to the debugee, the ptrace call within the debugee's code will fail 
     + This method can be bypassed by using LD_PRELOAD, which is an environment variable that is set to the path of a shared object. That shared object will be loaded first. As a result, if that shared object contains your own implementation of ptrace, then your own implementation of ptrace will be called instead when the call to ptrace is encountered 
@@ -549,7 +550,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
   * __TLS Callbacks__: (Windows only) Most debuggers start at the program’s entry point as defined by the PE header. TlsCallback is traditionally used to initialze thread-specific data before a thread runs, so TlsCallback is called before the entry point and therefore can execute secretly in a debugger
   * In C, function using the "constructor" attribute will execute before main()
 #
-## *<p align='center'> Anti-Emulation (2/5/2017) </p>*
+## *<p align='center'> Anti-Emulation </p>*
 * Using emulation allows reverse engineer to bypass many anti-debugging techniques
 * __Detection through Syscall__: invoke various uncommon syscalls and check if it contains expected value. Since there are OS features not properly implemented, it means that the process is running under emulation
 * __CPU Inconsistencies Detection__: try executing privileged instructions in user mode. If it succeeded, then it is under emulation
@@ -557,11 +558,11 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
 * __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
 #
-## *<p align='center'> Anti-Dumping (8/12/17) </p>*
-* __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if able to, the dumped image will be missing important information that the loader needs to load it again
+## *<p align='center'> Anti-Dumping </p>*
+* __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if a tool is able to dump it, the dumped image will be missing important information that the loader needs
 * __Stolen Bytes__: 
 #
-## *<p align='center'> Bonus (7/22/17) </p>*
+## *<p align='center'> Bonus </p>*
 * "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
   * [Repsych: Psychological Warfare in Reverse Engineering](https://www.youtube.com/watch?v=HlUe0TUHOIc)
   * [REpsych's Github Repo](https://github.com/xoreaxeaxeax/REpsych)
@@ -569,7 +570,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 
 # .encodings
 
-## *<p align='center'> String Encoding (12/12/16) </p>*
+## *<p align='center'> String Encoding </p>*
 * __ASCII__: string encoding that maps a byte to an English character, a special character, or a number
   * [ASCII Table](http://www.asciitable.com/)
   * Out of the 128 characters defined in ASCII, only 95 of them are human-readable
@@ -582,7 +583,7 @@ __NOTE:__ I put anything I find interesting regarding reverse engineering in thi
 * __Cause Of Garbled Text__: reading a byte sequence using the wrong encoding scheme
   
 #
-## *<p align='center'> Data Encoding (12/15/16) </p>*
+## *<p align='center'> Data Encoding </p>*
 * All forms of content modification for the purpose of hiding intent
 * __Caesar Cipher__: formed by shifting the letters of alphabet #’s characters to the left or right
 * __Single-Byte XOR Encoding__: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
