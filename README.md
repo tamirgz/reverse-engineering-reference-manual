@@ -56,9 +56,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
     + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
-  1. VA - image_base = RVA. VA relative to the base of the image 
-  2. RVA - section_base_RVA = offset from base of the section
-  3. offset_from_section_base + section_file_offset = file offset on disk  
+  ..1. VA - image_base = RVA. VA relative to the base of the image 
+  ..2. RVA - section_base_RVA = offset from base of the section
+  ..3. offset_from_section_base + section_file_offset = file offset on disk  
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
