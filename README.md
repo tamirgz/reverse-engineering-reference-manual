@@ -99,8 +99,8 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + When reversing, it could be useful to hook on breakpoints by using hook-stop 
     + How to define a hook: 
       1. __(gdb)__ define hook-?
-      2. <div>__>__...commands...</div>
-      3. <div>__>__end</div>
+      2. __>__...commands...
+      3. __>__end
       4. __(gdb)__
 * maint info sections: shows where sections are mapped to in virtual address space
 * i command displays information on the item specified to the right of it
