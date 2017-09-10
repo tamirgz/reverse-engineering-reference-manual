@@ -46,7 +46,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * Any function that calls another function is a non-leaf function, and all other functions are leaf functions
 * The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
 * To hide a string from GNU's strings utility, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section. One way to do this is to initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out the Data Encoding section
-* __Random Number Generator__: Randomness requires a source of entropy, which is an unpredictable sequence of bits. This source of entropy is called the seed and can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness. So as long as you seed the algorithms with a legitimate source of entropy, they can generate fairly long sequences of random values without the sequence repeating 
+* __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
   * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint, OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
   * __Hardware Breakpoint__: set in special registers called debug registers (DR0 through DR7)
@@ -56,9 +56,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
     + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
-  * VA - image_base = RVA. VA relative to the base of the image 
-  * RVA - section_base_RVA = offset from base of the section
-  * offset_from_section_base + section_file_offset = file offset on disk  
+  1. VA - image_base = RVA. VA relative to the base of the image 
+  2. RVA - section_base_RVA = offset from base of the section
+  3. offset_from_section_base + section_file_offset = file offset on disk  
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
