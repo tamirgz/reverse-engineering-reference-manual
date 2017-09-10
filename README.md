@@ -64,6 +64,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
+  * Value stored in RAM is in little-endian but when moved to a register it is in big-endian
 ---
 
 # .tools
@@ -154,14 +155,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .instruction-sets
 
 ## *<p align='center'> x86 (4/23/2017) </p>*
-* Value stored in RAM is in little-endian but when moved to a register it is in big-endian  
 * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register indicates a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
   + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the PEB structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
 * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
 * Calling Conventions (x86): 
-  + CDECL: arguments pushed on stack from right to left. Caller cleaned up stack after
-  + STDCALL: arguments pushed on stack from right to left. Callee cleaned up stack after
-  + FASTCALL: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
+  + __CDECL__: arguments pushed on stack from right to left. Caller cleaned up stack after
+  + __STDCALL__: arguments pushed on stack from right to left. Callee cleaned up stack after
+  + __FASTCALL__: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
 * The call instruction contains a 32-bit signed relative displacement that is added to the address immediately following the call instruction to calculate the call destination
 * __Jump Instruction__: 
   * __Short (Near) Jump__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
@@ -206,7 +206,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + Windows: first 4 parameters are placed in RCX, RDX, R8, and R9
   + Linux: first 6 parameters are placed in RDI, RSI, RDX, RCX, R8, and R9
 * In 32-bit code, stack space can be allocated and unallocated in middle of the function using push or pop. However, in 64-bit code, functions cannot allocate any space in the middle of the function
-* Nonleaf functions are sometimes called frame functions because they require a stack frame. Since stack space on x86-64 cannot change in the middle of a function,  all nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
+* Non-leaf functions are sometimes called frame functions because they require a stack frame. Since stack space on x86-64 cannot change in the middle of a function,  all nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
 * __Exception Handling__:  
   * __Windows__: on x86, Structured Exception Handling (SEH) is stored on the stack, which makes it vulnerable to buffer overflow attacks. SEH on x64 is implemented differently. SEH is table-based and no longer stored on the stack. It is instead stored in the PE Header
   * __Linux__: for both x86 and x64, exception handling can be achieved through signals 
