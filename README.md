@@ -114,7 +114,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * "catch syscall" will set a catchpoint that breaks at every call/return from a system call
 * Set hardware breakpoint in GDB: hbreak 
 * Set watchpoint (data breakpoint) in GDB: watch only break on write, rwatch break on read, awatch break on read/write
-* Set temporary variable: set $<-variable name-> = <-value->
+* Set temporary variable: set &lt;variable name<- = &lt;value&gt;
   * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
