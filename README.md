@@ -45,10 +45,12 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * A process is a container for execution. A thread is what the OS executes
 * Any function that calls another function is a non-leaf function, and all other functions are leaf functions
 * The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
-* To hide a string from GNU's strings utility, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section. One way to do this is to initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out the Data Encoding section
+  * Even if no library is statically compiled into the binary, part of the .text section will contain code that has nothing to do with what the original developer(s) wrote
+* To hide a string from GNU's strings utility, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section 
+  * One way to do this is to initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out the Data Encoding section
 * __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
-  * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint, OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
+  * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
   * __Hardware Breakpoint__: set in special registers called debug registers (DR0 through DR7)
     + Only DR0 - DR3 registers are reserved for breakpoint addresses
     + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
@@ -56,9 +58,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
     + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
-  ..1. VA - image_base = RVA. VA relative to the base of the image 
-  ..2. RVA - section_base_RVA = offset from base of the section
-  ..3. offset_from_section_base + section_file_offset = file offset on disk  
+  1. VA - image_base = RVA. VA relative to the base of the image 
+  2. RVA - section_base_RVA = offset from base of the section
+  3. offset_from_section_base + section_file_offset = file offset on disk  
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
@@ -69,6 +71,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 ## *<p align='center'> IDA Tips </p>*
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
+  * If there're functions in the IAT that are not in the function trace, that is considered normal since the function trace might not hit every single execution path. Through smart fuzzing, the percentage of execution paths covered can be brought up
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 * __To Show Advanced Toolbar__: View -> Toolbars -> Advanced Mode
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
@@ -85,7 +88,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
   * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. 
   * To make changes permanent, write it in the .gdbinit file
-* __User Inputs__: way to pass user inputs to debugged program as arguments or/and to debugged program's stdin
+* __User Inputs__: way to pass user inputs to debugged program as arguments or/and as stdin
   * After already starting GDB...
     * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; __<__ &lt;file&gt;
     * content of file will be passed to debugged program's stdin
@@ -95,10 +98,10 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
     + When reversing, it could be useful to hook on breakpoints by using hook-stop 
     + How to define a hook: 
-      * (gdb) define hook-?
-      * <div>>...commands...</div>
-      * <div>>end</div>
-      * (gdb)
+      1. __(gdb)__ define hook-?
+      2. <div>__>__...commands...</div>
+      3. <div>__>__end</div>
+      4. __(gdb)__
 * maint info sections: shows where sections are mapped to in virtual address space
 * i command displays information on the item specified to the right of it
   + i proc mappings: show mapped address spaces 
