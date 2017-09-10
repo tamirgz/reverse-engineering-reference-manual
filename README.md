@@ -16,7 +16,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + [WinDBG Tips](#-windbg-tips-)
 * [.instruction-sets](#instruction-sets)
   + [x86](#-x86-)
-  + [x86-64](#-x86-64--)
+  + [x86-64](#-x86-64-)
   + [ARM](#-arm-)
 * [.languages](#languages)
   + [C++ Reversing](#-c-reversing-)
