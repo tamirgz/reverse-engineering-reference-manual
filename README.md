@@ -15,28 +15,28 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + [GDB Tips](#-gdb-tips-)
   + [WinDBG Tips](#-windbg-tips-)
 * [.instruction-sets](#instruction-sets)
-  + [x86](#-x86-4232017-)
-  + [x86-64](#-x86-64-4242017-)
-  + [ARM](#-arm-4142017-)
+  + [x86](#-x86-)
+  + [x86-64](#-x86-64--)
+  + [ARM](#-arm-)
 * [.languages](#languages)
-  + [C++ Reversing](#-c-reversing-121316-)
-  + [Python Reversing](#-python-reversing-5172017-)
+  + [C++ Reversing](#-c-reversing-)
+  + [Python Reversing](#-python-reversing-)
 * [.file-formats](#file-formats)
-  + [ELF Files](#-elf-files-12017-)
-  * [PE Files](#-pe-files-5142017-)
+  + [ELF Files](#-elf-files-)
+  * [PE Files](#-pe-files-)
 * [.operating-system-concepts](#operating-system-concepts)
-  + [Windows OS](#-windows-os-412017-)
-  + [Interrupts](#-interrupts-4132017-)
+  + [Windows OS](#-windows-os-)
+  + [Interrupts](#-interrupts-)
 * [.anti-analysis](#anti-analysis)
-  + [Obfuscation](#-obfuscation-7317-)
-  + [Anti-Disassembly](#-anti-disassembly-111716-)
-  + [Anti-Debugging](#-anti-debugging-111716-)
-  + [Anti-Emulation](#-anti-emulation-252017-)
-  + [Anti-Dumping](#-anti-dumping-81217-)
-  + [Bonus](#-bonus-72217-)
+  + [Obfuscation](#-obfuscation-)
+  + [Anti-Disassembly](#-anti-disassembly-)
+  + [Anti-Debugging](#-anti-debugging-)
+  + [Anti-Emulation](#-anti-emulation-)
+  + [Anti-Dumping](#-anti-dumping-)
+  + [Bonus](#-bonus-)
 * [.encodings](#encodings)
-  + [String Encoding](#-string-encoding-121216-)
-  + [Data Encoding](#-data-encoding-121516-)
+  + [String Encoding](#-string-encoding-)
+  + [Data Encoding](#-data-encoding-)
 ---
 
 # .general-knowledge
@@ -72,7 +72,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 ## *<p align='center'> IDA Tips </p>*
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
-  * If there're functions in the IAT that are not in the function trace, that is considered normal since the function trace might not hit every single execution path. Through smart fuzzing, the percentage of execution paths covered can be brought up
+  * If there're functions in the IAT that are not in the function trace, that is considered normal since the function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 * __To Show Advanced Toolbar__: View -> Toolbars -> Advanced Mode
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
@@ -154,7 +154,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .instruction-sets
 
-## *<p align='center'> x86 (4/23/2017) </p>*
+## *<p align='center'> x86 </p>*
 * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register indicates a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
   + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the PEB structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
 * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
@@ -194,7 +194,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __MOVZX__: moves an unsigned value into a register and zero-extends it
   * __CMOVcc__: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
 #
-## *<p align='center'> x86-64 (4/24/2017) </p>*
+## *<p align='center'> x86-64 </p>*
 * All addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
 * 16 general-purpose registers each 64-bits (RAX, RCX, RDX, RBX, RSP, RBP, RSI, RDI, R8, R9, R10, R11, R12, R13, R14, R15)
   + DWORD (32-bit) version can be accessed with a D suffix, WORD (16-bit) with a W suffix, BYTE (8-bit) with a B suffix for registers R8 to R15
@@ -213,7 +213,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * Easier in 64-bit code to differentiate between pointers and data values. The most common size for storing integers is 32 bits and pointers are always 64 bits
 * RBP is treated like another GPR. As a result, local variables are referenced through RSP
 #
-## *<p align='center'> ARM (4/14/2017) </p>*
+## *<p align='center'> ARM </p>*
 * ARMv7 uses 3 profiles (Application, Real-Time, Microcontroller) and model name (Cortex). For example, ARMv7 Cortex-M is meant for microcontroller and support Thumb-2 execution only 
 * Thumb-1 is used in ARMv6 and earlier. Its instructions are always 2 bytes in size
 * Thumb-2 is used in ARMv7. Its instructions can be either 2 bytes or 4 bytes in size. 4 bytes Thumb instruction has a .W suffix, otherwise it generates a 2 byte Thumb instruction
@@ -268,7 +268,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .languages
 
-## *<p align='center'> C++ Reversing (12/13/16) </p>*
+## *<p align='center'> C++ Reversing </p>*
 * C++ calling convention for this pointer is called thiscall: 
   + On Microsoft Visual C++ compiled binary, this is stored in ecx. Sometimes esi 
   + On g++ compiled binary, this is passed in as the first parameter of the member function as an address 
@@ -282,7 +282,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * Memory spaces for global objects are allocated at compile-time and placed in data or bss section of binary 
 * Use Name Mangling to support Method Overloading (multiple functions with same name but accept different parameters). Since in PE or ELF format, a function is only labeled with its name 
 #
-## *<p align='center'> Python Reversing (5/17/2017) </p>*
+## *<p align='center'> Python Reversing </p>*
 * PVM (Python Virtual Machine) is a stack-based virtual machine that stores operands in an upwardly-growing stack
   * In stack-based execution, an operation is performed by popping operands from the stack, operates on them, and then storing the result back to the stack
   * __Advantages of Stack-Based Virtual Machine__
@@ -305,7 +305,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .file-formats
 
-## *<p align='center'> ELF Files (1/20/17) </p>*
+## *<p align='center'> ELF Files </p>*
 <p align='center'> <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Elf-layout--en.svg" height="400"> </p>
 <!-- this image is from wikipedia -->
 
@@ -346,7 +346,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + decompile: retargetable decompiler
   + view a running program's process address space: /proc/$pid/maps
 #
-## *<p align='center'> PE Files (5/14/2017) </p>*
+## *<p align='center'> PE Files </p>*
 
 <p align='center'> <img src="http://nagareshwar.securityxploded.com/wp-content/uploads/2013/10/PE-architecture.jpg" height="400"> </p>
 <!-- this image is from http://nagareshwar.securityxploded.com -->
@@ -375,7 +375,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .operating-system-concepts
 
-## *<p align='center'> Windows OS (4/1/2017) </p>*
+## *<p align='center'> Windows OS </p>*
 * Windows debug symbol information isn't stored inside the executable like Linux's ELF executable, where debug symbol information has its own section in the executable. Instead, it is stored in the program database (PDB) file
   + To load the PDB File along with the executable (assuming they are in the same directory): File -> Load File -> PDB File
 * __Device Driver__: allows third-party developers to run code in the Windows kernel. Located in the kernel. Device drivers create/destroy device objects. User space application interacts with the driver by sending requests to a device object
@@ -418,7 +418,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + SYSENTER invokes system call dispatcher (KiFastCallEntry) by loading EIP from MSR 0x176
   + System call dispatcher will use the value in EAX to index KiServiceTable for the system call, dispatch the system call, and return to user code
 #
-## *<p align='center'> Interrupts (4/13/2017) </p>*
+## *<p align='center'> Interrupts </p>*
 * Hardware interrupts are generated by hardware devices/peripherals (asynchronous: can happen at any time)
 * Software interrupts (exceptions) are generated by the executing code and can be categorized as either faults or traps (synchronous)
   + fault is a correctable exception such as page fault. After the exception is handled, execution returns to the instruction that causes the fault
@@ -441,7 +441,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .anti-analysis
 
-## *<p align='center'> Obfuscation (7/3/17) </p>*
+## *<p align='center'> Obfuscation </p>*
 * Program transformation techniques that output a program that is semantically equivalent to the original program but is more difficult to analyze
 * __Original Entry Point (OEP) Hiding__: OEP can be hidden through packing. A packer can compress or encrypt a whole executable and inject an unpacking stub that unpack (decompress or decrypt) the executable during runtime. This will hide the OEP and also the original executable (such as the text, data, rsrc sections) from static analysis
   * __Tail Jump__: an instruction that jumps from the unpacking stub to OEP after the unpacking stub finishes
@@ -484,7 +484,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + (Windows) use LoadLibrary function to load required libraries by name and then perform function address lookups within each library using GetProcAddress
   + (Linux) use dlopen function to load the dynamic shared object and use dlsym function to find the address of a specific function within the shared object 
 #
-## *<p align='center'> Anti-Disassembly (11/17/16) </p>*
+## *<p align='center'> Anti-Disassembly </p>*
 * __Disassembly Technique__: ways to disassemble machine code
   * __Linear Disassembly__: disassembling one instruction at a time linearly. Problem: code section of nearly all binaries will also contain data that isn’t instructions 
   * __Flow-Oriented Disassembly__: for conditional branch, it will process false branch first and note to disassemble true branch later. For unconditional branch, it will add destination to the end of list of places to disassemble in future and then disassemble from that list. For call instruction, most will disassemble the bytes after the call first and then the called location. If there is conflict between the true and false branch when disassembling, disassembler will trust the one it disassembles first
@@ -510,7 +510,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + Simply zero-ing out information regarding section headers table in the ELF Header (e_shoff, e_shentsize, e_shnum, e_shstrndx) can make tools such as readelf and Radare2 unable to display sections even though Section Headers Table still exists within the binary
     + The 6th byte of the ELF Header is EI_DATA, residing within e_ident array, which makes up the first 16 bytes of the ELF Header. EI_DATA specifies the data encoding of the processor-specific data in the file (unknown, little-endian, big-endian). Modifying EI_DATA after compilation will not affect program execution, but will make tools such as readelf, gdb, and radare2 to not work properly since they use this value to interpret the binary
 #
-## *<p align='center'> Anti-Debugging (11/17/16) </p>*
+## *<p align='center'> Anti-Debugging </p>*
 * __Using Functions from Dynamically Linked Libraries to Detect Debugger's Presence__ 
   * __ptrace (Linux)__: The ptrace system call allows a process (tracer) to observe and control execution of a second process (tracee), but only one tracer can control a tracee at a time. All debuggers and program tracers use ptrace call to setup debugging for a process. If the debugee's code itself contains a ptrace call with the request type PTRACE_TRACEME, PTRACE_TRACEME will set the parent process (most likely bash) as the tracer. This means that if a debugger is already attached to the debugee, the ptrace call within the debugee's code will fail 
     + This method can be bypassed by using LD_PRELOAD, which is an environment variable that is set to the path of a shared object. That shared object will be loaded first. As a result, if that shared object contains your own implementation of ptrace, then your own implementation of ptrace will be called instead when the call to ptrace is encountered 
@@ -550,7 +550,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __TLS Callbacks__: (Windows only) Most debuggers start at the program’s entry point as defined by the PE header. TlsCallback is traditionally used to initialze thread-specific data before a thread runs, so TlsCallback is called before the entry point and therefore can execute secretly in a debugger
   * In C, function using the "constructor" attribute will execute before main()
 #
-## *<p align='center'> Anti-Emulation (2/5/2017) </p>*
+## *<p align='center'> Anti-Emulation </p>*
 * Using emulation allows reverse engineer to bypass many anti-debugging techniques
 * __Detection through Syscall__: invoke various uncommon syscalls and check if it contains expected value. Since there are OS features not properly implemented, it means that the process is running under emulation
 * __CPU Inconsistencies Detection__: try executing privileged instructions in user mode. If it succeeded, then it is under emulation
@@ -558,11 +558,11 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
 * __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
 #
-## *<p align='center'> Anti-Dumping (8/12/17) </p>*
+## *<p align='center'> Anti-Dumping </p>*
 * __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if a tool is able to dump it, the dumped image will be missing important information that the loader needs
 * __Stolen Bytes__: 
 #
-## *<p align='center'> Bonus (7/22/17) </p>*
+## *<p align='center'> Bonus </p>*
 * "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
   * [Repsych: Psychological Warfare in Reverse Engineering](https://www.youtube.com/watch?v=HlUe0TUHOIc)
   * [REpsych's Github Repo](https://github.com/xoreaxeaxeax/REpsych)
@@ -570,7 +570,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 # .encodings
 
-## *<p align='center'> String Encoding (12/12/16) </p>*
+## *<p align='center'> String Encoding </p>*
 * __ASCII__: string encoding that maps a byte to an English character, a special character, or a number
   * [ASCII Table](http://www.asciitable.com/)
   * Out of the 128 characters defined in ASCII, only 95 of them are human-readable
@@ -583,7 +583,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Cause Of Garbled Text__: reading a byte sequence using the wrong encoding scheme
   
 #
-## *<p align='center'> Data Encoding (12/15/16) </p>*
+## *<p align='center'> Data Encoding </p>*
 * All forms of content modification for the purpose of hiding intent
 * __Caesar Cipher__: formed by shifting the letters of alphabet #’s characters to the left or right
 * __Single-Byte XOR Encoding__: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
