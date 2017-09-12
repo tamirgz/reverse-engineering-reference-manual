@@ -352,11 +352,12 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 <p align='center'> <img src="https://e16ae89e-a-62cb3a1a-s-sites.googlegroups.com/site/delphibasics/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1/PEFormat1.gif?attachauth=ANoY7crq-jlujmE8zWi60Cm1Xi_rNPgeQUC1YYKQlSvboVrM-HQoeheT2P4WBCI0_ucUP_NvHGSqE8JlQMo_t8bF3lUsnZSRzHEC1uVP0Z-1v-jkIOQqVKSJpK_ryOoQDHKu3zLerXHhxlpgIXAKSSGXmsH4ysNQiSiubcM4BTBAQfJiGDhinfcUL3kWQieZD91oSDlrYJo9HEsEnULu1X9Wlcc40V77IvtcQ_eZJKq9hd4Qy42gbBBav2rxu2dBgfqxFZ-NMhK9m4oupLnWQLLWBMxf3jZoUiSsO3VeIz7yIfnX0PCj_iowkY8_lcDMgl4NQGDgehgBqvi9jn59u51cwjB9fE065A%3D%3D&attredirects=0" height="400"> </p>
 <!-- this image is from DelphiBasics -->
 
-* PE file starts with a DOS header. The 2 fields of interest in the DOS header are e_magic and e_lfanew. e_magic contains the magic number 0x5A4D, which is MZ in ASCII. e_lfanew contains PE header's file offset
+* PE file starts with a DOS header. The 2 fields of interest in the DOS header are e_magic and e_lfanew. e_magic contains the magic number 0x5A4D (MZ). e_lfanew contains PE header's file offset
+  * e_lfanew field is necessary since between DOS Header and PE Header is the DOS Stub, which for backward compatibility prints "This program cannot be run in DOS mode" if a 32-bit PE file is ran in a 16-bit DOS environment
 * PE header (IMAGE_NT_HEADERS) contains 3 fields
-  * __Signature__: always 0x00004550, which is "PE00" in ASCII
-  * __IMAGE_FILE_HEADER (COFF Header)__: contains basic information on the file (e.g. target CPU, number of sections). Present in the object file so contains information useful to object file and executable
-  * __IMAGE_OPTIONAL_HEADER32 (PE Optional Header)__: MagicNumber field determines whether the image file uses 64-bit address space (PE32+) or 32-bit address space. Address of entry point can also be found here
+  * __Signature__: always 0x00004550 ("PE00")
+  * __IMAGE_FILE_HEADER (COFF Header)__: contains basic information on the file (e.g. target CPU, number of sections)
+  * __IMAGE_OPTIONAL_HEADER32 (PE Optional Header)__: contains the MagicNumber field, which determines whether the image file uses 64-bit address space (PE32+) or 32-bit address space. Address of entry point can also be found here
     * PE32+ contained widened PE Optional Header
 * Section table (IMAGE_SECTION_HEADERs) is right after PE Header. Each IMAGE_SECTION_HEADER contains information on a section, such as a section's virtual address or its pointer to data on disk 
   * 2 sections can be merged into a single one if they have similar attributes
