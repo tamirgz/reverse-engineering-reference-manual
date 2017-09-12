@@ -350,8 +350,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 * How a PE file is loaded into memory: 
 
-<p align='center'> <img src="https://e16ae89e-a-62cb3a1a-s-sites.googlegroups.com/site/delphibasics/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1/PEFormat1.gif?attachauth=ANoY7crq-jlujmE8zWi60Cm1Xi_rNPgeQUC1YYKQlSvboVrM-HQoeheT2P4WBCI0_ucUP_NvHGSqE8JlQMo_t8bF3lUsnZSRzHEC1uVP0Z-1v-jkIOQqVKSJpK_ryOoQDHKu3zLerXHhxlpgIXAKSSGXmsH4ysNQiSiubcM4BTBAQfJiGDhinfcUL3kWQieZD91oSDlrYJo9HEsEnULu1X9Wlcc40V77IvtcQ_eZJKq9hd4Qy42gbBBav2rxu2dBgfqxFZ-NMhK9m4oupLnWQLLWBMxf3jZoUiSsO3VeIz7yIfnX0PCj_iowkY8_lcDMgl4NQGDgehgBqvi9jn59u51cwjB9fE065A%3D%3D&attredirects=0" height="400"> </p>
-<!-- this image is from DelphiBasics -->
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/PE_Files/loading_pe_file.png"> 
+</p>
 
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
   1. VA - image_base = RVA. RVA (Relative Virtual Address) is virtual address relative to the image base (HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address. As a result, address obtained from disassembler might not match the address obtained from a debugger
