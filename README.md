@@ -352,25 +352,31 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 <p align='center'> <img src="https://e16ae89e-a-62cb3a1a-s-sites.googlegroups.com/site/delphibasics/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1/PEFormat1.gif?attachauth=ANoY7crq-jlujmE8zWi60Cm1Xi_rNPgeQUC1YYKQlSvboVrM-HQoeheT2P4WBCI0_ucUP_NvHGSqE8JlQMo_t8bF3lUsnZSRzHEC1uVP0Z-1v-jkIOQqVKSJpK_ryOoQDHKu3zLerXHhxlpgIXAKSSGXmsH4ysNQiSiubcM4BTBAQfJiGDhinfcUL3kWQieZD91oSDlrYJo9HEsEnULu1X9Wlcc40V77IvtcQ_eZJKq9hd4Qy42gbBBav2rxu2dBgfqxFZ-NMhK9m4oupLnWQLLWBMxf3jZoUiSsO3VeIz7yIfnX0PCj_iowkY8_lcDMgl4NQGDgehgBqvi9jn59u51cwjB9fE065A%3D%3D&attredirects=0" height="400"> </p>
 <!-- this image is from DelphiBasics -->
 
+* __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
+  1. VA - image_base = RVA. RVA (Relative Virtual Address) is virtual address relative to the image base (HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address. As a result, address obtained from disassembler might not match the address obtained from a debugger
+  2. RVA - section_base_RVA = offset from base of the section
+  3. offset_from_section_base + section_file_offset = file offset on disk  
 * PE file starts with a DOS header. The 2 fields of interest in the DOS header are e_magic and e_lfanew. e_magic contains the magic number 0x5A4D (MZ). e_lfanew contains PE header's file offset
   * e_lfanew field is necessary since between DOS Header and PE Header is the DOS Stub, which for backward compatibility prints "This program cannot be run in DOS mode" if a 32-bit PE file is ran in a 16-bit DOS environment
 * PE header (IMAGE_NT_HEADERS) contains 3 fields
   * __Signature__: always 0x00004550 ("PE00")
   * __IMAGE_FILE_HEADER (COFF Header)__: contains basic information on the file (e.g. target CPU, number of sections)
-  * __IMAGE_OPTIONAL_HEADER32 (PE Optional Header)__: contains the MagicNumber field, which determines whether the image file uses 64-bit address space (PE32+) or 32-bit address space. Address of entry point can also be found here
-    * PE32+ contained widened PE Optional Header
+  * __IMAGE_OPTIONAL_HEADER32 (PE Optional Header)__: contains most of the meaningful information. Can be further broken down into 3 parts:
+    * __Standard Fields__: notable fields are MagicNumber and AddressOfEntryPoint
+      * __MagicNumber__: determines whether the image file uses 64-bit address space (PE32+) or 32-bit address space. PE32+ contained widened PE Optional Header
+      * __AddressOfEntryPoint__: RVA to the entry point function
+    * __Windows Specific Fields (Additional Fields)__: notable fields are ImageBase, SectionAlignment, and SizeOfImage
+      * __ImageBase__: preferred address when loaded into memory
+        * __Base Relocations__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_BASERELOC. Refers to as the .reloc section. Contains every location that needs to be rebased if the executable doesn't load at the preferred load address
+          * To rebase, loader calculates the difference between the actual load address and the preferred load address. Every entry in this section is then updated with the previous calculation
+      * __SectionAlignment__: alignment for section when loaded into memory such that a section's VA will always be a multiple of this value 
+      * __SizeOfImage__: size of image starting from image base to the last section rounded to the nearest multiple of SectionAlignment
+    * __Data Directory (IMAGE_DATA_DIRECTION)__: locations of many important data structures (e.g. imports, exports, base relocations). 
+      * __Program Exception Data__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_EXCEPTION. It is an exception table that contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. Each IMAGE_RUNTIME_FUNCTION_ENTRY contains the address to an exception handler
 * Section table (IMAGE_SECTION_HEADERs) is right after PE Header. Each IMAGE_SECTION_HEADER contains information on a section, such as a section's virtual address or its pointer to data on disk 
   * 2 sections can be merged into a single one if they have similar attributes
     * .idata is often merged into .rdata in release-mode executable 
-* __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
-  1. VA - image_base = RVA. RVA (Relative Virtual Address) is virtual address relative to the image base (HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address. As a result, address obtained from disassembler might not match the address obtained from a debugger
-  2. RVA - section_base_RVA = offset from base of the section
-  3. offset_from_section_base + section_file_offset = file offset on disk  
-* Locations of many important data structures (e.g. imports, exports, base relocations) can be found in the Data Directory structure (IMAGE_DATA_DIRECTORY)
-* __Base Relocations__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_BASERELOC. Refers to as the .reloc section. Contains every location that needs to be rebased if the executable doesn't load at the preferred load address
-  * To rebase, loader calculates the difference between the actual load address and the preferred load address. Every entry in this section is then updated with the previous calculation
-* __Program Exception Data__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_EXCEPTION. It is an exception table that contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. Each IMAGE_RUNTIME_FUNCTION_ENTRY contains the address to an exception handler
-* __overlay__: data appended to end of a PE File. It is not loaded into memory
+* __Overlay__: data appended to end of a PE File. It is not loaded into memory
 ---
 
 # .operating-system-concepts
