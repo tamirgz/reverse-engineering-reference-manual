@@ -345,7 +345,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 ## *<p align='center'> PE Files </p>*
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/PE_Files/pe_header"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/PE_Files/pe_header.png"> 
 </p>
 
 * How a PE file is loaded into memory: 
