@@ -45,9 +45,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * A process is a container for execution. A thread is what the OS executes
 * Any function that calls another function is a non-leaf function, and all other functions are leaf functions
 * The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
-  * Even if no library is statically compiled into the binary, part of the .text section will contain code that has nothing to do with what the original developer(s) wrote
-* To hide a string from GNU's strings utility, construct the string in code. So instead of the string being referenced from the .data section, it will be constructed in the .text section 
-  * One way to do this is to initialize a string as an array of characters assigned to a local variable. This will result in code that moves each character onto the stack one at a time. To make the character harder to recognize, check out the Data Encoding section
+  * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 * __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
   * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
