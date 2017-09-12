@@ -367,12 +367,11 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
       * __AddressOfEntryPoint__: RVA to the entry point function
     * __Windows Specific Fields (Additional Fields)__: notable fields are ImageBase, SectionAlignment, and SizeOfImage
       * __ImageBase__: preferred address when loaded into memory
-        * __Base Relocations__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_BASERELOC. Refers to as the .reloc section. Contains every location that needs to be rebased if the executable doesn't load at the preferred load address
-          * To rebase, loader calculates the difference between the actual load address and the preferred load address. Every entry in this section is then updated with the previous calculation
       * __SectionAlignment__: alignment for section when loaded into memory such that a section's VA will always be a multiple of this value 
       * __SizeOfImage__: size of image starting from image base to the last section rounded to the nearest multiple of SectionAlignment
-    * __Data Directory (IMAGE_DATA_DIRECTION)__: locations of many important data structures (e.g. imports, exports, base relocations). 
+    * __Data Directory (IMAGE_DATA_DIRECTORY)__: locations of many important data structures (e.g. imports, exports, base relocations) that are stored as array of IMAGE_DATA_DIRECTORY structures. This allows loader to quickly locate an important section. Here are the notable IMAGE_DATA_DIRECTORY entries:
       * __Program Exception Data__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_EXCEPTION. It is an exception table that contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. Each IMAGE_RUNTIME_FUNCTION_ENTRY contains the address to an exception handler
+      * __Base Relocations__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_BASERELOC. Refers to as the .reloc section. Contains every location that needs to be rebased if the executable doesn't load at the preferred load address
 * Section table (IMAGE_SECTION_HEADERs) is right after PE Header. Each IMAGE_SECTION_HEADER contains information on a section, such as a section's virtual address or its pointer to data on disk 
   * 2 sections can be merged into a single one if they have similar attributes
     * .idata is often merged into .rdata in release-mode executable 
