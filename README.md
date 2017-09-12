@@ -57,10 +57,6 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
   * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
     + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
-* __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
-  1. VA - image_base = RVA. VA relative to the base of the image 
-  2. RVA - section_base_RVA = offset from base of the section
-  3. offset_from_section_base + section_file_offset = file offset on disk  
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
@@ -356,11 +352,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 <p align='center'> <img src="https://e16ae89e-a-62cb3a1a-s-sites.googlegroups.com/site/delphibasics/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1/PEFormat1.gif?attachauth=ANoY7crq-jlujmE8zWi60Cm1Xi_rNPgeQUC1YYKQlSvboVrM-HQoeheT2P4WBCI0_ucUP_NvHGSqE8JlQMo_t8bF3lUsnZSRzHEC1uVP0Z-1v-jkIOQqVKSJpK_ryOoQDHKu3zLerXHhxlpgIXAKSSGXmsH4ysNQiSiubcM4BTBAQfJiGDhinfcUL3kWQieZD91oSDlrYJo9HEsEnULu1X9Wlcc40V77IvtcQ_eZJKq9hd4Qy42gbBBav2rxu2dBgfqxFZ-NMhK9m4oupLnWQLLWBMxf3jZoUiSsO3VeIz7yIfnX0PCj_iowkY8_lcDMgl4NQGDgehgBqvi9jn59u51cwjB9fE065A%3D%3D&attredirects=0" height="400"> </p>
 <!-- this image is from DelphiBasics -->
 
-* data structures in PE file are the same as those loaded in memory 
 * 64-bit Windows led to the creation of a new file format called PE32+, which has the same fields as the original PE format but with widened field (32 bits to 64 bits)
 * 2 sections can be merged into a single one if they have similar attributes
   * .idata is often merged into .rdata in release-mode executable 
-* Relative Virtual Address (RVA) is virtual address relative to the image base (also known as HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address
+* __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
+  1. VA - image_base = RVA. RVA (Relative Virtual Address) is virtual address relative to the image base (HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address
+  2. RVA - section_base_RVA = offset from base of the section
+  3. offset_from_section_base + section_file_offset = file offset on disk  
 * Locations of many important data structures (e.g. imports, exports, base relocations) can be found in the Data Directory structure (IMAGE_DATA_DIRECTORY)
 * PE file starts with a DOS header. The 2 fields of interest in the DOS header are e_magic and e_lfanew. e_magic contains the WORD 0x5A4D, which is MZ in ASCII. e_lfanew contains PE header's file offset
 * PE header (IMAGE_NT_HEADERS) contains 3 fields
