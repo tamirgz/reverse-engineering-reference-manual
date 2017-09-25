@@ -129,8 +129,12 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
   * p command displays value stored in a named variable
   * set command sets temporary variable: __set &lt;variable name&gt; = &lt;value&gt;__
-    * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
-      + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
+    * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
+      + For example to set the zero flag...
+        ```bash
+        (gdb) $ZF = 6                    #bit position 6 in EFLAGS is zero flag
+        (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
+        ```
       + To figure out the bit position of a flag that you are interested in, check out this image below:
     
 <p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
