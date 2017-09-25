@@ -78,10 +78,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + __x__ to show cross-references
 #
 ## *<p align='center'> GDB Tips </p>*
-* __Changing Default Settings__: 
+* __Changing Default Settings__: to make changes permanent, write it in the .gdbinit file
   * ASLR is turned off by default in GDB. To turn it on: __set disable-randomization off__
   * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: __set disassembly-flavor intel__ 
-  * To make changes permanent, write it in the .gdbinit file
 * __User Inputs__: how to pass user inputs to debugged program as arguments or/and as stdin
   * After starting GDB...
       ```bash
@@ -102,22 +101,37 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
        > end
        (gdb)
        ```
-* maint info sections: shows where sections are mapped to in virtual address space
-* i command displays information on the item specified to the right of it
-  + __i proc mappings__: show mapped address spaces 
-  + __i b__: show all breakpoints 
-  + __i r__: show the values in registers at that point of execution
-* x command displays memory contents at a given address in the specified format
-  + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
-* p command displays value stored in a named variable
-* Catch program events: __catch &lt;event&gt;__
-  * "catch syscall" will set a catchpoint that breaks at every call/return from a system call
-* Set hardware breakpoint in GDB: __hbreak__
-* Set watchpoint (data breakpoint) in GDB: __watch__ break on write, __rwatch__ break on read, __awatch__ break on read/write
-* Set temporary variable: __set &lt;variable name&gt; = &lt;value&gt;__
-  * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
-    + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
-    + To figure out the bit position of a flag that you are interested in, check out this image below:
+* __Ways To Pause Debugger__: software breakpoint, hardware breakpoint, watchpoint, and catchpoint
+  * __Software Breakpoint__:
+    ```bash
+    (gdb) break *0x8048479
+    ```
+  * __Hardware Breakpoint__:
+    ```bash
+    (gdb) hbreak *0x8048479 
+    ```
+  * __Watchpoint__:
+    ```bash
+    (gdb) watch *0x8048560  #break on write
+    (gdb) rwatch *0x8048560 #break on read
+    (gdb) awatch *0x8048560 #break on read/write
+    ```
+  * __Catchpoint__:
+    ```bash
+    (gdb) catch syscall #break at every call/return from a system call
+    ```
+* __Useful Commands__: i, x, p, and set
+  * i command displays information on the item specified to the right of it
+    + __i proc mappings__: show mapped address spaces 
+    + __i b__: show all breakpoints 
+    + __i r__: show the values in registers at that point of execution
+  * x command displays memory contents at a given address in the specified format
+    + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
+  * p command displays value stored in a named variable
+  * set command sets temporary variable: __set &lt;variable name&gt; = &lt;value&gt;__
+    * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
+      + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
+      + To figure out the bit position of a flag that you are interested in, check out this image below:
     
 <p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
 <!-- EFLAGS Register - MIT course 6.858 --!>
