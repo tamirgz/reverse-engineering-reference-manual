@@ -143,31 +143,31 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 #
 ## *<p align='center'> WinDBG Tips </p>*
-* __Notations__: 
+* __WinDBG Notations__: 
   * __?__: evaluates an expression 
   * __??__: evaluates a C++ expression
   * __!__: prefixed to tell debugger that the token is a symbol and not an expression
     * symbol can also be prefixed with module name (e.g. &lt;module&gt;!&lt;symbol&gt;) to save debugger time from searching through all modules for the matching symbol
   * __$__: prefixed to all pseudo-registers (e.g. $ip, $peb) 
   * __@__: prefixed to tell debugger that the token is a register or pseudo-register to save it time from doing symbol lookup
-* WinDBG will break in the kernel, not at the entry point. Ways to find entry point: 
-  * lm (loaded modules) to find the binary's image base. From image base, here are 2 ways to get entry point: 
-    * !dh (dump headers) to read the image's header information to get the entry point
-    * $iment to display just the entry point and not the rest of the header information 
-  * $exentry: a pseudo-register that contains the entry point
+* __Ways To Find Entry Point__: WinDBG will break in the kernel, not at the entry point
+  * Use __lm (loaded modules)__ to find the binary's image base. From image base, here are 2 ways to get entry point: 
+    * __!dh (dump headers)__ to read the image's header information to get the entry point
+    * __$iment__ to display just the entry point and not the rest of the header information 
+  * __$exentry__: a pseudo-register that contains the entry point
 * __Useful General Commands__: 
-  * poi(address): displays data pointed to by address
-  * d[b/w/d/q/yb/a/u/f/D/p] address L&lt;num&gt;: displays memory. The num right next to L is the range specifier that specifies the amount to display
+  * __poi(address)__: displays data pointed to by address
+  * __d[b/w/d/q/yb/a/u/f/D/p] address L&lt;num&gt;__: displays memory. The num right next to L is the range specifier that specifies the amount to display
     * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
-  * e[b|d|D|f|p|q|w] address [values]: edits memory
+  * __e[b|d|D|f|p|q|w] address [values]__: edits memory
     * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
   * __~__: lists all threads. ~Ns switches to the Nth thread
   * __|__: lists current process and all child processes. |Ns switches to the Nth process
-  * sx(e/d/r/i): controls how the debugger handle exceptions or events
-    * sxe: breaks on an event 
-    * sxd: disables break for an event 
-    * sxr: shows output for an event 
-    * sxi: ignores an event 
+  * __sx(e/d/r/i)__: controls how the debugger handle exceptions or events
+    * __sxe__: breaks on an event 
+    * __sxd__: disables break for an event 
+    * __sxr__: shows output for an event 
+    * __sxi__: ignores an event 
 ---
 
 # .instruction-sets
