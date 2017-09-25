@@ -42,9 +42,10 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .general-knowledge
 
 ## *<p align='center'> int 0x7374617274 </p>*
-* A process is a container for execution. A thread is what the OS executes
-* Any function that calls another function is a non-leaf function, and all other functions are leaf functions
-* The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
+* __Threads__: a process is a container for execution. A thread is what the OS executes
+  * A process that doesn't utilizes multi-threading still contains a single thread
+* __Leaf vs Non-leaf Function__: any function that calls another function is a non-leaf function, and all other functions are leaf functions
+* __start Is Not main__: entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 * __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using an unpredictable sequence of bits as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
