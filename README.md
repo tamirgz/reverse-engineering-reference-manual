@@ -625,21 +625,20 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + Generates the keystream used to XOR the data using a pseudorandom number generator 
       * __Blum Blum Shub PRNG__: generic form: Value<sup>i+1</sup> = (Value<sup>i</sup> * Value<sup>i</sup>) % M. M is a constant  that is the product of 2 large primes and an initial V needs to be given. Actual key being xor-ed with the data is the lowest byte of current PRNG value
 * __Other Simple Encoding Scheme__:
-  + ADD, SUB
-  + ROL, ROR: Instructions rotate the bits within a byte right or left
-  + Multibyte: XOR key is multibyte
-  + Chained or loopback: Use content itself as part of the key
+  + __ADD, SUB__
+  + __ROL, ROR__: Instructions rotate the bits within a byte right or left
+  + __Multibyte__: XOR key is multibyte
+  + __Chained or Loopback__: Use content itself as part of the key
     * the original key is applied at one side of the plaintext and the encoded output character is used as the key for the next character
 * __Data Encoding Example (Base64)__:
-
-<p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
-</p>
-
   + Encodes binary data into character set of 64 ASCII characters
   * Most common character set is MIME’s Base64, whose table consists of A-Z, a-z, and 0-9 for the first 62 values and + / for the last 2 values
   * Base64 operates every 3 bytes (24 bits). For every 6 bits, it indexes the table with 64 characters. The encoded value is the character that is indexed with the 6 bits 
   * One padding character may be presented at the end of the encoded string (typically =) since Base64 operates every 3 bytes
   * Easy to develop a custom substitution cipher using Base64 since the only item that needs to be changed is the indexing string table of 64 characters
+
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
+</p>
 
 [Go to .table-of-contents](#table-of-contents)
