@@ -631,7 +631,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next character
 * __Data Encoding Example (Base64)__:
 
-<p align='center'> <img src="http://www.tcpipguide.com/free/diagrams/mimebase64.png"> </p> 
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
+</p>
 
   * Encodes binary data into character set of 64 ASCII characters
   * Most common character set is MIME’s Base64, whose table consists of A-Z, a-z, and 0-9 for the first 62 values and + / for the last 2 values
