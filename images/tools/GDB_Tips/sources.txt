@@ -1,0 +1,1 @@
+eflags.png: https://www.nayuki.io/res/a-fundamental-introduction-to-x86-assembly-programming/eflags-register.svg

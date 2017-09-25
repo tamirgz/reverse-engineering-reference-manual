@@ -138,7 +138,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + To figure out the bit position of a flag that you are interested in:
     
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/tools/GDB_Tips/eflags.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/tools/GDB_Tips/eflags.png" width="200" height="40"> 
 </p>
 
 #
