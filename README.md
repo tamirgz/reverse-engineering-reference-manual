@@ -155,7 +155,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     * __!dh (dump headers)__ to read the image's header information to get the entry point
     * __$iment__ to display just the entry point and not the rest of the header information 
   * __$exentry__: a pseudo-register that contains the entry point
-* __Useful General Commands__: 
+* __Useful Commands__: 
   * __poi(address)__: displays data pointed to by address
   * __d[b/w/d/q/yb/a/u/f/D/p] address L&lt;num&gt;__: displays memory. The num right next to L is the range specifier that specifies the amount to display
     * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
@@ -173,8 +173,8 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .instruction-sets
 
 ## *<p align='center'> x86 </p>*
-* The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register indicates a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
-  + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the PEB structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
+* The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register contains address to a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
+  + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
 * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
 * Calling Conventions (x86): 
   + __CDECL__: arguments pushed on stack from right to left. Caller cleaned up stack after
