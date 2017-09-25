@@ -130,15 +130,16 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * p command displays value stored in a named variable
   * set command sets temporary variable: __set &lt;variable name&gt; = &lt;value&gt;__
     * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
-      + For example to set the zero flag...
-        ```bash
-        (gdb) $ZF = 6                    #bit position 6 in EFLAGS is zero flag
-        (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
-        ```
-      + To figure out the bit position of a flag that you are interested in, check out this image below:
+    + To set the zero flag:
+      ```bash
+      (gdb) $ZF = 6                    #bit position 6 in EFLAGS is zero flag
+      (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
+      ```
+    + To figure out the bit position of a flag that you are interested in:
     
-<p align='center'> <img src="http://css.csail.mit.edu/6.858/2013/readings/i386/fig2-8.gif"> </p> 
-<!-- EFLAGS Register - MIT course 6.858 --!>
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/tools/GDB_Tips/eflags.png"> 
+</p>
 
 #
 ## *<p align='center'> WinDBG Tips </p>*
@@ -366,13 +367,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 ## *<p align='center'> PE Files </p>*
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/PE_Files/pe_header.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/PE_Files/pe_header.png"> 
 </p>
 
 * How a PE file is loaded into memory: 
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/PE_Files/loading_pe_file.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/PE_Files/loading_pe_file.png"> 
 </p>
 
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
