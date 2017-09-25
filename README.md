@@ -628,14 +628,15 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + ADD, SUB
   + ROL, ROR: Instructions rotate the bits within a byte right or left
   + Multibyte: XOR key is multibyte
-  + Chained or loopback: Use content itself as part of the key. EX: the original key is applied at one side of the plaintext, and the encoded output character is used as the key for the next character
+  + Chained or loopback: Use content itself as part of the key
+    * the original key is applied at one side of the plaintext and the encoded output character is used as the key for the next character
 * __Data Encoding Example (Base64)__:
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
 </p>
 
-  * Encodes binary data into character set of 64 ASCII characters
+  + Encodes binary data into character set of 64 ASCII characters
   * Most common character set is MIME’s Base64, whose table consists of A-Z, a-z, and 0-9 for the first 62 values and + / for the last 2 values
   * Base64 operates every 3 bytes (24 bits). For every 6 bits, it indexes the table with 64 characters. The encoded value is the character that is indexed with the 6 bits 
   * One padding character may be presented at the end of the encoded string (typically =) since Base64 operates every 3 bytes
