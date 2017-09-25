@@ -324,13 +324,15 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .file-formats
 
 ## *<p align='center'> ELF Files </p>*
-<p align='center'> <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Elf-layout--en.svg" height="400"> </p>
-<!-- this image is from wikipedia -->
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/ELF_Files/elf_file_format.png" height="400"> 
+</p>
 
 * What's important for linking compared to what's important for execution: 
 
-<p align='center'> <img src="https://lh4.googleusercontent.com/bdHe2FFeRH120O3iEV-Ikqs6UpTDOg-rJ7iAssHIOQEx-6XlPPeLISFYAaVB6-BL5aFL-D9y0wB9dfEz3NcTiroT6L-Q-EzPeXDT6VB1iK-BtPXub3o" height="400"> </p>
-<!-- this image is found on Google -->
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/ELF_Files/loading_elf_file.png" height="400"> 
+</p>
 
 * ELF file header starts at offset 0 and is the roadmap that describes the rest of the file. It marks the ELF type, architecture, execution entry point, and offsets to program headers and section headers
 * Program header table let the system knows how to create the process image. It contains an array of structures, each describing a segment. A segment contains one or more sections
