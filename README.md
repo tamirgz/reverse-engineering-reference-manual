@@ -46,7 +46,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * Any function that calls another function is a non-leaf function, and all other functions are leaf functions
 * The entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
-* __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using OS's internal operations or ambient factors as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
+* __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using an unpredictable sequence of bits as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
   * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
   * __Hardware Breakpoint__: set in special registers called debug registers (DR0 through DR7)
@@ -66,25 +66,24 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 ## *<p align='center'> IDA Tips </p>*
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
-  * If there're functions in the IAT that are not in the function trace, that is considered normal since the function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
+  * It is considered normal for functions to appear in just the IAT and not in the function trace since function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 * When IDA loads a binary, it simulates a mapping of the binary in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
-* __To Show Advanced Toolbar__: View -> Toolbars -> Advanced Mode
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
 * __Useful Shortcuts__: 
-  + u to undefine 
-  + d to turn it to data 
-  + c to turn it to code 
-  + g to bring up the jump to address menu
-  + n to rename
-  + x to show cross-references
+  + __u__ to undefine 
+  + __d__ to turn it to data 
+  + __c__ to turn it to code 
+  + __g__ to bring up the jump to address menu
+  + __n__ to rename
+  + __x__ to show cross-references
 #
 ## *<p align='center'> GDB Tips </p>*
 * __Changing Default Settings__: 
-  * ASLR is turned off by default in GDB. To turn it on: set disable-randomization off
-  * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: set disassembly-flavor intel. 
+  * ASLR is turned off by default in GDB. To turn it on: __set disable-randomization off__
+  * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: __set disassembly-flavor intel__ 
   * To make changes permanent, write it in the .gdbinit file
-* __User Inputs__: way to pass user inputs to debugged program as arguments or/and as stdin
-  * After already starting GDB...
+* __User Inputs__: how to pass user inputs to debugged program as arguments or/and as stdin
+  * After starting GDB...
     * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; __<__ &lt;file&gt;
     * content of file will be passed to debugged program's stdin
 * __Automation__: ways to automate tasks in GDB
@@ -93,10 +92,12 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
     + When reversing, it could be useful to hook on breakpoints by using hook-stop 
     + How to define a hook: 
-      1. __(gdb)__ define hook-?
-      2. __>__ ...commands...
-      3. __>__ end
-      4. __(gdb)__
+       ```
+       __(gdb)__ define hook-?
+       __>__ ...commands...
+       __>__ end
+       __(gdb)__
+       ```
 * maint info sections: shows where sections are mapped to in virtual address space
 * i command displays information on the item specified to the right of it
   + __i proc mappings__: show mapped address spaces 
