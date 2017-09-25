@@ -337,14 +337,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __ELF File Header__ starts at offset 0 and is the roadmap that describes the rest of the file. It marks the ELF type, architecture, execution entry point, and offsets to program headers and section headers
 * __Program Header Table__ let the system knows how to create the process image. It contains an array of structures, each describing a segment. A segment contains one or more sections
 * __Section Header Table__ is not necessary for program execution. It is mainly for linking and debugging purposes. It is an array of __ELF_32Shdr__ or __ELF_64Shdr__ structures (Section Header)
-* Relocatable objects have no program headers since they are not meant to be loaded into memory directly
-* __.got (Global Offset Table) Section__: a table of addresses located in the data section. It allows PIC (Position Independent) code to reference data that were not available during compilation (ex: extern "var"). That data will have a section in .got, which will then be filled in later by the dynamic linker
-* __.plt (Procedure Linkage Table) Section__: contains within the text segment, consisting of external function entries. Each plt entry has a correcponding entry in .got.plt which contains the actual offset to the function
-  * plt entry consists of: 
-    + A jump to an address specified in GOT
-    + argument to tell the resolver which function to resolve (only reach there during function's first invocation)
-    + call the resolver (resides at PLT entry 0)
-* __.got.plt Section__: contains dynamically-linked function entries that can be resolved lazily through lazy binding. This means that it doesn't resolve the address until the function is called
+  * __.got (Global Offset Table) Section__: a table of addresses located in the data section. It allows PIC (Position Independent) code to reference data that were not available during compilation (ex: extern "var"). That data will have a section in .got, which will then be filled in later by the dynamic linker
+  * __.plt (Procedure Linkage Table) Section__: contains within the text segment, consisting of external function entries. Each plt entry has a correcponding entry in .got.plt which contains the actual offset to the function
+    * plt entry consists of: 
+      + A jump to an address specified in GOT
+      + argument to tell the resolver which function to resolve (only reach there during function's first invocation)
+      + call the resolver (resides at PLT entry 0)
+  * __.got.plt Section__: contains dynamically-linked function entries that can be resolved lazily through lazy binding. This means that it doesn't resolve the address until the function is called
 * __Useful Compilation Options for GCC__:
   * __-g__: the compiled binary will contain extra sections with names that start with .debug_. The most important one of the .debug section is .debug_info. It tells you the path of the source file, path of the compilation directory, version of C used, and the line numbers where variables are declared in source code. It will also contain the parameter names for local functions
   * __-s__: the compiled binary will not contain symbol table and relocation information. This means that the .symtab will be stripped away, which contains references to variable and local function names
@@ -354,7 +353,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __nm command__ to list all symbols in the binary from .symtab
   * Stripped binary == no .symtab symbol table
   * .dynsym symbol table cannot be stripped since it is needed for runtime, so imported library functions' symbols remain in a stripped binary. But if a binary is compiled only with statically-linked libraries, it will contain no symbol table at all if stripped
-  * With non-stripped, gdb can identify local function names and knows the bounds of all functions so we can do this: disas "function name"
+  * With non-stripped, gdb can identify local function names and knows the bounds of all functions so we can do this: disas &lt;function name&gt;
   * With stripped binary, gdb can’t even identify main. We can still try to identify main from the entry point using the command: __info file__. Also, can’t use disas since gdb does not know the bounds of a functions so it does not know which address range should be disassembled. Solution: use examine(x) command on address pointed by pc register like: __x/14i $pc__
 * __Useful Tools To Analyze ELF File__: 
   + display section headers: __readelf -S &lt;file&gt;__
