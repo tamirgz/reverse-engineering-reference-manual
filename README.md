@@ -84,11 +84,15 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * To make changes permanent, write it in the .gdbinit file
 * __User Inputs__: how to pass user inputs to debugged program as arguments or/and as stdin
   * After starting GDB...
-    * (gdb) run &lt;argument 1&gt; &lt;argument 2&gt; __<__ &lt;file&gt;
+      ```bash
+      (gdb) run argument1 argument2 < file
+      ```
     * content of file will be passed to debugged program's stdin
 * __Automation__: ways to automate tasks in GDB
   * __-x Option__: puts the list of commands you want GDB to run when gdb starts in a file. Run GDB with the -x option like this:
-    * gdb -x &lt;command file&gt; &lt;program to debug&gt;
+      ```bash
+      gdb -x command_file program_to_debug
+      ```
   * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
     + When reversing, it could be useful to hook on breakpoints by using hook-stop 
     + How to define a hook: 
@@ -104,13 +108,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + __i b__: show all breakpoints 
   + __i r__: show the values in registers at that point of execution
 * x command displays memory contents at a given address in the specified format
-  + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: x/14i $pc
+  + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
 * p command displays value stored in a named variable
-* Catch program events: catch &lt;event&gt;
+* Catch program events: __catch &lt;event&gt;__
   * "catch syscall" will set a catchpoint that breaks at every call/return from a system call
-* Set hardware breakpoint in GDB: hbreak 
-* Set watchpoint (data breakpoint) in GDB: __watch__ only break on write, __rwatch__ break on read, __awatch__ break on read/write
-* Set temporary variable: set &lt;variable name&gt; = &lt;value&gt;
+* Set hardware breakpoint in GDB: __hbreak__
+* Set watchpoint (data breakpoint) in GDB: __watch__ break on write, __rwatch__ break on read, __awatch__ break on read/write
+* Set temporary variable: __set &lt;variable name&gt; = &lt;value&gt;__
   * set command can be used to change the flags in EFLAGS. You just need to know the bit position of the flag you wanted to change 
     + For example to set the zero flag, first set a temporary variable: set $ZF = 6 (bit position 6 in EFLAGS is zero flag). Use that variable to set the zero flag bit: set $eflags |= (1 << $ZF)
     + To figure out the bit position of a flag that you are interested in, check out this image below:
