@@ -92,11 +92,11 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __Hooks__: user-defined command. When command ? is ran, user-defined command 'hook-?' will be executed (if it exists)
     + When reversing, it could be useful to hook on breakpoints by using hook-stop 
     + How to define a hook: 
-       ```
-       __(gdb)__ define hook-?
-       __>__ ...commands...
-       __>__ end
-       __(gdb)__
+       ```bash
+       (gdb) define hook-?
+       > ...commands...
+       > end
+       (gdb)
        ```
 * maint info sections: shows where sections are mapped to in virtual address space
 * i command displays information on the item specified to the right of it
