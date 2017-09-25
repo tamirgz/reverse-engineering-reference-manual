@@ -83,7 +83,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: __set disassembly-flavor intel__ 
 * __User Inputs__: how to pass user inputs to debugged program as arguments or/and as stdin
   * After starting GDB...
-      ```bash
+      ```gdb
       (gdb) run argument1 argument2 < file
       ```
     * content of file will be passed to debugged program's stdin
