@@ -636,6 +636,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * Base64 operates every 3 bytes (24 bits). For every 6 bits, it indexes the table with 64 characters. The encoded value is the character that is indexed with the 6 bits 
   * One padding character may be presented at the end of the encoded string (typically =) since Base64 operates every 3 bytes
   * Easy to develop a custom substitution cipher using Base64 since the only item that needs to be changed is the indexing string table of 64 characters
+  * Example:
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
