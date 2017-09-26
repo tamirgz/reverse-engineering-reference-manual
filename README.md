@@ -345,7 +345,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
       + argument to tell the resolver which function to resolve (only reach there during function's first invocation)
       + call the resolver (resides at PLT entry 0)
   * __.got.plt Section__: contains dynamically-linked function entries that can be resolved lazily through lazy binding. This means that it doesn't resolve the address until the function is called
-* __Useful Compilation Options for GCC__:
+* __Useful Compilation Options To Know For GCC__:
   * __-g__: the compiled binary will contain extra sections with names that start with .debug_. The most important one of the .debug section is .debug_info. It tells you the path of the source file, path of the compilation directory, version of C used, and the line numbers where variables are declared in source code. It will also contain the parameter names for local functions
   * __-s__: the compiled binary will not contain symbol table and relocation information. This means that the .symtab will be stripped away, which contains references to variable and local function names
   * __-O3__: the second highest optimization level. The optimizations that it applied will actually result in bigger overall file size than the compiled version of the unoptimized binary
@@ -382,9 +382,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   1. VA - image_base = RVA. RVA (Relative Virtual Address) is virtual address relative to the image base (HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address. As a result, address obtained from disassembler might not match the address obtained from a debugger
   2. RVA - section_base_RVA = offset from base of the section
   3. offset_from_section_base + section_file_offset = file offset on disk  
-* PE file starts with a DOS header. The 2 fields of interest in the DOS header are e_magic and e_lfanew. e_magic contains the magic number 0x5A4D (MZ). e_lfanew contains PE header's file offset
-  * e_lfanew field is necessary since between DOS Header and PE Header is the DOS Stub, which for backward compatibility prints "This program cannot be run in DOS mode" if a 32-bit PE file is ran in a 16-bit DOS environment
-* PE header (IMAGE_NT_HEADERS) contains 3 fields
+* __DOS Header__: starts at offset 0. The 2 fields of interest in the DOS header are __e_magic__ and __e_lfanew__. __e_magic__ contains the magic number 0x5A4D (MZ). __e_lfanew__ contains PE header's file offset
+  * __e_lfanew__ field is necessary since between DOS Header and PE Header is the DOS Stub, which for backward compatibility prints "This program cannot be run in DOS mode" if a 32-bit PE file is ran in a 16-bit DOS environment
+* __PE Header (IMAGE_NT_HEADERS)__ contains 3 fields
   * __Signature__: always 0x00004550 ("PE00")
   * __IMAGE_FILE_HEADER (COFF Header)__: contains basic information on the file (e.g. target CPU, number of sections)
   * __IMAGE_OPTIONAL_HEADER32 (PE Optional Header)__: contains most of the meaningful information. Can be further broken down into 3 parts:
@@ -398,7 +398,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     * __Data Directory (IMAGE_DATA_DIRECTORY)__: array of IMAGE_DATA_DIRECTORY structures that contains RVAs and sizes of many important data structures (e.g. imports, exports, base relocations). Locations of those data structures reside in sections. Data structures allows loader to quickly locate an important section. Here are the notable IMAGE_DATA_DIRECTORY entries:
       * __Program Exception Data__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_EXCEPTION. It is an exception table that contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. Each IMAGE_RUNTIME_FUNCTION_ENTRY contains the address to an exception handler
       * __Base Relocations__: pointed by IMAGE_DATA_DIRECTORY's entry IMAGE_DIRECTORY_ENTRY_BASERELOC. Refers to as the .reloc section. Contains every location that needs to be rebased if the executable doesn't load at the preferred load address
-* Section table (IMAGE_SECTION_HEADERs) is right after PE Header. Each IMAGE_SECTION_HEADER contains information on a section, such as a section's virtual address or its pointer to data on disk 
+* __Section Header Table (IMAGE_SECTION_HEADERs)__ is right after PE Header. Each IMAGE_SECTION_HEADER contains information on a section, such as a section's virtual address or its pointer to data on disk 
   * 2 sections can be merged into a single one if they have similar attributes
     * .idata is often merged into .rdata in release-mode executable 
 * __Overlay__: data appended to end of a PE File. It is not loaded into memory
@@ -615,7 +615,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   
 #
 ## *<p align='center'> Data Encoding </p>*
-* All forms of content modification for the purpose of hiding intent
+* __Definition__: all forms of content modification for the purpose of hiding intent
 * __Caesar Cipher__: formed by shifting the letters of alphabet #’s characters to the left or right
 * __Single-Byte XOR Encoding__: modifies each byte of plaintext by performing a logical XOR operation with a static byte value
   * __Identifying XOR Loop__: looks for a small loop that contains the XOR function (where it is xor-ing a register and a constant or a register with another register)
