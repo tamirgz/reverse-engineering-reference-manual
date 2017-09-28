@@ -249,7 +249,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * Control register is the current program status register (CPSR), also known as application program status register (APSR), which is basically an extended EFLAGS register in x86
 * __Load/Store Instructions__: only load/store instructions can access memory. All other instructions operate on registers 
   + load/store instructions: LDR/STR, LDM/STM, and PUSH/POP
+
   __LDR/STR__
+
   * There are 4 forms of LDR/STR instructions 
     + LDR/STR Ra, [Rb]. LDR loads the data at Rb to Ra. STR stores Ra to the location pointed to by Rb 
     + LDR/STR Ra, [Rb, imm]
