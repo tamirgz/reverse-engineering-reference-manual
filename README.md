@@ -265,7 +265,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
       * Form: LDR Rd, [Rn, offset]!
     + __Post-indexed__: base register is used as the address to reference from and then updated with the offset 
       * Form: LDR Rd, [Rn], offset
+
   __LDM/STM__
+
   * LDM/STM loads/stores multiple words (32-bits), starting from a base address 
     * LDM Form: LDM<-mode-> Rb [!], {Registers}. LDM means load the data starting from Rb and loads it into Registers
     * STM Form: STM<-mode-> Rb [!], {Registers}. STM means store the data in Registers into location starting from Rb
@@ -277,7 +279,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + Full ascending: STMFA (STMIB), LDMFA (LDMDA)
     + Empty descending: STMED (STMDA), LDMED (LDMIB)
     + Empty ascending: STMEA (STMIA), LDMEA (LDMDB)
+
   __PUSH/POP__
+
   * PUSH/POP's form: PUSH/POP {register(s)}
   * PUSH/POP and STMFD/LDMFD are functionally the same, but PUSH/POP is used as prologue and epilogue in Thumb state while STMFD/LDMFD is used as prologue and epilogue in ARM state. 
 * __Instructions For Function Invocation__: B, BX, BL, and BLX
