@@ -174,25 +174,25 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .instruction-sets
 
 ## *<p align='center'> x86 </p>*
-* The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register contains address to a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
-  + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
-* Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
-* Calling Conventions (x86): 
-  + __CDECL__: arguments pushed on stack from right to left. Caller cleaned up stack after
-  + __STDCALL__: arguments pushed on stack from right to left. Callee cleaned up stack after
-  + __FASTCALL__: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
-* The call instruction contains a 32-bit signed relative displacement that is added to the address immediately following the call instruction to calculate the call destination
-* __Jump Instruction__: 
-  * __Short (Near) Jump__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
-  * __Long (Near) Jump__: uses larger offset value but also uses relative addressing from instruction pointer
-  * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
-* x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
-* The one byte NOP instruction is an alias mnemonic for the XCHG EAX, EAX instruction, although their opcodes are different
-* An opcode can have multiple mnemonics associated with it and a mnemonic can have multiple opcodes associated with it
+* __Registers__: temporary storage locations that is built into the CPU. Aside from the General Purpose Registers (GPRs), most other registers are dedicated to a specific purpose
+  * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register contains address to a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
+    + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
+  * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
+* __How EIP Can Be Updated__: CALL, JMP, or RET
+  * __Calling Conventions (x86)__: how function call is set up
+    + __CDECL__: arguments pushed on stack from right to left. Caller cleaned up stack after
+    + __STDCALL__: arguments pushed on stack from right to left. Callee cleaned up stack after
+    + __FASTCALL__: first two arguments passed in ECX and EDX. If there are more, they are pushed onto the stack
+    * The call instruction contains a 32-bit signed relative displacement that is added to the address immediately following the call instruction to calculate the call destination
+  * __Jump Instruction__: 
+    * __Short (Near) Jump__: like call instruction uses relative addressing, but with only an 8-bit signed relative displacement
+    * __Long (Near) Jump__: uses larger offset value but also uses relative addressing from instruction pointer
+    * __Far Jump__: uses absolute addresssing to jump to a location in a different segment. Needs to specify the segment to jump to and also the offsets from that segment 
+    * x86 instruction set does not provide EIP-relative data access the way it does for control-flow instructions. Thus to do EIP-relative data access, a general-purpose register must first be loaded with EIP
+* __Assembly to Machine Code Is Not One-To-One__: an opcode can have multiple mnemonics associated with it and a mnemonic can have multiple opcodes associated with it
   * __Example 1__: 0x75 is both the opcode for JNZ and JNE
   * __Example 2__: 0xb142 and 0xc6c142 both corresponds to the instruction MOV CL, 66
-* There is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
-* EIP can only be changed through CALL, JMP, or RET
+* __Lost Of Type Information__: there is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
 * __Floating Point Arithmetic__: Floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
   + FLD instruction is for loading values onto the FPU Register Stack
   + FST instruction is for storing values from ST0 into memory 
