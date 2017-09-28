@@ -235,14 +235,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * Supports instruction pointer-relative addressing on data. Unlike x86, referencing data will not use absolute address but rather an offset from RIP
 #
 ## *<p align='center'> ARM </p>*
-__ARM Version__:
+* __ARM Version__:
   * ARMv7 uses 3 profiles (Application, Real-Time, Microcontroller) and model name (Cortex). For example, ARMv7 Cortex-M is meant for microcontroller and support Thumb-2 execution only 
   * Thumb-1 is used in ARMv6 and earlier. Its instructions are always 2 bytes in size
   * Thumb-2 is used in ARMv7. Its instructions can be either 2 bytes or 4 bytes in size. 4 bytes Thumb instruction has a .W suffix, otherwise it generates a 2 byte Thumb instruction
   * Native ARM instructions are always 4 bytes in size
 * __Privileges Separation__ are defined by 8 modes. In comparison to x86, User (USR) mode is like ring3 and Supervisor (SVC) mode is like ring0
-* __Registers__:
-  * There are 16 32-bit general-purpose registers (R0 - R15), but only the first 12 registers are for general purpose usage
+* __Registers__: there are 16 32-bit general-purpose registers (R0 - R15), but only the first 12 registers are for general purpose usage
     + R0 holds the return value from function call
     + R13 is the stack pointer (SP)
     + R14 is the link register (LR), which holds return address for function call
@@ -286,7 +285,7 @@ __ARM Version__:
   * Thumb instruction cannot be conditionally executed, with the exception of B instruction, without the IT instruction. 
     + IT (If-then)'s syntax: ITxyz cc. cc is the conditional suffix for the 1st instruction after IT. xyz are for the 2nd, 3rd, and 4th instructions after IT. It can be either T or E. T means that the condition must match cc for it to be executed. E means that condition must be the opposite of cc for it to be executed
   * For arithmetic operations, the "S" suffix will update conditional flags. Whereas, comparison instructions (CBZ, CMP, TST, CMN, and TEQ) automatically update the flags
-__Importance of Barrel Shifter__: since instructions can only be 2 or 4 bytes in size, it's not possible to directly use a 32-bit constant as an operand. As a result, barrel shifter can be used to transform the immediate into a larger value 
+* __Importance of Barrel Shifter__: since instructions can only be 2 or 4 bytes in size, it's not possible to directly use a 32-bit constant as an operand. As a result, barrel shifter can be used to transform the immediate into a larger value 
 ---
 
 # .languages
