@@ -214,23 +214,25 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * __CMOVcc__: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
 #
 ## *<p align='center'> x86-64 </p>*
-* All addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
-* 16 general-purpose registers each 64-bits (RAX, RCX, RDX, RBX, RSP, RBP, RSI, RDI, R8, R9, R10, R11, R12, R13, R14, R15)
-  + DWORD (32-bit) version can be accessed with a D suffix, WORD (16-bit) with a W suffix, BYTE (8-bit) with a B suffix for registers R8 to R15
-  + For registers with alternate names like x86 (e.g. RAX, RCX), size access for register is same as x86. For example, 32-bit version of RAX is EAX and the 16-bit version is DX 
-* 16 XMM registers, each 128-bit long. XMM registers are for SIMD instruction set, which is an extension to the x86-64 architecture. SIMD is for performing the same instruction on multiple data at once and/or for floating point operations 
-  + Floating point operations were once done using stack-based instruction set that accesses the FPU Register Stack. But now, it can be done using SIMD instruction set 
-* Supports instruction pointer-relative addressing on data. Unlike x86, referencing data will not use absolute address but rather an offset from RIP
-* Calling conventions: Parameters are passed to registers. Additional one are stored on stack
-  + Windows: first 4 parameters are placed in RCX, RDX, R8, and R9
-  + Linux: first 6 parameters are placed in RDI, RSI, RDX, RCX, R8, and R9
-* In 32-bit code, stack space can be allocated and unallocated in middle of the function using push or pop. However, in 64-bit code, functions cannot allocate any space in the middle of the function
+* __Canonical Form__: all addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
+* __Registers__: aside from the old x86 registers being extended from 32-bits to 64-bits, extra General Purpose Registers have also been added (e.g. r8 to r15)
+  * 16 general-purpose registers each 64-bits (RAX, RCX, RDX, RBX, RSP, RBP, RSI, RDI, R8, R9, R10, R11, R12, R13, R14, R15)
+    + DWORD (32-bit) version can be accessed with a D suffix, WORD (16-bit) with a W suffix, BYTE (8-bit) with a B suffix for registers R8 to R15
+    + For registers with alternate names like x86 (e.g. RAX, RCX), size access for register is same as x86. For example, 32-bit version of RAX is EAX and the 16-bit version is DX 
+    * RBP is treated like another GPR. As a result, local variables are referenced through RSP
+  * 16 XMM registers, each 128-bit long. XMM registers are for SIMD instruction set, which is an extension to the x86-64 architecture. SIMD is for performing the same instruction on multiple data at once and/or for floating point operations 
+    + Floating point operations were once done using stack-based instruction set that accesses the FPU Register Stack. But now, it can be done using SIMD instruction set 
+* __Calling Conventions__: Parameters are passed to registers instead of the stack. Although additional ones will still be stored on stack
+  + __Windows__: first 4 parameters are placed in RCX, RDX, R8, and R9
+  + __Linux__: first 6 parameters are placed in RDI, RSI, RDX, RCX, R8, and R9
 * Non-leaf functions are sometimes called frame functions because they require a stack frame. Since stack space on x86-64 cannot change in the middle of a function,  all nonleaf functions are required to allocate 0x20 bytes of stack space when they call a function. This allows the function being called to save the register parameters (RCX, RDX, R8, and R9) in that space. If a function has any local stack variables, it will allocate space for them in addition to the 0x20 bytes
 * __Exception Handling__:  
   * __Windows__: on x86, Structured Exception Handling (SEH) is stored on the stack, which makes it vulnerable to buffer overflow attacks. SEH on x64 is implemented differently. SEH is table-based and no longer stored on the stack. It is instead stored in the PE Header
   * __Linux__: for both x86 and x64, exception handling can be achieved through signals 
-* Easier in 64-bit code to differentiate between pointers and data values. The most common size for storing integers is 32 bits and pointers are always 64 bits
-* RBP is treated like another GPR. As a result, local variables are referenced through RSP
+* __Other Notable Differences From x86__: 
+  * Easier in 64-bit code to differentiate between pointers and data values. The most common size for storing integers is 32 bits and pointers are always 64 bits
+  * In 32-bit code, stack space can be allocated and unallocated in middle of the function using push or pop. However, in 64-bit code, functions cannot allocate any space in the middle of the function
+  * Supports instruction pointer-relative addressing on data. Unlike x86, referencing data will not use absolute address but rather an offset from RIP
 #
 ## *<p align='center'> ARM </p>*
 * ARMv7 uses 3 profiles (Application, Real-Time, Microcontroller) and model name (Cortex). For example, ARMv7 Cortex-M is meant for microcontroller and support Thumb-2 execution only 
