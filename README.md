@@ -588,7 +588,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * In C, function using the "constructor" attribute will execute before main()
 #
 ## *<p align='center'> Anti-Emulation </p>*
-* Using emulation allows reverse engineer to bypass many anti-debugging techniques
+* __Definition__: using emulation allows reverse engineer to bypass many anti-debugging techniques
 * __Detection through Syscall__: invoke various uncommon syscalls and check if it contains expected value. Since there are OS features not properly implemented, it means that the process is running under emulation
 * __CPU Inconsistencies Detection__: try executing privileged instructions in user mode. If it succeeded, then it is under emulation
   + WRMSR is a privileged instruction (Ring 0) that is used to write values to a MSR register. Values in MSR registers are very important. For example, the SYSCALL instruction invokes the system-call handler by loading RIP from IA32_LSTAR MSR. As a result, WRMSR instruction cannot be executed in user-mode  
@@ -600,7 +600,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Stolen Bytes__: 
 #
 ## *<p align='center'> Bonus </p>*
-* "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
+* __Quote To Remember__: "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
   * [Repsych: Psychological Warfare in Reverse Engineering](https://www.youtube.com/watch?v=HlUe0TUHOIc)
   * [REpsych's Github Repo](https://github.com/xoreaxeaxeax/REpsych)
 ---
