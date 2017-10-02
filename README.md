@@ -1,10 +1,10 @@
-# <p align='center'> Reverse Engineering Cheatsheet </p>
+# <p align='center'> RERM: Reverse Engineering Reference Manual </p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/heading/Introduction.PNG"> 
 </p>
 
-__NOTE__: Here is a collage of reverse engineering topics that I find interesting. Enjoy~ 
+__NOTE__: Here is a collage of reverse engineering topics that I find interesting
 
 # .table-of-contents
 
