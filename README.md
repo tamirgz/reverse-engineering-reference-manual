@@ -75,13 +75,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_instr.PNG"> 
-</p>
+</p> \
 
   + IDA displaying those 4 instructions in hex. Note that the virtual addresses are the same
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
-</p>
+</p>\
 
   + Actual locations of those 4 instructions on disk
 
