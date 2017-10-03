@@ -1,7 +1,7 @@
-# <p align='center'> RERM: Reverse Engineering Field Manual </p>
+# <p align='center'> RERM: Reverse Engineering Reference Manual </p>
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-field-manual/blob/master/images/heading/Introduction.PNG"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/heading/Introduction.PNG"> 
 </p>
 
 __NOTE__: Here is a collage of reverse engineering topics that I find interesting
@@ -139,7 +139,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     + To figure out the bit position of a flag that you are interested in:
     
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120"> 
 </p>
 
 #
@@ -333,13 +333,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 ## *<p align='center'> ELF Files </p>*
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/ELF_Files/elf_file_format.png" height="400"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/ELF_Files/elf_file_format.png" height="400"> 
 </p>
 
 * What's important for linking compared to what's important for execution: 
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/ELF_Files/loading_elf_file.png" height="400"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/ELF_Files/loading_elf_file.png" height="400"> 
 </p>
 
 * __ELF File Header__ starts at offset 0 and is the roadmap that describes the rest of the file. It marks the ELF type, architecture, execution entry point, and offsets to program headers and section headers
@@ -376,13 +376,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 ## *<p align='center'> PE Files </p>*
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/PE_Files/pe_header.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/PE_Files/pe_header.png"> 
 </p>
 
 * How a PE file is loaded into memory: 
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/file-formats/PE_Files/loading_pe_file.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/PE_Files/loading_pe_file.png"> 
 </p>
 
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
@@ -645,7 +645,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * Example:
 
 <p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-journal/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
 </p>
 
 [Go to .table-of-contents](#table-of-contents)
