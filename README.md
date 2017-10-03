@@ -74,7 +74,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_instr.PNG"> 
-<p align='center' style="font-size:75%;">IDA displaying 4 instructions along with their respective virtual addresses</p>
+<span align='center' style="font-weight:bold;">IDA displaying 4 instructions along with their respective virtual addresses</span>
 </div>
 
 <div align='center'> 
