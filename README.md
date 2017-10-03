@@ -24,9 +24,6 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * [.file-formats](#file-formats)
   + [ELF Files](#-elf-files-)
   * [PE Files](#-pe-files-)
-* [.operating-system-concepts](#operating-system-concepts)
-  + [Windows OS](#-windows-os-)
-  + [Interrupts](#-interrupts-)
 * [.anti-analysis](#anti-analysis)
   + [Obfuscation](#-obfuscation-)
   + [Anti-Disassembly](#-anti-disassembly-)
@@ -431,71 +428,6 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * 2 sections can be merged into a single one if they have similar attributes
     * .idata is often merged into .rdata in release-mode executable 
 * __Overlay__: data appended to end of a PE File. It is not loaded into memory
----
-
-# .operating-system-concepts
-
-## *<p align='center'> Windows OS </p>*
-* __Windows Debug Symbol Information__: isn't stored inside the executable like Linux's ELF executable, where debug symbol information has its own section in the executable. Instead, it is stored in the program database (PDB) file
-  + To load the PDB File along with the executable (assuming they are in the same directory): File -> Load File -> PDB File
-* __Device Driver__: allows third-party developers to run code in the Windows kernel. Located in the kernel. Device drivers create/destroy device objects. User space application interacts with the driver by sending requests to a device object
-* __SEH (Structured Exception Handler)__: 32-bit Windows' mechanism for handling exceptions
-  * SEH chain is a list of exception handlers within a thread 
-  * Each handler can choose to handle the exception or pass to the next one. If the exception made it to the last handler, it is an unhandled exception
-  * FS segment register points to the Thread Environment Block (TEB). The first element of TEB is a pointer to the SEH chain
-  * SEH chains is a linked list of data structures called EXCEPTION_REGISTRATION records 
-  * struct _EXCEPTION_REGISTRATION {
-  DWORD prev;
-  DWORD handler;
-  };
-  * To add our own exception handler:
-    + push handler
-    + push fs:[0]
-    + mov fs:[0], esp
-* __Handles__: like pointers in that they refer to an object. It is an abstraction that hides a real memory address from the API user, allowing the system to reorganize physical memory transparently to the program
-* __Windows Registry (hierarchical database of information)__: used to store OS and program configuration information. Nearly all Windows configuration information is stored in the registry, including networking, driver, startup, user account, and other information 
-  + The registry is divided into five top-level sections called root keys
-  + __HKEY_LOCAL_MACHINE(HKLM)__: stores settings that are global to the local machine 
-  + __HKEY_CURRENT_USER(HKCU)__: stores settings specific to the current user
-* __DLL vs EXE__: DLL files look almost exactly like EXE files. For example, it also uses PE file format. The only real difference is that DLL has more exports than imports
-  + Main DLL function is DllMain. It has no label and is not an export in the DLL but is specified in the PE header as the file's entry point
-* __Thread Context__: before Windows OS switches between threads, all values in the CPU are saved in a structure called the thread context. The OS then loads the thread context of the new thread into the CPU and executes the new thread
-* __Pool Memory__: memory allocated by kernel-mode code
-  + __Paged Pool__: memory that can be paged out
-  + __Non-Paged Pool__: memory that can never be paged out
-* __Memory Descriptor Lists (MDL)__: a data structure that describes the mapping between a process's virtual address to a set of physical pages. Each MDL entry describes one contiguous buffer that can be locked (can't be reused by another process) and mapped to a process's virtual address space 
-* __Windows API's Invocation Pipeline__: User Code -> Kernel32 with functions that end with A (e.g. CreateFileA) -> Kernel32 with functions that end with W (e.g. CreateFileW) -> Ntdll -> Kernel(ntoskrnl.exe, ...)
-  * __Kernal32dll__: interface that provides APIs to interact with Windows OS
-    + There are two versions of Kernel32 API calls if the call takes in a string: One that ends in A and one that ends in W. A for ASCII and W for wide string
-    + In Kernel32 one has the option to call the API with ASCII or wide string. But if one calls it with ASCII, Windows will internally convert it to wide string and call the wide string version of the API
-  * __Ntdll__: interface to kernel. Lowest userland API
-    + Native applications are applications that issue calls directly to the Natice API(Ntdll)
-  + Windows API uses stdcall for its calling convention
-#
-## *<p align='center'> Interrupts </p>*
-* __Definition__: interrupt is the communication between the kernel and CPU. When an interrupt or exception occurs, the CPU uses the interrupt number as index into the Interrupt Descriptor Table (IDT), where each entry is a 8 byte KIDTENTRY structure. Each KIDTENTRY structure contains the address of a specific interrupt handler. Base of IDT is stored in the IDT register, which can be accessed through the SIDT instruction
-  + The kernel can also notify the running process that an interrupt event has been fired by sending a signal to the process. For example, when a breakpoint is hit (INT3), the process will receive the SIGTRAP signal. The signal can then be handled in user code by user-defined signal handler 
-* __Interrupt Requests Level (IRQL)__: an interrupt is associated with an IRQL, which indicates its priority
-  + IRQL is per-processor. The local interrupt controller (LAPIC) in the processor controls task priority register (TPR) and read-only processor priority register (PPR). Code running in certain PPR level will only fire interrupts that have priority higher than PPR
-* __System Calls__ can be implemented using software interrupts, such as __SYSENTER__ on x86 or __SYSCALL__ on x86-64
-  + On pre-Pentinum 2 processors, APIs call will eventually trigger int 0x2e, where index 0x2e in the IDT is the system call dispatcher
-  + SYSCALL invokes system call dispatcher (KiSystemCall64) by loading RIP from IA32_LSTAR MSR (Model Specific Register) 
-  + SYSENTER invokes system call dispatcher (KiFastCallEntry) by loading EIP from MSR 0x176
-  * List of available system calls is stored in KiServiceTable (which can be found inside the KeServiceDescriptorTable structure) and every system call has an unique number that indexes into it
-  + System call dispatcher will use the value in EAX to index KiServiceTable for the system call, dispatch the system call, and return to user code
-* __Hardware Interrupts__ are generated by hardware devices/peripherals (asynchronous: can happen at any time)
-* __Software Interrupts__ (exceptions) are generated by the executing code and can be categorized as either faults or traps (synchronous)
-  + __fault__ is a correctable exception such as page fault. After the exception is handled, execution returns to the instruction that causes the fault
-  + __trap__ is an exception caused by executing special instruction, such as int 0x80. After the trap is handled, execution returns to the instruction after the the trap
-    * int 0x80 is used to make system call. Parameters are passed through GPRs 
-      + syscall number: eax 
-      + 1st parameter: ebx 
-      + 2nd parameter: ecx
-      + 3rd parameter: edx
-      + 4th parameter: esi 
-      + 5th parameter: edi 
-      + 6th parameter: ebp 
-      + int 0x80 is an old way to make syscall on x86. A more modern implementation is the SYSENTER instruction
 ---
 
 # .anti-analysis
