@@ -50,6 +50,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/int_0x7374617274/start_v_main.PNG"> 
+<p align='center'><sub><strong>32-bit ELF binary compiled by gcc</strong></sub></p>
 </p>
 
 * __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using a seemingly unpredictable sequence of bits as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
