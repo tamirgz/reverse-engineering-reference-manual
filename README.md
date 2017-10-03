@@ -479,7 +479,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 # .anti-analysis
 
 ## *<p align='center'> Obfuscation </p>*
-* __Definition__: Program transformation techniques that output a program that is semantically equivalent to the original program but is more difficult to analyze
+* __Definition__: Program transformation techniques that output a program that is semantically equivalent (execute the same) to the original program but is more difficult to analyze
 * __Original Entry Point (OEP) Hiding__: OEP can be hidden through packing. A packer can compress or encrypt a whole executable and inject an unpacking stub that unpack (decompress or decrypt) the executable during runtime. This will hide the OEP and also the original executable (such as the text, data, rsrc sections) from static analysis
   * __Tail Jump__: an instruction that jumps from the unpacking stub to OEP after the unpacking stub finishes
   * __Signs Of Packer Usage__: 
