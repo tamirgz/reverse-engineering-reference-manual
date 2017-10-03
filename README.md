@@ -73,8 +73,8 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Addresses Shown In IDA__: When IDA loads a binary, it simulates a mapping of the file in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
-<p align='center'><font size="3">IDA displaying 4 instructions along with their respective virtual addresses</font></p>
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_instr.PNG"> 
+<p align='center' style="font-size:75%;">IDA displaying 4 instructions along with their respective virtual addresses</p>
 </div>
 
 <div align='center'> 
