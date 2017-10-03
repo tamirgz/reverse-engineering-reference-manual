@@ -71,19 +71,20 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 ## *<p align='center'> IDA Tips </p>*
 * __Addresses Shown In IDA__: When IDA loads a binary, it simulates a mapping of the file in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
-  * IDA displaying 4 instructions along with their respective virtual addresses
-
-![](images/ida-tips/ida_va_instr.PNG)
-
-  + IDA displaying those 4 instructions in hex. Note that the virtual addresses are the same
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
-</p>\
-<p align='center'>Actual locations of those 4 instructions on disk</p>
+IDA displaying 4 instructions along with their respective virtual addresses
+</p>
+
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
+IDA displaying those 4 instructions in hex. Note that the virtual addresses are the same
+</p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/hex_on_disk.PNG"> 
+Actual locations of those 4 instructions on disk
 </p>
 
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
