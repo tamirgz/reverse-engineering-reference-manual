@@ -74,12 +74,12 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
-IDA displaying 4 instructions along with their respective virtual addresses
+<font size="2">IDA displaying 4 instructions along with their respective virtual addresses</font>
 </p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
-IDA displaying those 4 instructions in hex. Note that the virtual addresses are the same
+<p><font size="3">IDA displaying those 4 instructions in hex. Note that the virtual addresses are the same</font></p>
 </p>
 
 <p align='center'> 
