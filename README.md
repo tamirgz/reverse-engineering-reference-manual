@@ -46,7 +46,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/int_0x7374617274/start_v_main.PNG"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/start_v_main.PNG"> 
 <p align='center'><sub><strong>32-bit ELF binary compiled by gcc</strong></sub></p>
 </div>
 
@@ -71,17 +71,17 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Addresses Shown In IDA__: When IDA loads a binary, it simulates a mapping of the file in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_instr.PNG"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ida_va_instr.PNG"> 
 <p align='center'><sub><strong>IDA displaying 4 instructions along with their respective virtual addresses</strong></sub></p>
 </div>
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/ida_va_hex.PNG"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ida_va_hex.PNG"> 
 <p align='center'><sub><strong>IDA displaying those 4 instructions in hex. Note that the virtual addresses are the same</strong></sub></p>
 </div>
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/ida-tips/hex_on_disk.PNG"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/hex_on_disk.PNG"> 
 <p align='center'><sub><strong>Actual locations of those 4 instructions on disk</strong></sub></p>
 </div>
 
