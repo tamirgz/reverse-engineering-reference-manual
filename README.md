@@ -216,6 +216,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + FLD instruction is for loading values onto the FPU Register Stack
   + FST instruction is for storing values from ST0 into memory 
   + FPU Register Stack can be accessed only by FPU instructions
+* __Variable-Length Instruction__: an instruction's size in x86 can range from 1 to 15 bytes
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/instruction-sets/x86/x86.png"> 
+<p align='center'><sub><strong>x86 instructions that only takes up a byte</strong></sub></p>
+</div>
+
 * __Commonly Used Hard To Remember x86 Instructions With Side Effects__:
   * __IMUL reg/mem__: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
   * __IDIV reg/mem__: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
