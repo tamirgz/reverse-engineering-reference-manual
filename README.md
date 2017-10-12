@@ -220,7 +220,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/instruction-sets/x86/x86.png" height="600" width="400"> 
-<p align='center'><sub><strong>x86 instructions that only takes up a byte</strong></sub></p>
+<p align='center'><sub><strong>one byte x86 instructions</strong></sub></p>
 </div>
 
 * __Commonly Used Hard To Remember x86 Instructions With Side Effects__:
