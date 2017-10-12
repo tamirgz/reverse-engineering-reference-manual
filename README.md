@@ -513,8 +513,8 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     * __NtQueryInformationProcess__: Native Windows API in Ntdll.dll. CheckRemoteDebuggerPresent will eventually call this native function. Passing ProcessDebugPort (0x7) as its second argument will tell this function to query whether the process is being debugged or not 
     * __OutputDebugString__: sends debugger strings to display. If debugger is present, this function will return a valid address in the process address space into eax. Otherwise, it will return an invalid address 
     * For a more comprehensive list, check out [section 7 of the Ultimate Anti-Debugging Reference by Peter Ferrie](http://anti-reversing.com/Downloads/Anti-Reversing/The_Ultimate_Anti-Reversing_Reference.pdf)
-  * __readlink (Linux)__: calling readlink on "/proc/ppid/exe" will return a string containing the location of the debugger if one is attached. You can find ppid by checking the dynamic file /proc/pid/status. And to find the pid of the process, use the ps command
-    * __/proc/pid/status__: this dynamic file also contains other information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced
+  * __readlink (Linux)__: calling readlink on "/proc/&lt;ppid&gt;/exe" will return a string containing the location of the debugger if one is attached. You can find ppid by checking the dynamic file /proc/&lt;pid&gt;/status. And to find the pid of the process, use the ps command
+    * __/proc/&lt;pid&gt;/status__: this dynamic file also contains other information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced
   * Under GDB, argv[0] (name of the current invoked program) contains binary's absolute path even if you invoke the binary from a relative path. Under normal execution, argv[0] will contain the relative path. You can take advantage of this with any string-related functions, such as strcmp() and strstr(), to detect presence of GDB
 
 <div align='center'> 
