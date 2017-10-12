@@ -18,6 +18,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + [x86](#-x86-)
   + [x86-64](#-x86-64-)
   + [ARM](#-arm-)
+  + [MIPS](#-mips-)
 * [.languages](#languages)
   + [C++ Reversing](#-c-reversing-)
   + [Python Reversing](#-python-reversing-)
@@ -260,6 +261,9 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   * This is how conditional branch instruction is implemented. For example, BEQ executes Branch instruction if EQ condition is true (ZF = 1)
 * Thumb instruction cannot be conditionally executed, with the exception of B instruction, without the IT instruction. 
   + IT (If-then)'s syntax: ITxyz cc. cc is the conditional suffix for the 1st instruction after IT. xyz are for the 2nd, 3rd, and 4th instructions after IT. It can be either T or E. T means that the condition must match cc for it to be executed. E means that condition must be the opposite of cc for it to be executed
+#
+## *<p align='center'> ARM </p>*
+* testing
 ---
 
 # .languages
