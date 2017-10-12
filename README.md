@@ -532,7 +532,6 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/anti-analysis/Anti-Debugging/sigtrap.png"> 
 <p align='center'><sub><strong>bypassing False Software Breakpoints with gdb</strong></sub></p>
 </div>
-
   * __False Memory Breakpoints__: Create a dynamic buffer and write the opcode for ret instruction in it. Manually change the permission of the page the buffer is in to guard. Pushes a return address to the stack before jumping to that dynamic buffer. If execution transfer control to that return address, then the program knows that it's under the context of a debugger since STATUS_GUARD_PAGE_VIOLATION exception was absorbed by the debugger 
   + __Two Byte Interrupt 3__: instead of 0xCC, it's 0xCD 0x03. Can also be used as false breakpoint
   + __Interrupt 0x2C__: raises a debug assertion exception. This exception is consumed by WinDbg 
