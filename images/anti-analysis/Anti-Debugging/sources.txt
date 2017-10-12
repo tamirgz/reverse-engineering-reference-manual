@@ -1,0 +1,2 @@
+proc_status.png: myself
+sigtrap.png: myself
