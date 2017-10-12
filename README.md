@@ -219,7 +219,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 * __Variable-Length Instruction__: an instruction's size in x86 can range from 1 to 15 bytes
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/instruction-sets/x86/x86.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/instruction-sets/x86/x86.png" height="600" width="400"> 
 <p align='center'><sub><strong>x86 instructions that only takes up a byte</strong></sub></p>
 </div>
 
