@@ -263,7 +263,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + IT (If-then)'s syntax: ITxyz cc. cc is the conditional suffix for the 1st instruction after IT. xyz are for the 2nd, 3rd, and 4th instructions after IT. It can be either T or E. T means that the condition must match cc for it to be executed. E means that condition must be the opposite of cc for it to be executed
 #
 ## *<p align='center'> MIPS </p>*
-* testing
+* stub
 ---
 
 # .languages
