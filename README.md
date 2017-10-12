@@ -519,7 +519,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/anti-analysis/Anti-Debugging/proc_status.png"> 
-<p align='center'><sub><strong>a tracee is identified using /proc/&lt;pid&gt;/status</strong></sub></p>
+<p align='center'><sub><strong>a tracee is identified using /proc/&lt;pid&gt;/status and its corresponding tracer is identified using readlink</strong></sub></p>
 </div>
 
 * __Using Flags within the PEB structure to Detect Debugger's Presence (Windows)__
