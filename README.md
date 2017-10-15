@@ -124,6 +124,7 @@
     ```bash
     (gdb) break *0x8048479
     ```
+    * __shortcut__: if the instruction pointer is at the address that you wanted to break at, simply type b or break and a breakpoint will be set there
   * __Hardware Breakpoint__:
     ```bash
     (gdb) hbreak *0x8048479 
