@@ -151,7 +151,7 @@
     * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
     + To set the zero flag:
       ```bash
-      (gdb) $ZF = 6                    #bit position 6 in EFLAGS is zero flag
+      (gdb) set $ZF = 6                #bit position 6 in EFLAGS is zero flag
       (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
       ```
     + To figure out the bit position of a flag that you are interested in:
