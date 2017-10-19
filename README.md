@@ -43,9 +43,10 @@
 * __start Is Not main__: entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 
-![32-bit ELF binary compiled by gcc](https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/start_v_main.PNG)
-  
-  * Testing
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/start_v_main.PNG"> 
+<p align='center'><sub><strong>32-bit ELF binary compiled by gcc</strong></sub></p>
+</div>
 
 * __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using a seemingly unpredictable sequence of bits as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
 * __Software/Hardware/Memory Breakpoint__: 
@@ -507,26 +508,26 @@
     + The 6th byte of the ELF Header is EI_DATA, residing within e_ident array, which makes up the first 16 bytes of the ELF Header. EI_DATA specifies the data encoding of the processor-specific data in the file (unknown, little-endian, big-endian). Modifying EI_DATA after compilation will not affect program execution, but will make tools such as readelf, gdb, and radare2 to not work properly since they use this value to interpret the binary
 #
 ## *<p align='center'> Anti-Debugging </p>*
-<ul>
-<li><strong>Using Functions from Dynamically Linked Libraries to Detect Debugger's Presence</strong></li>
-  <ul><li><strong>ptrace (Linux)</strong>: The ptrace system call allows a process (tracer) to observe and control execution of a second process (tracee), but only one tracer can control a tracee at a time. All debuggers and program tracers use ptrace call to setup debugging for a process. If the debugee's code itself contains a ptrace call with the request type PTRACE_TRACEME, PTRACE_TRACEME will set the parent process (most likely bash) as the tracer. This means that if a debugger is already attached to the debugee, the ptrace call within the debugee's code will fail</li></ul>
-    <ul><li>This method can be bypassed by using LD_PRELOAD, which is an environment variable that is set to the path of a shared object. That shared object will be loaded first. As a result, if that shared object contains your own implementation of ptrace, then your own implementation of ptrace will be called instead when the call to ptrace is encountered</li></ul> 
-      <ul><li>[How To Deter People From Using LD_PRELOAD To Bypass Ptrace](https://seblau.github.io/posts/linux-anti-debugging</li></ul>)
-  <ul><li>Windows API provides several functions that can be used by a program to determine if it is being debugged</li></ul>
-    <ul><li><strong>DebugActiveProcess (Self-Debugging)</strong>: Windows' version of ptrace. Self-debugging can be achieved by spawning a new process and use kernel32!DebugActiveProcess to debug the parent process. Call to DebugActiveProcess will fail if a debugger is already attached to the parent process</li></ul> 
-    <ul><li><strong>IsDebuggerPresent</strong>: checks the PEB structure for the IsDebugged field. If the process is running under the context of a debugger, the IsDebugged field will be 1, otherwise 0</li></ul>
-    <ul><li><strong>CheckRemoteDebuggerPresent</strong>: can use this to check if a remote or current process is being debugged. Also checks the IsDebugged field in the PEB structure to make the decision</li></ul>
-    <ul><li><strong>NtQueryInformationProcess</strong>: Native Windows API in Ntdll.dll. CheckRemoteDebuggerPresent will eventually call this native function. Passing ProcessDebugPort (0x7) as its second argument will tell this function to query whether the process is being debugged or not</li></ul> 
-    <ul><li><strong>OutputDebugString</strong>: sends debugger strings to display. If debugger is present, this function will return a valid address in the process address space into eax. Otherwise, it will return an invalid address</li></ul> 
-    <ul><li>For a more comprehensive list, check out [section 7 of the Ultimate Anti-Debugging Reference by Peter Ferrie](http://anti-reversing.com/Downloads/Anti-Reversing/The_Ultimate_Anti-Reversing_Reference.pdf</li></ul>)
-  <ul><li><strong>readlink (Linux)</strong>: calling readlink on "/proc/&lt;ppid&gt;/exe" will return a string containing the location of the debugger if one is attached. You can find ppid by checking the dynamic file /proc/&lt;pid&gt;/status. And to find the pid of the process, use the ps command</li></ul>
-    <ul><li>__/proc/&lt;pid&gt;/status__: this dynamic file also contains other information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced</li></ul>
+* __Using Functions from Dynamically Linked Libraries to Detect Debugger's Presence__ 
+  * __ptrace (Linux)__: The ptrace system call allows a process (tracer) to observe and control execution of a second process (tracee), but only one tracer can control a tracee at a time. All debuggers and program tracers use ptrace call to setup debugging for a process. If the debugee's code itself contains a ptrace call with the request type PTRACE_TRACEME, PTRACE_TRACEME will set the parent process (most likely bash) as the tracer. This means that if a debugger is already attached to the debugee, the ptrace call within the debugee's code will fail 
+    + This method can be bypassed by using LD_PRELOAD, which is an environment variable that is set to the path of a shared object. That shared object will be loaded first. As a result, if that shared object contains your own implementation of ptrace, then your own implementation of ptrace will be called instead when the call to ptrace is encountered 
+      * [How To Deter People From Using LD_PRELOAD To Bypass Ptrace](https://seblau.github.io/posts/linux-anti-debugging)
+  * Windows API provides several functions that can be used by a program to determine if it is being debugged
+    * __DebugActiveProcess (Self-Debugging)__: Windows' version of ptrace. Self-debugging can be achieved by spawning a new process and use kernel32!DebugActiveProcess to debug the parent process. Call to DebugActiveProcess will fail if a debugger is already attached to the parent process    
+    * __IsDebuggerPresent__: checks the PEB structure for the IsDebugged field. If the process is running under the context of a debugger, the IsDebugged field will be 1, otherwise 0
+    * __CheckRemoteDebuggerPresent__: can use this to check if a remote or current process is being debugged. Also checks the IsDebugged field in the PEB structure to make the decision
+    * __NtQueryInformationProcess__: Native Windows API in Ntdll.dll. CheckRemoteDebuggerPresent will eventually call this native function. Passing ProcessDebugPort (0x7) as its second argument will tell this function to query whether the process is being debugged or not 
+    * __OutputDebugString__: sends debugger strings to display. If debugger is present, this function will return a valid address in the process address space into eax. Otherwise, it will return an invalid address 
+    * For a more comprehensive list, check out [section 7 of the Ultimate Anti-Debugging Reference by Peter Ferrie](http://anti-reversing.com/Downloads/Anti-Reversing/The_Ultimate_Anti-Reversing_Reference.pdf)
+  * __readlink (Linux)__: calling readlink on "/proc/&lt;ppid&gt;/exe" will return a string containing the location of the debugger if one is attached. You can find ppid by checking the dynamic file /proc/&lt;pid&gt;/status. And to find the pid of the process, use the ps command
+    * __/proc/&lt;pid&gt;/status__: this dynamic file also contains other information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced
+    * Under GDB, argv[0] (name of the current invoked program) contains binary's absolute path even if you invoke the binary from a relative path. Under normal execution, argv[0] will contain the relative path. You can take advantage of this with any string-related functions, such as strcmp() and strstr(), to detect presence of GDB
+
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/anti-analysis/Anti-Debugging/proc_status.png"> 
 <p align='center'><sub><strong>a tracee is identified using /proc/&lt;pid&gt;/status and its corresponding tracer is identified using readlink</strong></sub></p>
 </div>
-    <ul><li>Under GDB, argv[0] (name of the current invoked program) contains binary's absolute path even if you invoke the binary from a relative path. Under normal execution, argv[0] will contain the relative path. You can take advantage of this with any string-related functions, such as strcmp() and strstr(), to detect presence of GDB</li></ul>
-</ul>
+
 * __Using Flags within the PEB structure to Detect Debugger's Presence (Windows)__
   * Location of PEB can be referenced by the location fs:[30h]. The second item on the PEB struct is BYTE BeingDebugged. The API function, isDebuggerPresent, checks this field to determine if a debugger is present or not
   * __Flags and ForceFlags__: within Reserved4 array in PEB, is ProcessHeap, which is set to location of process’s first heap allocated by loader. This first heap contains a header with fields that tell kernel whether the heap was created within a debugger. The fields are Flags and ForceFlags. If the Flags field does not have the HEAP_GROWABLE(0x2) flag set, then the process is being debugged. Also, if ForceFlags != 0, then the process is being debugged. The location of both Flags and ForceFlags in the heap depends on whether the machine is 32-bit or 64-bit and also the version of Window Operating System (e.g. Windows XP, Windows Vista)
