@@ -44,7 +44,6 @@
 <p align='center'><sub><strong>single threaded vs multi-threaded process</strong></sub></p>
 </div>
 
-* __Leaf vs Non-Leaf Function__: any function that calls another function is a non-leaf function, and all other functions are leaf functions
 * __start Is Not main__: entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 
