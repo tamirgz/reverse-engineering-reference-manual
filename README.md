@@ -40,7 +40,7 @@
   * A process that doesn't utilizes multi-threading still contains a single thread
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/4_01_ThreadDiagram.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/4_01_ThreadDiagram.png" width="469" height="270">
 <p align='center'><sub><strong>single threaded vs multi-threaded process</strong></sub></p>
 </div>
 
