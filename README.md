@@ -33,6 +33,8 @@
   + [Data Encoding](#-data-encoding-)
 ---
 
+__NOTE__: from now until the end Jan 2018, I am planning on adding more pics/diagrams to go along with the notes to make them more understandable and easier to read
+
 # .general-knowledge
 
 ## *<p align='center'> int 0x7374617274 </p>*
