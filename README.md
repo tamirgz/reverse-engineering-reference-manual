@@ -70,7 +70,6 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
     * DR6: status register that contains information on which debugging event has occurred
     * DR7: stores breakpoint conditions and the lengths of breakpoints for DR0-DR3
   + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
-  + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/hardware_bp.png" width="469" height="270"> 
