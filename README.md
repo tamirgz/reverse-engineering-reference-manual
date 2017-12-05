@@ -62,10 +62,20 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 <p align='center'><sub><strong>software breakpoint</strong></sub></p>
 </div>
 
-* __Hardware Breakpoint__: set at CPU level in special registers called debug registers (DR0 through DR7)
-  + Only DR0 - DR3 registers are reserved for breakpoint addresses
+* __Hardware Breakpoint__: set at CPU level in special registers called debug registers
+  * Debug registers (DR0 through DR7)
+    * DR0-DR3: stores addresses of hardware breakpoints
+    * DR4-DR5: reserved
+    * DR6: status register that contains information on which debugging event has occurred
+    * DR7: stores breakpoint conditions and the lengths of breakpoints for DR0-DR3
   + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
   + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/hardware_bp.png"> 
+<p align='center'><sub><strong>hardware breakpoint</strong></sub></p>
+</div>
+
 * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
   + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
 
