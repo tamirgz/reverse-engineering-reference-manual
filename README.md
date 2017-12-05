@@ -54,7 +54,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 <p align='center'><sub><strong>32-bit ELF binary compiled by gcc</strong></sub></p>
 </div>
 
-* __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using a seemingly unpredictable sequence of bits as seed are known as pseudorandom number generators, because while their output isn't random, they still pass the statistical tests of randomness
+* __Random Number Generator__: randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using a seemingly unpredictable sequence of bits as seed are known as pseudorandom number generators, because while their output are not random, they still pass the statistical tests of randomness
   * [basic pseudorandom number generator using srand, rand, and time](https://gist.github.com/yellowbyte/4c36b9fffa73d79fa739f75a5ea951c9)
 * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused by the debugger, and debugger's internal lookup occurs to flip the original byte back
 
