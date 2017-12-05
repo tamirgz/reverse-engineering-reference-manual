@@ -72,7 +72,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
   + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/hardware_bp.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/hardware_bp.png" width="469" height="270"> 
 <p align='center'><sub><strong>hardware breakpoint</strong></sub></p>
 </div>
 
