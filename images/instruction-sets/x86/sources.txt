@@ -1,0 +1,1 @@
+x86.png: https://raw.githubusercontent.com/corkami/pics/master/binary/x86.png

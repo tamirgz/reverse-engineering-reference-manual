@@ -1,10 +1,8 @@
-# <p align='center'> RERM: Reverse Engineering Reference Manual </p>
+# <p align='center'> Reverse Engineering Reference Manual </p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/heading/Introduction.PNG"> 
 </p>
-
-__NOTE__: Here is a collage of reverse engineering topics that I find interesting
 
 # .table-of-contents
 
@@ -30,19 +28,25 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + [Anti-Disassembly](#-anti-disassembly-)
   + [Anti-Debugging](#-anti-debugging-)
   + [Anti-Emulation](#-anti-emulation-)
-  + [Anti-Dumping](#-anti-dumping-)
   + [Bonus](#-bonus-)
 * [.encodings](#encodings)
   + [String Encoding](#-string-encoding-)
   + [Data Encoding](#-data-encoding-)
 ---
 
+__NOTE__: from now until the end Jan 2018, I am planning on adding more pics/diagrams to go along with the notes to make them more understandable and easier to read. Stay tuned!
+
 # .general-knowledge
 
 ## *<p align='center'> int 0x7374617274 </p>*
 * __Threads__: a process is a container for execution. A thread is what the OS executes
   * A process that doesn't utilizes multi-threading still contains a single thread
-* __Leaf vs Non-Leaf Function__: any function that calls another function is a non-leaf function, and all other functions are leaf functions
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/4_01_ThreadDiagram.png" width="469" height="270">
+<p align='center'><sub><strong>single threaded vs multi-threaded process</strong></sub></p>
+</div>
+
 * __start Is Not main__: entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 
@@ -52,14 +56,35 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
 </div>
 
 * __Random Number Generator__: Randomness requires a source of entropy (seed), which is an unpredictable sequence of bits that can come from the OS observing its internal operations or ambient factors. Algorithms using a seemingly unpredictable sequence of bits as seed are known as pseudorandom generators, because while their output isn't random, it still passes statistical tests of randomness
-* __Software/Hardware/Memory Breakpoint__: 
-  * __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused, and internal lookup occurs to flip the original byte back
-  * __Hardware Breakpoint__: set in special registers called debug registers (DR0 through DR7)
-    + Only DR0 - DR3 registers are reserved for breakpoint addresses
-    + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
-    + Can check if someone sets a hardware breakpoint on Windows by using GetThreadContext() and checks if DR0-DR3 is set
-  * __Memory Breakpoint__: changes the permissions on a region, or page, of memory
-    + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
+  * [basic pseudorandom generator using srand, rand, and time](https://gist.github.com/yellowbyte/4c36b9fffa73d79fa739f75a5ea951c9)
+* __Software Breakpoint__: debugger reads and stores the first byte of instruction and then overwrites that first byte with 0xCC (INT3). When CPU hits the breakpoint (0xCC), OS kernel sends SIGTRAP signal to process, process execution is paused by the debugger, and debugger's internal lookup occurs to flip the original byte back
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/soft_bp.png"> 
+<p align='center'><sub><strong>software breakpoint</strong></sub></p>
+</div>
+
+* __Hardware Breakpoint__: set at CPU level in special registers called debug registers
+  * Debug registers (DR0 through DR7)
+    * DR0-DR3: stores addresses of hardware breakpoints
+    * DR4-DR5: reserved
+    * DR6: status register that contains information on which debugging event has occurred
+    * DR7: stores breakpoint conditions and the lengths of breakpoints for DR0-DR3
+  + Before CPU attempts to execute an instruction, it first checks whether the address is currently enabled for a hardware breakpoint. If the address is stored in debug registers DR0–DR3 and the read, write, or execute conditions are met, an INT1 is fired and the process halts
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/hardware_bp.png" width="469" height="270"> 
+<p align='center'><sub><strong>hardware breakpoint</strong></sub></p>
+</div>
+
+* __Memory Breakpoint__: changes the permissions on a region, or page, of memory
+  + Guard page: Any access to a guard page results in a one-time exception, and then the page returns to its original status. Memory breakpoint changes permission of the page to guard
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/memory_bp.png"> 
+<p align='center'><sub><strong>memory breakpoint</strong></sub></p>
+</div>
+
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype such as integer has its least significant byte stored in the lower address of main memory. Due to Intel's endianness, here are points to keep in mind when reversing: 
   * Characters or user input, whether constructed on stack or already initialized and placed in data section, will be placed in memory in the order that it comes in since each character is a byte long, so endianness doesn't matter. But if you read out multi-characters at a time, such as 4 characters using DWORD[addr], CPU will think that the 4 bytes at addr are in little-endian and will then retrieve those bytes in reverse order 
   * Multi-bytes datatype, such as integer, will be stored in little-endian in memory. But when accessed from memory, it will be in its original form since CPU assumes little-endian
@@ -127,6 +152,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     ```bash
     (gdb) break *0x8048479
     ```
+    * __shortcut__: if the instruction pointer is at the address that you wanted to break at, simply type b or break and a breakpoint will be set there
   * __Hardware Breakpoint__:
     ```bash
     (gdb) hbreak *0x8048479 
@@ -153,7 +179,7 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
     + To set the zero flag:
       ```bash
-      (gdb) $ZF = 6                    #bit position 6 in EFLAGS is zero flag
+      (gdb) set $ZF = 6                #bit position 6 in EFLAGS is zero flag
       (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
       ```
     + To figure out the bit position of a flag that you are interested in:
@@ -217,6 +243,13 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + FLD instruction is for loading values onto the FPU Register Stack
   + FST instruction is for storing values from ST0 into memory 
   + FPU Register Stack can be accessed only by FPU instructions
+* __Variable-Length Instruction__: an instruction's size in x86 can range from 1 to 15 bytes
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/instruction-sets/x86/x86.png" height="600" width="400"> 
+<p align='center'><sub><strong>one byte x86 instructions</strong></sub></p>
+</div>
+
 * __Commonly Used Hard To Remember x86 Instructions With Side Effects__:
   * __IMUL reg/mem__: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
   * __IDIV reg/mem__: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
@@ -517,9 +550,15 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
     * __NtQueryInformationProcess__: Native Windows API in Ntdll.dll. CheckRemoteDebuggerPresent will eventually call this native function. Passing ProcessDebugPort (0x7) as its second argument will tell this function to query whether the process is being debugged or not 
     * __OutputDebugString__: sends debugger strings to display. If debugger is present, this function will return a valid address in the process address space into eax. Otherwise, it will return an invalid address 
     * For a more comprehensive list, check out [section 7 of the Ultimate Anti-Debugging Reference by Peter Ferrie](http://anti-reversing.com/Downloads/Anti-Reversing/The_Ultimate_Anti-Reversing_Reference.pdf)
-  * __readlink (Linux)__: calling readlink on "/proc/ppid/exe" will return a string containing the location of the debugger if one is attached. You can find ppid by checking the dynamic file /proc/pid/status. And to find the pid of the process, use the ps command
-    * __/proc/pid/status__: this dynamic file also contains other information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced
-  * Under GDB, argv[0] (name of the current invoked program) contains binary's absolute path even if you invoke the binary from a relative path. Under normal execution, argv[0] will contain the relative path. You can take advantage of this with any string-related functions, such as strcmp() and strstr(), to detect presence of GDB
+  * __readlink (Linux)__: calling readlink on "/proc/&lt;ppid&gt;/exe" will return a string containing the location of the debugger if one is attached. You can find ppid by checking the dynamic file /proc/&lt;pid&gt;/status. And to find the pid of the process, use the ps command
+    * __/proc/&lt;pid&gt;/status__: this dynamic file also contains other information on a running process, such as whether or not the process is being traced. If the field tracerPid is 0, the process is not being traced
+    * Under GDB, argv[0] (name of the current invoked program) contains binary's absolute path even if you invoke the binary from a relative path. Under normal execution, argv[0] will contain the relative path. You can take advantage of this with any string-related functions, such as strcmp() and strstr(), to detect presence of GDB
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/anti-analysis/Anti-Debugging/proc_status.png"> 
+<p align='center'><sub><strong>a tracee is identified using /proc/&lt;pid&gt;/status and its corresponding tracer is identified using readlink</strong></sub></p>
+</div>
+
 * __Using Flags within the PEB structure to Detect Debugger's Presence (Windows)__
   * Location of PEB can be referenced by the location fs:[30h]. The second item on the PEB struct is BYTE BeingDebugged. The API function, isDebuggerPresent, checks this field to determine if a debugger is present or not
   * __Flags and ForceFlags__: within Reserved4 array in PEB, is ProcessHeap, which is set to location of process’s first heap allocated by loader. This first heap contains a header with fields that tell kernel whether the heap was created within a debugger. The fields are Flags and ForceFlags. If the Flags field does not have the HEAP_GROWABLE(0x2) flag set, then the process is being debugged. Also, if ForceFlags != 0, then the process is being debugged. The location of both Flags and ForceFlags in the heap depends on whether the machine is 32-bit or 64-bit and also the version of Window Operating System (e.g. Windows XP, Windows Vista)
@@ -539,6 +578,12 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + __ICEBP (0xF1)__: generates a single step exception
   + __Trap Flag Check__: Trap Flag is part of the EFLAGS register. IF TF is 1, CPU will generate Single Step exception(int 0x01h) after executing an instruction. Trap Flag can be manually set to cause next instruction to raise an exception. If the process is running under the context of a debugger, the debugger will not pass the exception to the program so the exception handler will never be ran
   + __Stack Segment__: when you operate on SS (e.g. mov ss, pop ss), CPU will lock all interrupts until the end of the next instruction. Therefore, if you are single-stepping through it with a debugger, the debugger will not stop on the next instruction but the instruction after the next one. One way to detect debugger is for the next instruction after a write to SS to be pushfd. Since the debugger did not stop there, it will not clear the trap flag and pushfd will push the value of trap flag (plus rest of EFLAGS) onto the stack
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/anti-analysis/Anti-Debugging/sigtrap.png"> 
+<p align='center'><sub><strong>bypassing False Software Breakpoints with gdb</strong></sub></p>
+</div>
+
 * __Timing Checks__:  record a timestamp, perform some operations, take another timestamp, and then compare the two timestamps. If there is a lag, you can assume the presence of a debugger
   * __rdtsc Instruction (0x0F31)__: this instruction returns the count of the number of ticks since the last system reboot as a 64-bit value placed into EDX:EAX. Simply execute this instruction twice and compare the difference between the two readings
 * __Detection Before main()__: make it harder to find anti-debugging checks, anti-debugging checks can be placed in code that executes before main()
@@ -552,10 +597,6 @@ __NOTE__: Here is a collage of reverse engineering topics that I find interestin
   + WRMSR is a privileged instruction (Ring 0) that is used to write values to a MSR register. Values in MSR registers are very important. For example, the SYSCALL instruction invokes the system-call handler by loading RIP from IA32_LSTAR MSR. As a result, WRMSR instruction cannot be executed in user-mode  
 * __Timing Delays__: execution under emulation will be slower than running under real CPU
 * __Number of Cores__: the number of cores under emulation could be smaller than the number of cores on the host machine 
-#
-## *<p align='center'> Anti-Dumping </p>*
-* __Header Erase__: erasing the file header during program execution will prevent the program from being dumped. Even if a tool is able to dump it, the dumped image will be missing important information that the loader needs
-* __Stolen Bytes__: 
 #
 ## *<p align='center'> Bonus </p>*
 * __Quote To Remember__: "From an anti-reversing prespective, code doesn't have to be hard to reverse engineer....all we really need in the end of the day is we need the reverse engineer give up" - Chris Domas 
