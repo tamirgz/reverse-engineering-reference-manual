@@ -46,7 +46,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 <p align='center'><sub><strong>single threaded vs multi-threaded process</strong></sub></p>
 </div>
 
-* __start Is Not main__: entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
+* __start IS NOT main__: entry point of a binary (start function) is not main. A program's startup code (how main is set up and called) depends on the compiler and the platform that the binary is compiled for
   * Even if no library is statically compiled into the binary, part of the .text section will contain code that is irrelevant to the source code
 
 <div align='center'> 
@@ -91,7 +91,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 # .tools
 
 ## *<p align='center'> IDA Tips </p>*
-* __Addresses Shown In IDA__: When IDA loads a binary, it simulates a mapping of the file in memory. The addresses shown in IDA are the virtual memory addresses and not the offsets of binary file on disk
+* __Addresses Shown In IDA__: when IDA loads a binary, it simulates a mapping of the file in memory. The addresses shown in IDA are the virtual memory addresses and not offsets of the binary file on disk
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ida_va_instr.PNG"> 
@@ -108,8 +108,8 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 <p align='center'><sub><strong>Actual locations of those 4 instructions on disk</strong></sub></p>
 </div>
 
-* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary is interacting with the OS. To hide APIs call from displaying in the IAT, a programmer can dynamically resolve an API call
-  + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (go to Module Windows, find the shared library the API is under, click on the library and another window will open showing all the available APIs, find the API that you are interested in, and place a breakpoint on it). Once execution breaks there, step back through the call stack to find where it's called in user code
+* __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary will be interacting with the OS. To hide API calls from displaying in the IAT, a programmer can dynamically resolve them
+  + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis (Windows sandbox), ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved. Once you find a dynamically resolved API, you can place a breakpoint on the API in IDA's debugger view (in the Module Windows you can place a breakpoint on any function belonging to a loaded dynamically linked library). Once execution breaks there, step back through the call stack to find where it's called from in user code
   * It is considered normal for functions to appear in just the IAT and not in the function trace since function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
 * __Useful Shortcuts__: 
