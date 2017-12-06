@@ -110,7 +110,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 
 * __Import Address Table (IAT)__: shows you all the dynamically linked libraries' functions that the binary uses. IAT is important for a reverser to understand how the binary will be interacting with the OS. To hide API calls from displaying in the IAT, a programmer can dynamically resolve them
   + __How To Find Dynamically Resolved APIs__: get the binary's function trace (e.g. hybrid-analysis, ltrace). If any of the APIs in the function trace is not in the IAT, then that API is dynamically resolved
-  * __How To Find Where A Dynamically Resolved API Is Called__: in IDA's debugger view, the Module Windows allows you to place a breakpoint on any function in a loaded dynamically linked library. Use the Module Windows to place a breakpoint on a dynamically resolved API and once execution breaks there, step back through the call stack to find where it's called from in user code   
+  * __How To Find Where A Dynamically Resolved API Is Called__: in IDA's debugger view, the Module Windows allows you to place a breakpoint on any function in a loaded dynamically linked library. Use it to place a breakpoint on a dynamically resolved API and once execution breaks there, step back through the call stack to find where it's called from in user code
   * It is normal for functions to appear in just the IAT and not in the function trace since function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
 * __Useful Shortcuts__: 
