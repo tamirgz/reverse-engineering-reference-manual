@@ -145,7 +145,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 ## *<p align='center'> GDB Tips </p>*
 * __Changing Default Settings__: to make changes permanent, write it in the .gdbinit file
   * ASLR is turned off by default in GDB. To turn it on: __set disable-randomization off__
-  * Default displays assembly in AT&T notation. You can change it to display assembly in Intel notation: __set disassembly-flavor intel__ 
+  * Default displays assembly in AT&T notation. To display assembly in Intel notation: __set disassembly-flavor intel__ 
 * __User Inputs__: how to pass user inputs to debugged program as arguments or/and as stdin
   * After starting GDB...
       ```gdb
@@ -166,7 +166,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
        > end
        (gdb)
        ```
-* __Ways To Pause Debugger__: software breakpoint, hardware breakpoint, watchpoint, and catchpoint
+* __Ways To Pause Debuggee__: software breakpoint, hardware breakpoint, watchpoint, and catchpoint
   * __Software Breakpoint__:
     ```bash
     (gdb) break *0x8048479
