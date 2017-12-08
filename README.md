@@ -114,7 +114,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
   * It is normal for functions to appear in just the IAT and not in the function trace since function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/source.png"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/source.png" width="500" height="300"> 
 <p align='center'><sub><strong>source code showing how `puts` is dynamically resolved. String reference to `puts` is also encoded</strong></sub></p>
 </div>
 
