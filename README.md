@@ -201,7 +201,6 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
       (gdb) set $ZF = 6                #bit position 6 in EFLAGS is zero flag
       (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
       ```
-    + To figure out the bit position of a flag that you are interested in:
     
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120"> 
