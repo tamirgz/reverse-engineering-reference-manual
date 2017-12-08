@@ -118,6 +118,21 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 <p align='center'><sub><strong><a href="https://gist.github.com/yellowbyte/ec470d75ba7c14ebefed271c6fe58e9e">source code</a> showing how `puts` is dynamically resolved. String reference to `puts` is also encoded</strong></sub></p>
 </div>
 
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/iat.png">
+<p align='center'><sub><strong>even though `puts` is a function from a dynamically linked library it does not show up in IDA's IAT</strong></sub></p>
+</div>
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/strings.png">
+<p align='center'><sub><strong>GNU strings can't identify string reference to `puts` either</strong></sub></p>
+</div>
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ltrace.png">
+<p align='center'><sub><strong>function trace like ltrace is able to catch the call to `puts`</strong></sub></p>
+</div>
+
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
 * __Useful Shortcuts__: 
   + __u__ to undefine 
