@@ -130,7 +130,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ltrace.png">
-<p align='center'><sub><strong>function tracer like ltrace is able to detect `puts`</strong></sub></p>
+<p align='center'><sub><strong>function tracer like ltrace is able to detect reference to `puts`</strong></sub></p>
 </div>
 
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
