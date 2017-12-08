@@ -145,7 +145,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
 ## *<p align='center'> GDB Tips </p>*
 * __Changing Default Settings__: to make changes permanent, write it in the .gdbinit file
   * ASLR is turned off by default in GDB. To turn it on: __set disable-randomization off__
-  * Default displays assembly in AT&T notation. To change it to the more readable and superior Intel notation: __set disassembly-flavor intel__ 
+  * Default displays assembly in AT&T notation. You can change it to display assembly in Intel notation: __set disassembly-flavor intel__ 
 * __User Inputs__: how to pass user inputs to debugged program as arguments or/and as stdin
   * After starting GDB...
       ```gdb
@@ -205,6 +205,7 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
     
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120"> 
+<p align='center'><sub><strong>each available flag and its corresponding bit position in the EFLAGS register</strong></sub></p>
 </p>
 
 #
