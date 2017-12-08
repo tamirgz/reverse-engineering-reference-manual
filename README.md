@@ -114,8 +114,8 @@ __NOTE__: from now until the end Jan 2018, I am planning on adding more pics/dia
   * It is normal for functions to appear in just the IAT and not in the function trace since function trace might not hit every single execution path. Through smart fuzzing, function trace coverage can be improved
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/source.png" width="500" height="450"> 
-<p align='center'><sub><strong>[source code](https://gist.github.com/yellowbyte/ec470d75ba7c14ebefed271c6fe58e9e) showing how `puts` is dynamically resolved. String reference to `puts` is also encoded</strong></sub></p>
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/source.png" width="500" height="430">
+<p align='center'><sub><strong><a href="https://gist.github.com/yellowbyte/ec470d75ba7c14ebefed271c6fe58e9e">source code</a> showing how `puts` is dynamically resolved. String reference to `puts` is also encoded</strong></sub></p>
 </div>
 
 * __To Save Memory Snapshot From Your Debugger Session__: Debugger -> Take Memory Snapshot -> All Segments
