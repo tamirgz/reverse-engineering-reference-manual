@@ -123,12 +123,12 @@ __NOTE__: if you have any question or need further clarification on the content,
 </div>
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/strings.png">
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/strings.png" width="500">
 <p align='center'><sub><strong>GNU strings can't identify string reference to `puts` either</strong></sub></p>
 </div>
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ltrace.png">
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/IDA_Tips/ltrace.png" width="500">
 <p align='center'><sub><strong>function tracer like ltrace is able to detect reference to `puts`</strong></sub></p>
 </div>
 
@@ -193,7 +193,7 @@ __NOTE__: if you have any question or need further clarification on the content,
   * x command displays memory contents at a given address in the specified format
     + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
   * p command displays value stored in a named variable
-  * set command sets temporary variable: __set &lt;variable name&gt; = &lt;value&gt;__
+  * set command sets temporary variable: __set $&lt;variable name&gt; = &lt;value&gt;__
     * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
     + To set the zero flag:
       ```bash
