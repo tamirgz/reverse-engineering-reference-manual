@@ -240,8 +240,8 @@ __NOTE__: if you have any question or need further clarification on the content,
 ## *<p align='center'> x86 </p>*
 * __Registers__: temporary storage locations that is built into the CPU. Aside from the General Purpose Registers (GPRs), most other registers are dedicated to a specific purpose
   * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register contains address to a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
-    + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. Offset 2 in the PEB is the BeingDebugged field. In x64, PEB is located at offset 60h of the gs segment register
-  * Control register: EFLAGS. EFLAGS is a 32-bit register. It contains values of 32 boolean flags that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
+    + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. In x64, PEB is located at offset 60h of the gs segment register
+  * Control register: EFLAGS. It contains flag values that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
 * __How EIP Can Be Updated__: CALL, JMP, or RET
   * __Calling Conventions (x86)__: how function call is set up
     + __CDECL__: arguments pushed on stack from right to left. Caller cleaned up stack after
@@ -256,7 +256,7 @@ __NOTE__: if you have any question or need further clarification on the content,
 * __Assembly to Machine Code Is Not One-To-One__: an opcode can have multiple mnemonics associated with it and a mnemonic can have multiple opcodes associated with it
   * __Example 1__: 0x75 is both the opcode for JNZ and JNE
   * __Example 2__: 0xb142 and 0xc6c142 both corresponds to the instruction MOV CL, 66
-* __Lost Of Type Information__: there is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is for unsigned numbers
+* __Lost Of Type Information__: there is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is a jump instruction for unsigned numbers
 * __Floating Point Arithmetic__: Floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
   + FLD instruction is for loading values onto the FPU Register Stack
   + FST instruction is for storing values from ST0 into memory 
@@ -268,21 +268,19 @@ __NOTE__: if you have any question or need further clarification on the content,
 <p align='center'><sub><strong>one byte x86 instructions</strong></sub></p>
 </div>
 
-* __Commonly Used Hard To Remember x86 Instructions With Side Effects__:
+* __Commonly Used But Hard To Remember x86 Instructions With Side Effects__:
   * __IMUL reg/mem__: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
   * __IDIV reg/mem__: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
   * __STOS(B/W/D)__: writes the value AL/AX/EAX to EDI. Commonly used to initialize a buffer to a constant value
   * __SCAS(B/W/D)__: compares AL/AX/EAX with data starting at the memory address EDI
   * __LODS(B/W/D)__: reads 1, 2, or 4 byte value from esi and stores it in al, ax, or eax 
+  * __MOVS(B/W/D)__: moves data with 1, 2, or 4 byte granularity between two memory addresses. They implicitly use EDI/ESI as the destination/source address
+  * __CLD/STD__: CLD/STD clears/sets direction flag (DF). If DF is 1, addresses are decremented. It is used by STOS(B/W/D), SCAS(B/W/D), LODS(B/W/D), and MOVS(B/W/D)  
   * __REP__: repeats an instruction up to ECX times
-  * __MOVS(B/W/D)__: moves data with 1, 2, or 4 byte granularity between two addresses. They implicitly use EDI/ESI as the destination/source address, respectively. In addition, they also automatically update the source/destination address depending on the direction flag
-  * __CLD__: clear direction flag. DF: 0
-  * __STD__: set direction flag. DF: 1. If DF is 1, addresses are decremented
-  * __PUSHAD, POPAD__: pushes/pops all 8 general-purpose registers 
-  * __PUSHFD, POPFD__: pushes/pops EFLAGS register 
-  * __MOVSX__: moves a signed value into a register and sign-extends it 
-  * __MOVZX__: moves an unsigned value into a register and zero-extends it
-  * __CMOVcc__: conditional execution on the move operation. If the condition code's (cc) corresponding flag is set in EFLAGS, the mov instruction will be performed. Otherwises, it's just like a NOP instruction 
+  * __PUSHAD/POPAD__: pushes/pops all 8 general-purpose registers 
+  * __PUSHFD/POPFD__: pushes/pops EFLAGS register 
+  * __MOVSX/MOVZX__: both works like a MOV except MOVSX sign-extends the value in the destination register while MOVZX zero-extends the value in the destination register   
+  * __CMOVcc__: if the condition code's (cc) corresponding flag is set in EFLAGS, MOV will be performed. Otherwises, it's just like a NOP 
 #
 ## *<p align='center'> x86-64 </p>*
 * __Canonical Form__: all addresses and pointers are 64-bit, but virtual addresses must be in canonical form. Canonical form means that bit 47 and bits 48-63 must match since modern processors only support 48-bit for address space rather than the full 64-bit that is available. If the address is not in canonical form, an exception will be raised 
