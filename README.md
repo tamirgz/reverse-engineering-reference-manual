@@ -33,7 +33,7 @@
   + [Data Encoding](#-data-encoding-)
 ---
 
-__NOTE__: from now until the end Jan 2018, I am planning on adding more pics/diagrams to go along with the notes to make them more understandable and easier to read. Stay tuned!
+__NOTE__: if you have any question or need further clarification on the content, feel free to create an issue and ask away!
 
 # .general-knowledge
 
