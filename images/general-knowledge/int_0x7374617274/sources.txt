@@ -7,3 +7,5 @@ soft_bp.png: based off diagram from Gray Hat Python
 memory_bp.png: based off diagram from Gray Hat Python
 
 hardware_bp.png: http://css.csail.mit.edu/6.858/2017/readings/i386/s12_02.htm
+
+endianness.png: myself
