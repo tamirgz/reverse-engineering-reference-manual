@@ -88,9 +88,9 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype (e.g. integer) has its least significant byte stored in the lower address of main memory 
   * Value stored in RAM is in little-endian but when moved into a register will be in big-endian. This is why even though bytes representing an integer is flipped in memory, it will be in its original form when moved into a register
-  * __Advantage Of Little-Endian__   
+  * __Advantage Of Little-Endian__:   
     * __Makes it easy to check if number is even or odd__. Since the least significant byte is stored at the starting address, use the size directive BYTE to retrieve the first byte from the starting address and check its last bit (0 means even, 1 means odd)
-    * __Makes it easy to convert data from a wider format to a narrower one__. If you change a number from an integer to a short, it won't change the starting address. The only thing that changes is the size directive of the memory content
+    * __Makes it easy to convert data from a wider format to a narrower one__. If you change a number from an integer to a short, it won't change the starting address. The only thing that changes is the size directive to retrieve the memory content
 ---
 
 # .tools
