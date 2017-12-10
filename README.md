@@ -92,7 +92,7 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/endianness.png"> 
-<p align='center'><sub><strong>integer in memory vs integer in register</strong></sub></p>
+<p align='center'><sub><strong>integer 599 (0x257) in memory vs in register</strong></sub></p>
 </div>
 
 ---
