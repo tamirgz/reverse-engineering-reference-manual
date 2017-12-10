@@ -40,6 +40,7 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 # .general-knowledge
 
 ## *<p align='center'> int 0x7374617274 </p>*
+* __What is Reverse Engineering?__: [the science of man-made things](https://medium.com/@againsthimself/in-defense-of-reverse-engineering-e07fe19b26c)
 * __Threads__: a process is a container for execution. A thread is what the OS executes
   * A process that doesn't utilizes multi-threading still contains a single thread
 
@@ -88,9 +89,12 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype (e.g. integer) has its least significant byte stored in the lower address of main memory 
   * Value stored in RAM is in little-endian but when moved into a register will be in big-endian. This is why even though bytes representing an integer is flipped in memory, it will be in its original form when moved into a register
-  * __Advantage Of Little-Endian__:   
-    * __Makes it easy to check if number is even or odd__. Since the least significant byte is stored at the starting address, use the size directive BYTE to retrieve the first byte from the starting address and check its last bit (0 means even, 1 means odd)
-    * __Makes it easy to convert data from a wider format to a narrower one__. If you change a number from an integer to a short, it won't change the starting address. The only thing that changes is the size directive to retrieve the memory content
+
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/endianness.png"> 
+<p align='center'><sub><strong>integer in memory vs integer in register</strong></sub></p>
+</div>
+
 ---
 
 # .tools
@@ -190,14 +194,13 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
     ```bash
     (gdb) catch syscall #break at every call/return from a system call
     ```
-* __Useful Commands__: i, x, p, and set
+* __Useful Commands__: i, x, and set
   * i command displays information on the item specified to the right of it
     + __i proc mappings__: show mapped address spaces 
     + __i b__: show all breakpoints 
     + __i r__: show the values in registers at that point of execution
   * x command displays memory contents at a given address in the specified format
     + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
-  * p command displays value stored in a named variable
   * set command sets temporary variable: __set $&lt;variable name&gt; = &lt;value&gt;__
     * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
     + To set the zero flag:
