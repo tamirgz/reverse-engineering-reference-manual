@@ -2,4 +2,12 @@ ida_va_instr.PNG: myself
 
 ida_va_hex.PNG: myself
 
-hex_on_disk: myself
+hex_on_disk.PNG: myself
+
+iat.png: myself
+
+ltrace.png: myself
+
+source.png: myself
+
+strings.png: myself

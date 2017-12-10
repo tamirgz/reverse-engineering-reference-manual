@@ -1,4 +1,4 @@
-# <p align='center'> Reverse Engineering Reference Manual </p>
+# <p align='center'> Reverse Engineering Reference Manual (beta) </p>
 
 <p align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/heading/Introduction.PNG"> 
@@ -33,7 +33,9 @@
   + [Data Encoding](#-data-encoding-)
 ---
 
-__NOTE__: if you have any question or need further clarification on the content, feel free to create an issue and ask away!
+__NOTE(1)__: if you have any question or need further clarification on the content, feel free to create an issue and ask away!
+
+__NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more pictures and diagrams to the current content. Plans to add more sections will continue after revamping it.
 
 # .general-knowledge
 
@@ -86,6 +88,9 @@ __NOTE__: if you have any question or need further clarification on the content,
 
 * __Endianness__: Intel x86 and x86-64 use little-endian format. It is a format where multi-bytes datatype (e.g. integer) has its least significant byte stored in the lower address of main memory 
   * Value stored in RAM is in little-endian but when moved into a register will be in big-endian. This is why even though bytes representing an integer is flipped in memory, it will be in its original form when moved into a register
+  * __Advantage Of Little-Endian__   
+    * __Makes it easy to check if number is even or odd__. Since the least significant byte is stored at the starting address, use the size directive BYTE to retrieve the first byte from the starting address and check its last bit (0 means even, 1 means odd)
+    * __Makes it easy to convert data from a wider format to a narrower one__. If you change a number from an integer to a short, it won't change the starting address. The only thing that changes is the size directive of the memory content
 ---
 
 # .tools
@@ -238,7 +243,7 @@ __NOTE__: if you have any question or need further clarification on the content,
 # .instruction-sets
 
 ## *<p align='center'> x86 </p>*
-* __Registers__: temporary storage locations that is built into the CPU. Aside from the General Purpose Registers (GPRs), most other registers are dedicated to a specific purpose
+* __Registers__: temporary storage locations that are built into the CPU. Aside from the General Purpose Registers (GPRs), most other registers are dedicated to a specific purpose
   * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register contains address to a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
     + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. In x64, PEB is located at offset 60h of the gs segment register
   * Control register: EFLAGS. It contains flag values that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
@@ -257,7 +262,7 @@ __NOTE__: if you have any question or need further clarification on the content,
   * __Example 1__: 0x75 is both the opcode for JNZ and JNE
   * __Example 2__: 0xb142 and 0xc6c142 both corresponds to the instruction MOV CL, 66
 * __Lost Of Type Information__: there is no way to tell the datatype of something stored in memory by just looking at the location of where it is stored. The datatype is implied by the operations that are used on it. For example, if an instruction loads a value into EAX, comparison is taken place between EAX and 0x10, and JA is used to jump to another location if EAX is greater, then we know that the value is an unsigned int since JA is a jump instruction for unsigned numbers
-* __Floating Point Arithmetic__: Floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
+* __Floating Point Arithmetic__: floating point operations are performed using the FPU Register Stack, or the "x87 Stack." FPU is divided into 8 registers, st0 to st7. Typical FPU operations will pop item(s) off the stack, perform on it/them, and push the result back to the stack
   + FLD instruction is for loading values onto the FPU Register Stack
   + FST instruction is for storing values from ST0 into memory 
   + FPU Register Stack can be accessed only by FPU instructions
@@ -269,6 +274,7 @@ __NOTE__: if you have any question or need further clarification on the content,
 </div>
 
 * __Commonly Used But Hard To Remember x86 Instructions With Side Effects__:
+  * __Side Effects?__: how executing a particular instruction will affect memory and registers
   * __IMUL reg/mem__: register is multiplied with AL, AX, or EAX and the result is stored in AX, DX:AX, or EDX:EAX
   * __IDIV reg/mem__: takes one parameter (divisor). Depending on the divisor’s size, div will use either AX, DX:AX, or EDX:EAX as the dividend, and the resulting quotient/remainder pair are stored in AL/AH, AX/DX, or EAX/EDX
   * __STOS(B/W/D)__: writes the value AL/AX/EAX to EDI. Commonly used to initialize a buffer to a constant value
