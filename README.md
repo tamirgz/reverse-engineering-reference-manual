@@ -193,11 +193,13 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
     ```bash
     (gdb) catch syscall #break at every call/return from a system call
     ```
-* __Useful Commands__: i, x, and set
+* __Useful Commands__: apropos, i, x, and set
+  * apropos &lt;arg&gt; command searches through all gdb commands/documentations for &lt;arg&gt; and displays matched command/documentation pairs  
   * i command displays information on the item specified to the right of it
-    + __i proc mappings__: show mapped address spaces 
-    + __i b__: show all breakpoints 
-    + __i r__: show the values in registers at that point of execution
+    + __i proc mappings__: shows mapped address spaces 
+    + __i b__: shows all breakpoints 
+    + __i r__: shows the values in general purpose, flag, and segment registers at that point of execution
+    + __i all r__: shows the values in all registers at that point of execution, such as FPU and XMM registers  
   * x command displays memory contents at a given address in the specified format
     + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
   * set command sets temporary variable: __set $&lt;variable name&gt; = &lt;value&gt;__
