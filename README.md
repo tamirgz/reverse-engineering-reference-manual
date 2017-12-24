@@ -195,6 +195,12 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
     ```
 * __Useful Commands__: apropos, i, x, and set
   * apropos &lt;arg&gt; command searches through all gdb commands/documentations for &lt;arg&gt; and displays matched command/documentation pairs  
+
+<p align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/apropos_ex.png"> 
+<p align='center'><sub><strong>gdb output from 'apropos mapping' command</strong></sub></p>
+</p>
+
   * i command displays information on the item specified to the right of it
     + __i proc mappings__: shows mapped address spaces 
     + __i b__: shows all breakpoints 
