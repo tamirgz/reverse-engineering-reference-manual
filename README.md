@@ -196,10 +196,10 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 * __Useful Commands__: apropos, i, x, and set
   * apropos &lt;arg&gt; command searches through all gdb commands/documentations for &lt;arg&gt; and displays matched command/documentation pairs  
 
-<p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/apropos_ex.png"> 
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/apropos_ex.png" width="500">
 <p align='center'><sub><strong>gdb output from 'apropos mapping' command</strong></sub></p>
-</p>
+</div>
 
   * i command displays information on the item specified to the right of it
     + __i proc mappings__: shows mapped address spaces 
@@ -216,10 +216,10 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
       (gdb) set $eflags |= (1 << $ZF)  #use that variable to set the zero flag bit
       ```
     
-<p align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120"> 
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120">
 <p align='center'><sub><strong>each available flag and its corresponding bit position in the EFLAGS register</strong></sub></p>
-</p>
+</div>
 
 ---
 
