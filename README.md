@@ -11,7 +11,6 @@
 * [.tools](#tools)
   + [IDA Tips](#-ida-tips-)
   + [GDB Tips](#-gdb-tips-)
-  + [WinDBG Tips](#-windbg-tips-)
 * [.instruction-sets](#instruction-sets)
   + [x86](#-x86-)
   + [x86-64](#-x86-64-)
@@ -214,39 +213,12 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 <p align='center'><sub><strong>each available flag and its corresponding bit position in the EFLAGS register</strong></sub></p>
 </p>
 
-#
-## *<p align='center'> WinDBG Tips </p>*
-* __WinDBG Notations__: 
-  * __?__: evaluates an expression 
-  * __??__: evaluates a C++ expression
-  * __!__: prefixed to tell debugger that the token is a symbol and not an expression
-    * symbol can also be prefixed with module name (e.g. &lt;module&gt;!&lt;symbol&gt;) to save debugger time from searching through all modules for the matching symbol
-  * __$__: prefixed to all pseudo-registers (e.g. $ip, $peb) 
-  * __@__: prefixed to tell debugger that the token is a register or pseudo-register to save it time from doing symbol lookup
-* __Ways To Find Entry Point__: WinDBG will break in the kernel, not at the entry point
-  * Use __lm (loaded modules)__ to find the binary's image base. From image base, here are 2 ways to get entry point: 
-    * __!dh (dump headers)__ to read the image's header information to get the entry point
-    * __$iment__ to display just the entry point and not the rest of the header information 
-  * __$exentry__: a pseudo-register that contains the entry point
-* __Useful Commands__: 
-  * __poi(address)__: displays data pointed to by address
-  * __d[b/w/d/q/yb/a/u/f/D/p] address L&lt;num&gt;__: displays memory. The num right next to L is the range specifier that specifies the amount to display
-    * dd deadbeef L4 will display 4 4-bytes values starting from address deadbeef 
-  * __e[b|d|D|f|p|q|w] address [values]__: edits memory
-    * ed deadbeef 0x10101010 0x20202020 will replace 2 4-bytes values starting from address deadbeef with 0x10101010 and then 0x20202020
-  * __~__: lists all threads. ~Ns switches to the Nth thread
-  * __|__: lists current process and all child processes. |Ns switches to the Nth process
-  * __sx(e/d/r/i)__: controls how the debugger handle exceptions or events
-    * __sxe__: breaks on an event 
-    * __sxd__: disables break for an event 
-    * __sxr__: shows output for an event 
-    * __sxi__: ignores an event 
 ---
 
 # .instruction-sets
 
 ## *<p align='center'> x86 </p>*
-* __Registers__: temporary storage locations that are built into the CPU. Aside from the General Purpose Registers (GPRs), most other registers are dedicated to a specific purpose
+* __Registers__: temporary storage locations that are built into the CPU. Aside from the General Purpose Registers (GPRs), most other registers are dedicated to specific purposes
   * The 6 32-bit selector registers for x86 architecture: CS, DS, ES, FS, GS, SS. A selector register contains address to a specific block of memory from which one can read or write. The real memory address is looked up in an internal CPU table 
     + Selector registers usually points to OS specific information. For example, FS segment register points to the beginning of current Thread Environment Block (TEB), also know as Thread Information Block (TIB), on Windows. Offset zero in TEB is the head of a linked list of pointers to exception handler functions on 32-bit system. Offset 30h is the Process Environment Block (PEB) structure. In x64, PEB is located at offset 60h of the gs segment register
   * Control register: EFLAGS. It contains flag values that indicate results from executing the previous instruction. EFLAGS is used by JCC instructions to decide whether to jump or not
