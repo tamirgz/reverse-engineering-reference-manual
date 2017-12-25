@@ -197,7 +197,7 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
   * apropos &lt;arg&gt; command searches through all gdb commands/documentations for &lt;arg&gt; and displays matched command/documentation pairs  
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/apropos_ex.png" width="500">
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/apropos_ex.png" width="600">
 <p align='center'><sub><strong>gdb output from 'apropos mapping'</strong></sub></p>
 </div>
 
