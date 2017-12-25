@@ -198,7 +198,7 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/apropos_ex.png" width="500">
-<p align='center'><sub><strong>gdb output from 'apropos mapping' command</strong></sub></p>
+<p align='center'><sub><strong>gdb output from 'apropos mapping'</strong></sub></p>
 </div>
 
   * i command displays information on the item specified to the right of it
@@ -390,15 +390,18 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 # .file-formats
 
 ## *<p align='center'> ELF Files </p>*
-<p align='center'> 
+
+<div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/ELF_Files/elf_file_format.png" height="400"> 
-</p>
+<p align='center'><sub><strong>ELF file format overview</strong></sub></p>
+</div>
 
 * What's important for linking compared to what's important for execution: 
 
-<p align='center'> 
+<div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/ELF_Files/loading_elf_file.png" height="400"> 
-</p>
+<p align='center'><sub><strong>linking vs execution view</strong></sub></p>
+</div>
 
 * __ELF File Header__ starts at offset 0 and is the roadmap that describes the rest of the file. It marks the ELF type, architecture, execution entry point, and offsets to program headers and section headers
 * __Program Header Table__ let the system knows how to create the process image. It contains an array of structures, each describing a segment. A segment contains one or more sections
@@ -433,15 +436,17 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
 #
 ## *<p align='center'> PE Files </p>*
 
-<p align='center'> 
+<div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/PE_Files/pe_header.png"> 
-</p>
+<p align='center'><sub><strong>PE file format overview</strong></sub></p>
+</div>
 
 * How a PE file is loaded into memory: 
 
-<p align='center'> 
+<div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/file-formats/PE_Files/loading_pe_file.png"> 
-</p>
+<p align='center'><sub><strong>PE file in memory</strong></sub></p>
+</div>
 
 * __Virtual Address(VA) to File Offset Translation__: file_offset = VA - image_base - section_base_RVA + section_file_offset
   1. VA - image_base = RVA. RVA (Relative Virtual Address) is virtual address relative to the image base (HMODULE). It is used to avoid hardcoded memory addresses since the image base might not always get loaded to its preferred load address. As a result, address obtained from disassembler might not match the address obtained from a debugger
@@ -645,8 +650,9 @@ __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more picture
   * Easy to develop a custom substitution cipher using Base64 since the only item that needs to be changed is the indexing string table of 64 characters
   * Example:
 
-<p align='center'> 
+<div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/encodings/Data_Encoding/base64_conversion.png"> 
-</p>
+<p align='center'><sub><strong>base64 conversion</strong></sub></p>
+</div>
 
 [Go to .table-of-contents](#table-of-contents)
