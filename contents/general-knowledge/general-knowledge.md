@@ -1,4 +1,4 @@
-## ___.general-knowledge___
+## *<p align='center'>.general-knowledge</p>*
 
 __What is Reverse Engineering?__
 * [the science of man-made things](https://medium.com/@againsthimself/in-defense-of-reverse-engineering-e07fe19b26c)
@@ -7,10 +7,10 @@ __What is Reverse Engineering?__
 ### *<p align='center'> section overview </p>*
 ---
 * [int 0x7374617274](int_0x7374617274.md)
-  * [Threads](int_0x7374617274.md#Threads)
-  * [start IS NOT main](int_0x7374617274.md)
-  * [Random Number Generator](int_0x7374617274.md)
-  * [Software Breakpoint](int_0x7374617274.md)
-  * [Hardware Breakpoint](int_0x7374617274.md)
-  * [Memory Breakpoint](int_0x7374617274.md)
-  * [Endianness](int_0x7374617274.md)
+  * [Threads](int_0x7374617274.md#-threads-)
+  * [start IS NOT main](int_0x7374617274.md#-start-is-not-main-)
+  * [Random Number Generator](int_0x7374617274.md#-random-number-generator-)
+  * [Software Breakpoint](int_0x7374617274.md#-software-breakpoint-)
+  * [Hardware Breakpoint](int_0x7374617274.md#-hardware-breakpoint-)
+  * [Memory Breakpoint](int_0x7374617274.md#-memory-breakpoint-)
+  * [Endianness](int_0x7374617274.md#-endianness-)
