@@ -7,7 +7,7 @@
 # .table-of-contents
 
 * [.general-knowledge](contents/general-knowledge/general-knowledge.md)
-  + [int 0x7374617274](#-int-0x7374617274-)
+  + [int 0x7374617274](#int_0x7374617274.md)
 * [.tools](contents/tools/tools.md)
   + [IDA Tips](#-ida-tips-)
   + [GDB Tips](#-gdb-tips-)
