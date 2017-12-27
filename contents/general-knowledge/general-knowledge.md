@@ -16,4 +16,4 @@ __What is Reverse Engineering?__
   * [Memory Breakpoint](int_0x7374617274.md#-memory-breakpoint-)
 
 #
-<p align='center'><a href="/README.md">Home</a> | <a href="int_0x7374617274.md">int 0x7374617274</a></p>
+<p align='center'><a href="/README.md">Home</a> | <a href="int_0x7374617274.md">.general-knowledge -> int 0x7374617274</a></p>
