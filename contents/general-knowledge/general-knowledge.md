@@ -1,6 +1,7 @@
 ## *<p align='center'>.general-knowledge</p>*
 
-__What is Reverse Engineering?__
+__Why Reverse Engineering?__
+* [personal motivation](https://gist.github.com/yellowbyte/cb45efbb2fe05b631455b7523ebd1ff3)
 * [the science of man-made things](https://medium.com/@againsthimself/in-defense-of-reverse-engineering-e07fe19b26c)
 
 ---
