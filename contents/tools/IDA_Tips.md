@@ -55,4 +55,4 @@
 * __n__ to rename
 * __x__ to show cross-references
 
-<p align='center'><a href="/contents/tools/tools.md">0x7374617274</a> | <a href="/contents/tools/GDB_Tips.md">.tools -> IDA_Tips</a></p>
+<p align='center'><a href="/contents/tools/tools.md">.tools</a> | <a href="GDB_Tips.md">.tools -> GDB_Tips</a></p>

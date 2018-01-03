@@ -7,7 +7,16 @@ It's good to have a few go-to reversing tools, but never be too reliant on any o
 ### *<p align='center'> section overview </p>*
 ---
 * [IDA Tips](IDA_Tips.md)
+  * [Addresses Shown In IDA](IDA_Tips.md)
+  * [Import Address Table (IAT)](IDA_Tips.md)
+  * [Saving Memory Snapshot From Your Debugger Session](IDA_Tips.md)
+  * [Useful Shortcuts](IDA_Tips.md)
 * [GDB Tips](GDB_Tips.md)
+  * [Changing Default Settings](GDB_Tips.md)
+  * [User Inputs](GDB_Tips.md)
+  * [Automation](GDB_Tips.md)
+  * [Ways To Pause Debuggee](GDB_Tips.md)
+  * [Useful Commands](GDB_Tips.md)
 
 #
-<p align='center'><a href="/contents/general_knowledge/int 0x7374617274.md">0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">.tools -> IDA_Tips</a></p>
+<p align='center'><a href="/contents/general_knowledge/int_0x7374617274.md">.general-knowledge -> int_0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">.tools -> IDA_Tips</a></p>

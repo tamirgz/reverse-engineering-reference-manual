@@ -84,4 +84,4 @@
 <p align='center'><sub><strong>each available flag and its corresponding bit position in the EFLAGS register</strong></sub></p>
 </div>
 
-<p align='center'><a href="/contents/general_knowledge/int 0x7374617274.md">0x7374617274</a> | <a href="IDA_TIPS.md">.tools -> IDA_Tips</a></p>
+<p align='center'><a href="IDA_TIPS.md">.tools -> IDA_Tips</a> | <a href="/contents/instruction-sets/instruction-sets.md">.instruction-sets</a></p>
