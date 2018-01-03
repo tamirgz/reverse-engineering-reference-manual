@@ -42,3 +42,5 @@
 __NOTE(1)__: if you have any question or need further clarification on the content, feel free to create an issue and ask away!
 
 __NOTE(2)__: beta? Yes. In the coming months I'm planning on adding more pictures and diagrams to the current content. Plans to add more sections will continue after revamping it.
+
+__NOTE(3)__: images found in this reference manual are a mix of ones I created myself and ones I found on the internet. All images and their respective sources can be found under the images directory.

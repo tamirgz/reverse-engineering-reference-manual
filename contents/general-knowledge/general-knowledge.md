@@ -1,5 +1,10 @@
 ## *<p align='center'>.general-knowledge</p>*
 
+<div align='center'> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/endianness.png"> 
+<p align='center'><sub><strong>gif courtesy Of Malware Unicorn's <a href="https://securedorg.github.io/RE101/intro/">Reverse Engineering Malware 101</a>. Go check her RE stuff out!</strong></sub></p>
+</div>
+
 __Why Reverse Engineering?__
 * [personal motivation](https://gist.github.com/yellowbyte/cb45efbb2fe05b631455b7523ebd1ff3)
 * [the science of man-made things](https://medium.com/@againsthimself/in-defense-of-reverse-engineering-e07fe19b26c)
