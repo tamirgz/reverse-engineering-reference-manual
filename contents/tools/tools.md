@@ -19,4 +19,4 @@ It's good to have a few go-to reversing tools, but never be too reliant on any o
   * [Useful Commands](GDB_Tips.md)
 
 #
-<p align='center'><a href="/contents/general_knowledge/int_0x7374617274.md">.general-knowledge -> int_0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">.tools -> IDA_Tips</a></p>
+<p align='center'><a href="/contents/general-knowledge/int_0x7374617274.md">.general-knowledge -> int_0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">.tools -> IDA_Tips</a></p>
