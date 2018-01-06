@@ -66,12 +66,12 @@
 <p align='center'><sub><strong>gdb output from 'apropos mapping'</strong></sub></p>
 </div>
 
-* __i/info__ command displays information on the item specified to the right of it
+* __i (info)__ command displays information on the item specified to the right of it
   + __i proc mappings__: shows mapped address spaces 
   + __i b__: shows all breakpoints 
   + __i r__: shows the values in general purpose, flag, and segment registers at that point of execution
   + __i all r__: shows the values in all registers at that point of execution, such as FPU and XMM registers  
-* __x/examine__ command displays memory contents at a given address in the specified format
+* __x (examine)__ command displays memory contents at a given address in the specified format
   + Since disas command won't work on stripped binary, x command can come in handy to display instructions from current program counter: __x/14i $pc__
 * __set__ command sets temporary variable: __set $&lt;variable name&gt; = &lt;value&gt;__
   * set command can be used to change the flags in the EFLAGS register. You just need to know the bit position of the flag you wanted to change 
