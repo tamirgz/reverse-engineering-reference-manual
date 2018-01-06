@@ -26,5 +26,10 @@ __Be Cautious...__
   * [Ways To Pause Debuggee](GDB_Tips.md)
   * [Useful Commands](GDB_Tips.md)
 
+---
+### *<p align='center'> further readings </p>*
+---
+*work in progress...*
+
 #
 <p align='center'><a href="/contents/general-knowledge/int_0x7374617274.md">int_0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">IDA_Tips</a></p>
