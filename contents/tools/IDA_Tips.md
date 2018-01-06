@@ -1,4 +1,4 @@
-### __IDA Tips__
+### [.tools](tools.md)[__IDA Tips__]
 
 ---
 #### *<p align='center'> Addresses Shown In IDA </p>*

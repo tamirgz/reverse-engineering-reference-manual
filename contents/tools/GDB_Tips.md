@@ -1,4 +1,4 @@
-### __GDB Tips__
+### [.tools](tools.md)[__GDB Tips__]
 
 ---
 #### *<p align='center'> Changing Default Settings </p>*
