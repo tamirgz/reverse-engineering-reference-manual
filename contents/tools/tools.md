@@ -1,7 +1,11 @@
 ## *<p align='center'>.tools</p>*
 
-__Remember...__
-It's good to have a few go-to reversing tools, but never be too reliant on any one of them. Tools popular among reversers are not exclusive to just the reversing community. People trying to make reversing harder also knows about all the popular go-to tools. As a result, for most (if not all) of the popular tools out there, there are ways to either detect their presence or make them not function properly. For more information about anti-analysis techniques, check out my .anti\-analysis section.
+__It Always Come Down To Two__
+* When reversing a target, you will likely run various basic static analysis, dynamic analysis, and/or automation tools to identify point of interests for further manual analysis. Once you identified all the point of interests, the majority of your time will be spent inside a disassembler and a debugger to try to figure out whether if any of those point of interests leads you closer to the ultimate goal you have in mind for reversing the target in the first place (e.g. is the binary
+  exploitable). As a result, at least __know how to use a disassembler and a debugger well__.
+
+__Be Cautious...__
+* Never be too reliant on any one tool. For every popular tool, depending on the tool's usage, there are ways to detect its presence (e.g. if gdb is detected, divert from normal execution), hide certain program properties from it, or make it not function properly. 
 
 ---
 ### *<p align='center'> section overview </p>*
@@ -19,4 +23,4 @@ It's good to have a few go-to reversing tools, but never be too reliant on any o
   * [Useful Commands](GDB_Tips.md)
 
 #
-<p align='center'><a href="/contents/general-knowledge/int_0x7374617274.md">.general-knowledge -> int_0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">.tools -> IDA_Tips</a></p>
+<p align='center'><a href="/contents/general-knowledge/int_0x7374617274.md">int_0x7374617274</a> | <a href="/contents/tools/IDA_Tips.md">IDA_Tips</a></p>

@@ -2,7 +2,7 @@
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/general-knowledge/int_0x7374617274/endianness.png"> 
-<p align='center'><sub><strong>gif courtesy Of Malware Unicorn's <a href="https://securedorg.github.io/RE101/intro/">Reverse Engineering Malware 101</a>. Go check her RE stuff out!</strong></sub></p>
+<p align='center'><sub><strong>courtesy Of Malware Unicorn's <a href="https://securedorg.github.io/RE101/intro/">Reverse Engineering Malware 101</a>. Go check her RE stuff out!</strong></sub></p>
 </div>
 
 __Why Reverse Engineering?__
@@ -22,4 +22,4 @@ __Why Reverse Engineering?__
   * [Memory Breakpoint](int_0x7374617274.md#-memory-breakpoint-)
 
 #
-<p align='center'><a href="/README.md">Home</a> | <a href="int_0x7374617274.md">.general-knowledge -> int 0x7374617274</a></p>
+<p align='center'><a href="/README.md">Home</a> | <a href="int_0x7374617274.md">int 0x7374617274</a></p>
