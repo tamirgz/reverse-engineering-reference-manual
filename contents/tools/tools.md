@@ -15,16 +15,16 @@ __Be Cautious...__
 ### *<p align='center'> section overview </p>*
 ---
 * [IDA Tips](IDA_Tips.md)
-  * [Addresses Shown In IDA](IDA_Tips.md)
-  * [Import Address Table (IAT)](IDA_Tips.md)
-  * [Saving Memory Snapshot From Your Debugger Session](IDA_Tips.md)
-  * [Useful Shortcuts](IDA_Tips.md)
+  * [Addresses Shown In IDA](IDA_Tips.md#-addresses-shown-in-ida-)
+  * [Import Address Table (IAT)](IDA_Tips.md#-import-address-table-iat-)
+  * [Saving Memory Snapshot From Your Debugger Session](IDA_Tips.md#-saving-memory-snapshot-from-your-debugger-session-)
+  * [Useful Shortcuts](IDA_Tips.md#-useful-shortcuts-)
 * [GDB Tips](GDB_Tips.md)
-  * [Changing Default Settings](GDB_Tips.md)
-  * [User Inputs](GDB_Tips.md)
-  * [Automation](GDB_Tips.md)
-  * [Ways To Pause Debuggee](GDB_Tips.md)
-  * [Useful Commands](GDB_Tips.md)
+  * [Changing Default Settings](GDB_Tips.md#-changing-default-settings-)
+  * [User Inputs](GDB_Tips.md#-user-inputs-)
+  * [Automation](GDB_Tips.md#-automation-)
+  * [Ways To Pause Debuggee](GDB_Tips.md#-ways-to-pause-debuggee-)
+  * [Useful Commands](GDB_Tips.md#-useful-commands-)
 
 ---
 ### *<p align='center'> further readings </p>*
