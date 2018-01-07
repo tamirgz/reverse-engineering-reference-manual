@@ -1,4 +1,4 @@
-## *<p align='center'><a href="/README.md#table-of-contents">RERM</a>[.general-knowledge]</p>*
+## *<p align='center'>.general-knowledge</p>*
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/general-knowledge/malwareunicorn_bikeloop.gif" width="500" height="430"> 

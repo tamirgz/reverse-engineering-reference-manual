@@ -1,4 +1,4 @@
-## *<p align='center'><a href="/README.md#table-of-contents">RERM</a>[.instruction-sets]</p>*
+## *<p align='center'>.instruction-sets</p>*
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/instruction-sets/isa.png"> 
@@ -41,4 +41,4 @@ __The Interface Between Software And Hardware__
 *work in progress...*
 
 #
-<p align='center'><a href="/contents/tools/GDB_Tips.md">GDB Tips</a> | <a href="/contents/instruction-sets/x86.md">x86</a></p>
+<p align='center'><a href="/contents/tools/tools.md">.tools</a> | <a href="/README.md#table-of-contents">RERM</a> |<a href="/contents/languages/languages.md">.languages</a></p>
