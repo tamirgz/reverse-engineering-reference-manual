@@ -1,12 +1,12 @@
 ## *<p align='center'>.instruction-sets</p>*
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/tools/tools.jpg" width="500" height="430"> 
-<p align='center'><sub><strong>drawing by <a href="http://www.leejohnphillips.com/">Lee John Phillips</a></strong></sub></p>
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/instruction-sets/isa.png" width="500" height="430"> 
+<p align='center'><sub><strong>picture courtesy of <a href="https://www.eeweb.com/quizzes/instruction-set-architecture">EEWeb</a></strong></sub></p>
 </div>
 
-__The Power Of Two__
-* When reversing a target, you will likely run various basic static analysis, dynamic analysis, and/or automation tools to identify point of interests for further manual analysis. Once you identified all the point of interests, the majority of your time will be spent inside a disassembler and a debugger to try to figure out if any of those point of interests leads you closer to your goal (e.g. finding exploitable bugs). As a result, at least __know how to use a disassembler and a debugger well__.
+__The Interface Between Software And Hardware__
+* 
 
 ---
 ### *<p align='center'> section overview </p>*
