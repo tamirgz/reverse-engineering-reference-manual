@@ -1,3 +1,9 @@
+<div id="header">
+    <h2 style="float: left; width: 34%; text-align: left;">Text Left</h2>
+    <p style="float: left; width: 33%; text-align: center;">Text Middle</p>
+    <p style="float: left; width: 33%; text-align: right;">Text Right</p>
+</div>
+#
 ## *<p align='center'>.general-knowledge</p>*
 
 <div align='center'> 
