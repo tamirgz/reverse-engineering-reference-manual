@@ -3,6 +3,7 @@
     <p style="float: left; width: 33%; text-align: center;">Text Middle</p>
     <p style="float: left; width: 33%; text-align: right;">Text Right</p>
 </div>
+
 #
 ## *<p align='center'>.general-knowledge</p>*
 
