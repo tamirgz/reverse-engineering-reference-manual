@@ -2,7 +2,7 @@
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/instruction-sets/isa.png"> 
-<p align='center'><sub><strong>picture courtesy of <a href="https://www.eeweb.com/quizzes/instruction-set-architecture">EEWeb</a></strong></sub></p>
+<p align='center'><sub><strong>courtesy of <a href="https://www.eeweb.com/quizzes/instruction-set-architecture">EEWeb</a></strong></sub></p>
 </div>
 
 __The Interface Between Software And Hardware__
