@@ -1,7 +1,7 @@
 ## *<p align='center'>.instruction-sets</p>*
 
 <div align='center'> 
-<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/instruction-sets/isa.png" width="500" height="430"> 
+<img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/instruction-sets/isa.png"> 
 <p align='center'><sub><strong>picture courtesy of <a href="https://www.eeweb.com/quizzes/instruction-set-architecture">EEWeb</a></strong></sub></p>
 </div>
 
