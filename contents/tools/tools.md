@@ -1,4 +1,4 @@
-### *<p align='center'><a href="/README.md#table-of-contents">RERM</a>[.tools]</p>*
+## *<p align='center'><a href="/README.md#table-of-contents">RERM</a>[.tools]</p>*
 
 <div align='center'> 
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/reorganize/images/tools/tools.jpg" width="500" height="430"> 
