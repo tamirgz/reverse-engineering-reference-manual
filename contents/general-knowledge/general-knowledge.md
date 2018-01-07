@@ -4,6 +4,8 @@
   <div style="display: inline-block;margin:0 auto;width:100px;">center</div>
 </div>
 
+<div style="text-align: right"> your-text-here </div>
+
 #
 ## *<p align='center'>.general-knowledge</p>*
 
