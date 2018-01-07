@@ -1,7 +1,7 @@
-<div style="width:100%;">
+<div style="width:100%;text-align:center;">
   <div style="float:left;width:100px;">left</div>
   <div style="float:right;width:100px;">right</div>
-  <div style="margin:0 auto;width:100px;">center</div>
+  <div style="display: inline-block;margin:0 auto;width:100px;">center</div>
 </div>
 
 #
