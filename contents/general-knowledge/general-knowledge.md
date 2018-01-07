@@ -1,7 +1,7 @@
-<div id="header">
-    <h2 style="float: left; width: 34%; text-align: left;">Text Left</h2>
-    <p style="float: left; width: 33%; text-align: center;">Text Middle</p>
-    <p style="float: left; width: 33%; text-align: right;">Text Right</p>
+<div style="width:100%;">
+  <div style="float:left;width:100px;">left</div>
+  <div style="float:right;width:100px;">right</div>
+  <div style="margin:0 auto;width:100px;">center</div>
 </div>
 
 #
