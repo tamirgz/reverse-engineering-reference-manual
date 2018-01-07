@@ -1,6 +1,3 @@
-<div style="width:100%;text-align:center;"><div style="text-align: right"> your-text-here </div>
-
-#
 ## *<p align='center'>.general-knowledge</p>*
 
 <div align='center'> 
