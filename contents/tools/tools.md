@@ -1,6 +1,4 @@
-<p align='center'><a href="/README.md#table-of-contents">RERM</a> ->  <a href="/contents/instruction-sets/instruction-sets.md">.instruction-sets</a></p>
-
-#
+<a href="/README.md#table-of-contents">RERM</a>
 ## *<p align='center'>.tools</p>*
 
 <div align='center'> 
