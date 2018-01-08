@@ -56,4 +56,4 @@
 * __x__ to show cross-references
 
 #
-<p align='center'><a href="/contents/tools/tools.md">.tools</a> | <a href="GDB_Tips.md">GDB_Tips</a></p>
+<p align='center'><a href="/contents/tools/tools.md">.tools</a> ~> <a href="GDB_Tips.md">GDB_Tips</a></p>

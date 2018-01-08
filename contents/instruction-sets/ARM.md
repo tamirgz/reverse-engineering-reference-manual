@@ -80,4 +80,4 @@
 * Since instructions can only be 2 or 4 bytes in size, it's not possible to directly use a 32-bit constant as an operand. As a result, barrel shifter can be used to transform the immediate into a larger value 
 
 #
-<p align='center'><a href="x86-64.md">x86-64</a> | <a href="/contents/languages/languages.md">.languages</a></p>
+<p align='center'><a href="x86-64.md">x86-64</a> <~ <a href="instruction-sets.md">.instruction-sets</a> ~> <a href="/contents/languages/languages.md">.languages</a></p>
