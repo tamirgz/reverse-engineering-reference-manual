@@ -6,7 +6,7 @@
 
 # .table-of-contents
 
-* [.general-knowledge](contents/general-knowledge/general-knowledge.md)
+* [.general](contents/general/general.md)
   * [int 0x7374617274](contents/general-knowledge/int_0x7374617274.md)
 * [.tools](contents/tools/tools.md)
   * [IDA Tips](contents/tools/IDA_Tips.md)
