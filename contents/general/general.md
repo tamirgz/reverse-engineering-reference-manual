@@ -31,4 +31,4 @@ __Why Reverse Engineering?__
 * [Reverse Engineering for Beginners](https://beginners.re/): a comprehensive book on reverse engineering that's FREE
 
 #
-<p align='center'><a href="/README.md#table-of-contents">RERM</a> <~ [<a href="/README.md#table-of-contents">RERM</a>] ~> <a href="/contents/tools/tools.md">.tools</a></p>
+<p align='center'><a href="/README.md#table-of-contents">RERM</a> <~ <a href="/README.md#table-of-contents">RERM</a> ~> <a href="/contents/tools/tools.md">.tools</a></p>

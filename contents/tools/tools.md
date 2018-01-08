@@ -32,4 +32,4 @@ __Be Cautious...__
 *work in progress...*
 
 #
-<p align='center'><a href="/contents/general/general.md">.general</a> <~ [<a href="/README.md#table-of-contents">RERM</a>] ~> <a href="/contents/instruction-sets/instruction-sets.md">.instruction-sets</a></p>
+<p align='center'><a href="/contents/general/general.md">.general</a> <~ <a href="/README.md#table-of-contents">RERM</a> ~> <a href="/contents/instruction-sets/instruction-sets.md">.instruction-sets</a></p>

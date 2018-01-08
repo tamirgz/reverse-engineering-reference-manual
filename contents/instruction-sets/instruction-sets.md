@@ -41,4 +41,4 @@ __The Interface Between Software And Hardware__
 *work in progress...*
 
 #
-<p align='center'><a href="/contents/tools/tools.md">.tools</a> <~ [<a href="/README.md#table-of-contents">RERM</a>] ~> <a href="/contents/languages/languages.md">.languages</a></p>
+<p align='center'><a href="/contents/tools/tools.md">.tools</a> <~ <a href="/README.md#table-of-contents">RERM</a> ~> <a href="/contents/languages/languages.md">.languages</a></p>
