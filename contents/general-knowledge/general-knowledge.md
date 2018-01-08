@@ -31,4 +31,4 @@ __Why Reverse Engineering?__
 * [Reverse Engineering for Beginners](https://beginners.re/): a comprehensive book on reverse engineering that's FREE
 
 #
-<p align='center'><a href="/README.md">Home</a> | <a href="int_0x7374617274.md">int 0x7374617274</a></p>
+<p align='center'><a href="/contents/general-knowledge/general-knowledge.md">Home</a> <~ <a href="/README.md#table-of-contents">RERM</a> ~> <a href="/contents/tools/tools.md">.tools</a></p>
