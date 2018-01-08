@@ -84,6 +84,5 @@
 <img src="https://github.com/yellowbyte/reverse-engineering-reference-manual/blob/master/images/tools/GDB_Tips/eflags.png" width="600" height="120">
 <p align='center'><sub><strong>each available flag and its corresponding bit position in the EFLAGS register</strong></sub></p>
 </div>
-
 #
-<p align='center'><a href="IDA_Tips.md">IDA_Tips</a> <~ [<a href="tools.md">.tools</a>] ~> <a href="/contents/instruction-sets/instruction-sets.md">.instruction-sets</a></p>
+<p align='center'><a href="IDA_Tips.md">IDA_Tips</a> <~ <a href="/README.md#table-of-contents">RERM</a>[<a href="tools.md">.tools</a>] ~> <a href="/contents/instruction-sets/instruction-sets.md">.instruction-sets</a></p>
