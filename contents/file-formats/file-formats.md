@@ -13,13 +13,22 @@ __The Interface Between Software And Hardware__
 ### *<p align='center'> section overview </p>*
 ---
 * [ELF Files](ELF_Files.md)
-  * [thiscall](C++_Reversing.md#-thiscall-)
-  * [How An Object Is Represented](C++_Reversing.md#-how-an-object-is-represented-)
-  * [Name Mangling](C++_Reversing.md#-name-mangling-)
+  * [Overview](ELF_Files.md#-overview-)
+  * [Linking VS Execution](ELF_Files.md#-linking-vs-execution-)
+  * [ELF File Header](ELF_Files.md#-elf-file-header-)
+  * [Program Header Table](ELF_Files.md#-program-header-table-)
+  * [Section Header Table](ELF_Files.md#-section-header-table-)
+  * [Useful Compilation Options To Know For GCC](ELF_Files.md#-useful-compilation-options-to-know-for-gcc-)
+  * [Stripped Binary](ELF_Files.md#-stripped-binary-)
+  * [Useful Tools To Analyze ELF File](ELF_Files.md#-useful-tools-to-analyze-elf-file-)
 * [PE Files](PE_Files.md)
-  * [PVM (Python Virtual Machine)](Python_Reversing.md#-pvm-python-virtual-machine-)
-  * [The 3 Tuples Associated With Function Object](Python_Reversing.md#-the-3-tuples-associated-with-function-object-)
-  * [Python Bytecode Instructions](Python_Reversing.md#-python-bytecode-instructions-)
+  * [Overview](PE_Files.md#-overview-)
+  * [PE File In Memory](PE_Files.md#-pe-file-in-memory-)
+  * [Virtual Address(VA) To File Offset Translation](PE_Files.md#-virtual-addressva-to-file-offset-translation-)
+  * [DOS Header](PE_Files.md#-dos-header-)
+  * [PE Header (IMAGE_NT_HEADERS)](PE_Files.md#-pe-header-image_nt_headers-)
+  * [Section Header Table (IMAGE_SECTION_HEADERs)](PE_Files.md#-section-header-table-image_section_headers-)
+  * [Overlay](PE_Files.md#-overlay-)
 
 ---
 ### *<p align='center'> further readings </p>*
