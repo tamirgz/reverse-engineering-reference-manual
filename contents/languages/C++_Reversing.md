@@ -3,7 +3,7 @@
 ---
 #### *<p align='center'> thiscall </p>*
 ---
-* __thiscall__: C++'s calling convention
+* __Thiscall__: C++'s calling convention
   + On Microsoft Visual C++ compiled binary, this pointer is stored in ecx. Sometimes esi 
   + On g++ compiled binary, this pointer is passed in as the first parameter of the member function as an address 
   + Class member functions are called with the usual function parameters in the stack and with ecx pointing to the class’s object 
