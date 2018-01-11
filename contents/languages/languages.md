@@ -13,13 +13,13 @@ __The Interface Between Software And Hardware__
 ### *<p align='center'> section overview </p>*
 ---
 * [C++ Reversing](C++_Reversing.md)
-  * [thiscall](C++_Reversing.md#)
-  * [How An Object Is Represented](C++_Reversing.md#)
-  * [Name Mangling](C++_Reversing.md#)
+  * [thiscall](C++_Reversing.md#-thiscall-)
+  * [How An Object Is Represented](C++_Reversing.md#-how-an-object-is-represented-)
+  * [Name Mangling](C++_Reversing.md#-name-mangling-)
 * [Python Reversing](Python_Reversing.md)
-  * [PVM (Python Virtual Machine)](Python_Reversing.md#)
-  * [The 3 Tuples Associated With Function Object](Python_Reversing.md#)
-  * [Python Bytecode Instructions](Python_Reversing.md#)
+  * [PVM (Python Virtual Machine)](Python_Reversing.md#-pvm-python-virtual-machine-)
+  * [The 3 Tuples Associated With Function Object](Python_Reversing.md#-the-3-tuples-associated-with-function-object-)
+  * [Python Bytecode Instructions](Python_Reversing.md#-python-bytecode-instructions-)
 
 ---
 ### *<p align='center'> further readings </p>*
